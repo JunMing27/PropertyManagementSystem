@@ -159,14 +159,15 @@ void showAllTenants()
     {
         while (current != nullptr)
         {
-            cout << "Tenant ID: " << current->tenantId << endl;
+            /*cout << "Tenant ID: " << current->tenantId << endl;
             cout << "Tenant Name: " << current->tenantName << endl;
             cout << "Tenant Username: " << current->tenantUserName << endl;
             cout << "Tenant Email: " << current->tenantEmail << endl;
             cout << "Property ID: " << current->propertyId << endl;
             cout << "Payment History: " << current->paymentHistory << endl;
             cout << "Lease Renewed: " << (current->leaseRenewed ? "Yes" : "No") << endl;
-            cout << "================================" << endl;
+            cout << "================================" << endl;*/
+            displaySingleTenant(current);
             current = current->next;
         }
     }
@@ -191,7 +192,7 @@ Tenant* searchTenantById(Tenant* tHead, string tenantId)
     return nullptr;
 }
 
-void displaySearchTenant(Tenant* tenant)
+void displaySingleTenant(Tenant* tenant)
 {
     cout << "Tenant ID: " << tenant->tenantId << endl;
     cout << "Tenant Name: " << tenant->tenantName << endl;
@@ -212,9 +213,43 @@ void searchTenantDetails()
     Tenant* foundTenant = searchTenantById(tHead, tenantID);
     if (isTenantFound) {
         cout << "Tenant found!" << endl;
-        displaySearchTenant(foundTenant);
+        displaySingleTenant(foundTenant);
     }
     else {
         cout << "Tenant not found with ID: " << tenantID << endl;
     }
+}
+
+//delete inactive tenant
+void deleteInactiveTenants()
+{
+    Tenant* current = tHead;
+    while (current != nullptr)
+    {
+        if (!current->isActive) //inactive
+        {
+            //display
+            cout << endl << "Inactive Tenant Details:" << endl;
+            displaySingleTenant(current);
+
+            //delete
+            if (current == tHead)
+            {
+                tHead = current->next;
+                delete current;
+                current = tHead;
+            }
+            else
+            {
+                Tenant* temp = current;
+                current = current->next;
+                delete temp;
+            }
+
+            cout << endl << "Deleted successfully" << endl;
+
+        }
+        current = current->next;
+    }
+
 }

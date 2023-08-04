@@ -72,7 +72,7 @@ void loginManager()
     cin >> managerPassword;
     bool loggedIn = searchManager(managerUsername, managerPassword);
     if (loggedIn) {
-        cout << "Login successful. Welcome, " << managerUsername << " !" << endl << endl;
+        cout << endl <<"Login successful. Welcome, " << managerUsername << " !" << endl;
         displayManagerMenu();
     }
     else {
@@ -85,49 +85,54 @@ void loginManager()
 void displayManagerMenu()
 {
     int managerOption;
+    bool managerLogIn = true;
 
-    cout << "======== Manager Menu ========" << endl;
-    cout << "1. Display all tenants' details" << endl;
-    cout << "2. Search tenant details" << endl;
-    cout << "3. Delete inactive tenants" << endl;
-    cout << "4. Summarize top 10 properties" << endl;
-    cout << "5. Manage tenancy process" << endl;
-    cout << "6. Manage payment" << endl;
-    cout << "7. Logout" << endl;
-    cout << "Enter your choice: ";
-
-    cin >> managerOption;
-    switch (managerOption)
+    while (managerLogIn)
     {
-    case 1:
-        showAllTenants();
-        break;
-    case 2:
-        searchTenantDetails();
-        break;
-    case 3:
-        //deleteInactiveTenants(tenantList);
-        cout << "3 ING";
-        break;
-    case 4:
-        //summarizeTop10Property(propertyList);
-        cout << "4 ING";
-        break;
-    case 5:
-        //manageTenancyProcess(tenantList, propertyList);
-        cout << "5 ING";
-        break;
-    case 6:
-        //managePayment(tenantList);
-        cout << "6 ING";
-        break;
-    case 7:
-        logout();
-        break;
-    default:
-        cout << "Invalid Option. Please Try Again." << endl;
-        break;
+        cout << "======== Manager Menu ========" << endl;
+        cout << "1. Display all tenants' details" << endl;
+        cout << "2. Search tenant details" << endl;
+        cout << "3. Delete inactive tenants" << endl;
+        cout << "4. Summarize top 10 properties" << endl;
+        cout << "5. Manage tenancy process" << endl;
+        cout << "6. Manage payment" << endl;
+        cout << "7. Logout" << endl;
+        cout << "Enter your choice: ";
+
+        cin >> managerOption;
+        switch (managerOption)
+        {
+        case 1:
+            showAllTenants();
+            break;
+        case 2:
+            searchTenantDetails();
+            break;
+        case 3:
+            deleteInactiveTenants();
+            break;
+        case 4:
+            //summarizeTop10Property(propertyList);
+            cout << "4 ING";
+            break;
+        case 5:
+            //manageTenancyProcess(tenantList, propertyList);
+            cout << "5 ING";
+            break;
+        case 6:
+            //managePayment(tenantList);
+            cout << "6 ING";
+            break;
+        case 7:
+            managerLogIn = false;
+            logout();
+            break;
+        default:
+            cout << "Invalid Option. Please Try Again." << endl;
+            break;
+        }
     }
+    
 }
 
 

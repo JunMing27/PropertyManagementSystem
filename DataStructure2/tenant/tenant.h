@@ -34,6 +34,7 @@ void showAllTenants();
 //for search
 void searchTenantDetails();
 Tenant* searchTenantById(Tenant* tHead, string tenantId);
-void displaySearchTenant(Tenant* tenant);
+void displaySingleTenant(Tenant* tenant);
 
 //for delete due to inactive
+void deleteInactiveTenants();
