@@ -13,6 +13,8 @@
 #include "tenant.h"
 #include "../main.h"
 
+#include "../manager/manager.h"
+
 using namespace std;
 // -------------------------
 // LINKED LIST FUNCTION
@@ -142,3 +144,77 @@ void displayTenantMenu() {
 //     cout << "Lease Renewed: " << (tenant->leaseRenewed ? "Yes" : "No") << endl;
 //     cout << "================================" << endl;
 // }
+
+
+//by hoiyi
+//display all tenants
+void showAllTenants()
+{
+    Tenant* current = tHead;
+    if (current == nullptr)
+    {
+        cout << "Tenant List is Empty." << endl;
+    }
+    else 
+    {
+        while (current != nullptr)
+        {
+            cout << "Tenant ID: " << current->tenantId << endl;
+            cout << "Tenant Name: " << current->tenantName << endl;
+            cout << "Tenant Username: " << current->tenantUserName << endl;
+            cout << "Tenant Email: " << current->tenantEmail << endl;
+            cout << "Property ID: " << current->propertyId << endl;
+            cout << "Payment History: " << current->paymentHistory << endl;
+            cout << "Lease Renewed: " << (current->leaseRenewed ? "Yes" : "No") << endl;
+            cout << "================================" << endl;
+            current = current->next;
+        }
+    }
+
+    
+}
+
+
+//search tenant details (linear search)
+bool isTenantFound;
+Tenant* searchTenantById(Tenant* tHead, string tenantId)
+{
+    Tenant* temp = tHead;
+    isTenantFound = false;
+    while (temp != nullptr) {
+        if (temp->tenantId == tenantId) {
+            isTenantFound = true;
+            return temp;
+        }
+        temp = temp->next;
+    }
+    return nullptr;
+}
+
+void displaySearchTenant(Tenant* tenant)
+{
+    cout << "Tenant ID: " << tenant->tenantId << endl;
+    cout << "Tenant Name: " << tenant->tenantName << endl;
+    cout << "Tenant UserName: " << tenant->tenantUserName << endl;
+    cout << "Tenant Password: " << tenant->tenantPassword << endl;
+    cout << "Tenant Email: " << tenant->tenantEmail << endl;
+    cout << "Tenant Property ID: " << tenant->propertyId << endl;
+    cout << "Tenant Payment History: " << tenant->paymentHistory << endl;
+    cout << "Tenant Lease Renewed: " << tenant->leaseRenewed << endl;
+}
+
+void searchTenantDetails()
+{
+    string tenantID;
+    cout << "Enter tenant ID to search: ";
+    cin >> tenantID;
+
+    Tenant* foundTenant = searchTenantById(tHead, tenantID);
+    if (isTenantFound) {
+        cout << "Tenant found!" << endl;
+        displaySearchTenant(foundTenant);
+    }
+    else {
+        cout << "Tenant not found with ID: " << tenantID << endl;
+    }
+}

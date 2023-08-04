@@ -25,3 +25,15 @@ void displayTenantMenu();
 bool searchTenant(Tenant* tHead, string username, string password);
 void displayAllTenants();
 void displayTenantDetails(Tenant* tenant);
+
+
+//by hoiyi
+//for display
+void showAllTenants();
+
+//for search
+void searchTenantDetails();
+Tenant* searchTenantById(Tenant* tHead, string tenantId);
+void displaySearchTenant(Tenant* tenant);
+
+//for delete due to inactive
