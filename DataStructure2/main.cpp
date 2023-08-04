@@ -1,7 +1,10 @@
 //This file is the main file to run propertyManagement system
-/*
+
 #include <iostream>
 #include "tenant/tenant.h"
+#include "admin/admin.h"
+#include "manager/manager.h"
+#include "main.h"
 using namespace std;
 
 void displayMenuList() {
@@ -17,7 +20,14 @@ void displayMenuList() {
 
 void displayMenu() {
     int choice;
+
+    string managerId;
+    string managerUserName;
+    string managerPassword;
+    bool managerStatus = false;
+
     initializeTenant(); //initialize the current tenant into linkedlist first
+    initializeAdmin(); //initialize the current admin into linkedlist first
     displayMenuList();
     cin >> choice;
     if (cin.fail()) //validate the input, ensure it is integer only continue with loop
@@ -41,6 +51,16 @@ void displayMenu() {
             break;
         case 3:
             cout << endl;
+            loginAdmin();
+            cin >> choice;
+            switch (choice) {
+            case 1:
+                addNewManager(managerId, managerUserName, managerPassword, managerStatus);
+                break;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+                displayMenu();
+            }
             break;
         case 4:
             cout << endl;
@@ -63,4 +83,3 @@ int main()
     displayMenu();
     return 0;
 }
-*/
