@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DataStructure2.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="property\property.cpp" />
     <ClCompile Include="tenant\tenant.cpp" />
   </ItemGroup>
