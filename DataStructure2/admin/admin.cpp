@@ -59,7 +59,6 @@ void loginAdmin() {
     bool isAdminFound = searchAdmin(aHead, adminUserName, adminPassword);
     if (isAdminFound) {
         cout << "Login Successfully" << endl << endl;
-        displayAdminMenu();
     }
     else {
         cout << "Login Failed. Please double check your username and password" << endl << endl;
@@ -83,6 +82,21 @@ void addNewManager(string managerId, string managerUserName, string managerPassw
     // Ask the user to enter manager details
     cout << endl << "Enter Manager ID: ";
     cin >> managerId;
+
+    // Check if the manager ID already exists in the linked list
+    Manager* temp = mHead;
+    while (temp != nullptr) {
+        if (temp->managerId == managerId) {
+            cout << "Manager ID already exists. Please enter a different Manager ID." << endl << endl;
+            cout << "Enter Manager ID: ";
+            cin >> managerId;
+            // Reset the temp pointer to the beginning of the linked list to recheck the new ID
+            temp = mHead;
+        }
+        else {
+            temp = temp->next;
+        }
+    }
 
     cout << "Enter Manager Username: ";
     cin >> managerUserName;
@@ -130,5 +144,51 @@ void addNewManager(string managerId, string managerUserName, string managerPassw
     }
     else {
         cout << endl << "New manager not saved. Operation cancelled." << endl << endl;
+    }
+}
+
+void modifyManagerStatus() {
+    string managerId;
+    cout << endl << "Enter Manager ID to search: ";
+    cin >> managerId;
+
+    // Search for the manager with the specified managerId
+    Manager* temp = mHead;
+    bool managerFound = false;
+    while (temp != nullptr) {
+        if (temp->managerId == managerId) {
+            managerFound = true;
+            break;
+        }
+        temp = temp->next;
+    }
+
+    if (managerFound) {
+        // Manager with the given managerId is found
+        char newStatus;
+        cout << "Manager Details:" << endl;
+        cout << "Manager ID: " << temp->managerId << endl;
+        cout << "Manager Username: " << temp->managerUsername << endl;
+        cout << "Manager Password: " << temp->managerPassword << endl;
+        cout << "Current Manager Status: " << (temp->managerStatus ? "Active" : "Inactive") << endl;
+        cout << "Enter the new status (A for Active, I for Inactive): ";
+        cin >> newStatus;
+
+        // Update the manager status
+        if (newStatus == 'A' || newStatus == 'a') {
+            temp->managerStatus = true; // Set to Active
+            cout << endl << "Manager Status Updated Successfully." << endl << endl;
+        }
+        else if (newStatus == 'I' || newStatus == 'i') {
+            temp->managerStatus = false; // Set to Inactive
+            cout << endl << "Manager Status Updated Successfully." << endl << endl;
+        }
+        else {
+            cout << endl << "Invalid status entered. Status remains unchanged." << endl << endl;
+        }
+
+    }
+    else {
+        cout << endl << "Manager with ID '" << managerId << "' not found." << endl << endl;
     }
 }
