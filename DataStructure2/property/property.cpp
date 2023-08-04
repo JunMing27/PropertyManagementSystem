@@ -106,28 +106,56 @@ void addNewProperty(string ads_id, string prop_name, string completion_year, str
 }
 
 void displayPropertyBy5() {
-    Property* temp = head;
-    if (head == nullptr) {
+    int batchSize = 1;
+    Property* currentProperty = head;
+
+    if (currentProperty == nullptr) {
         cout << "No property in the list." << endl;
         return;
     }
-    while (temp != NULL) {
+
+    while (currentProperty != nullptr) {
         cout << "================================" << endl;
-        cout << "Property ID: " << temp->ads_id << endl;
-        cout << "Property Name: " << temp->prop_name << endl;
-        cout << "Completion Year: " << temp->completion_year << endl;
-        cout << "Monthly Rent: " << temp->monthly_rent << endl;
-        cout << "Location: " << temp->location << endl;
-        cout << "Property Type: " << temp->propertyType << endl;
-        cout << "Number of Rooms: " << temp->rooms << endl;
-        cout << "Parking: " << temp->parking << endl;
-        cout << "Number of Bathrooms: " << temp->bathroom << endl;
-        cout << "Size: " << temp->size << endl;
-        cout << "Furnished: " << temp->furnished << endl;
-        cout << "Facilities: " << temp->facilities << endl;
-        cout << "Additional Facilities: " << temp->additional_facilities << endl;
-        cout << "Region: " << temp->region << endl;
+        cout << "Property ID: " << currentProperty->ads_id << endl;
+        cout << "Property Name: " << currentProperty->prop_name << endl;
+        cout << "Completion Year: " << currentProperty->completion_year << endl;
+        cout << "Monthly Rent: " << currentProperty->monthly_rent << endl;
+        cout << "Location: " << currentProperty->location << endl;
+        cout << "Property Type: " << currentProperty->propertyType << endl;
+        cout << "Number of Rooms: " << currentProperty->rooms << endl;
+        cout << "Parking: " << currentProperty->parking << endl;
+        cout << "Number of Bathrooms: " << currentProperty->bathroom << endl;
+        cout << "Size: " << currentProperty->size << endl;
+        cout << "Furnished: " << currentProperty->furnished << endl;
+        cout << "Facilities: " << currentProperty->facilities << endl;
+        cout << "Additional Facilities: " << currentProperty->additional_facilities << endl;
+        cout << "Region: " << currentProperty->region << endl;
         cout << "================================" << endl;
-        temp = temp->next;
+
+        // Ask for user input to continue or go back
+        int userInput;
+        cout << "Enter '1' to view the next property, '2' to view the previous property, or any other number to exit: ";
+        cin >> userInput;
+
+        if (userInput == 2 && currentProperty == head) {
+            cout << "You are already at the beginning of the list." << endl;
+        }
+        else if (userInput == 1) {
+            // Move to the next property
+            currentProperty = currentProperty->next;
+        }
+        else if (userInput == 2) {
+            // Move to the previous property
+            currentProperty = currentProperty->prev;
+        }
+        else {
+            // Exit the loop if any other number is entered
+            break;
+        }
     }
+}
+
+int main() 
+{
+    initializeProperty();
 }
