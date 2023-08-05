@@ -12,6 +12,7 @@
 #include <iostream>
 #include "tenant.h"
 #include "../main.h"
+#include "../property/property.h"
 
 using namespace std;
 // -------------------------
@@ -107,21 +108,105 @@ void loginTenant() {
 void displayTenantMenu() {
     cout << "======== Tenant Operation ========" << endl;
     cout << "1. View Property" << endl;
-    cout << "2. Sort" << endl;
-    cout << "3. Search" << endl;
+    cout << "2. Sort Property" << endl;
+    cout << "3. Search Property" << endl;
     cout << "4. Rent History" << endl;
+    cout << "5. Sign Out" << endl;
     cout << "===========================" << endl;
     cout << "Enter your choice: ";
+    inputTenantMenu();
 }
 
 void displayTenantPropertyMenu() {
+    inputTenantPropertyMenu();
     cout << "======== Tenant Operation ========" << endl;
     cout << "1. Next" << endl;
     cout << "2. Previous" << endl;
     cout << "3. Save property into favourite" << endl;
     cout << "4. Rent Property" << endl;
+    cout << "5. Back to Menu" << endl;
     cout << "===========================" << endl;
     cout << "Enter your choice: ";
+}
+
+void inputTenantMenu() {
+    int choice;
+    cin >> choice;
+    if (cin.fail()) //validate the input, ensure it is integer only continue with loop
+    {
+        // clear error flags
+        cin.clear();
+        // Wrong input remains on the stream, so you need to get rid of it
+        cin.ignore();
+        cout << "Invalid choice. Please try again." << endl;
+        displayTenantMenu();
+    }
+    else
+    {
+        switch (choice) {
+        case 1:             //View Property
+            cout << endl;
+            displayTenantPropertyMenu();
+            break;
+        case 2:             //Sort Property
+            cout << endl;
+            break;
+        case 3:             //Search Property
+            cout << endl;
+            break;
+        case 4:             //Rent History
+            cout << endl;
+            break;
+        case 5:             //Sign Out
+            cout << " You have signed out! Come Back Next Time!" << endl;
+            break;
+        default:
+            cout << "Invalid choice. Please try again." << endl;
+            displayTenantMenu();
+        }
+    }
+
+    cout << endl;
+}
+
+void inputTenantPropertyMenu() {
+    displayProperty();
+    int choice;
+    cin >> choice;
+    if (cin.fail()) //validate the input, ensure it is integer only continue with loop
+    {
+        // clear error flags
+        cin.clear();
+        // Wrong input remains on the stream, so you need to get rid of it
+        cin.ignore();
+        cout << "Invalid choice. Please try again." << endl;
+        displayTenantPropertyMenu();
+    }
+    else
+    {
+        switch (choice) {
+        case 1:             //View Property, Next Page
+            cout << endl;
+            break;
+        case 2:             //View Property, Previous Page
+            cout << endl;
+            break;
+        case 3:             //Save property into favourite
+            cout << endl;
+            break;
+        case 4:             //Rent Property
+            cout << endl;
+            break;
+        case 5:             //Back to TenantMenu
+            cout << endl;
+            break;
+        default:
+            cout << "Invalid choice. Please try again." << endl;
+            displayTenantPropertyMenu();
+        }
+    }
+
+    cout << endl;
 }
 
 // void displayAllTenants() {

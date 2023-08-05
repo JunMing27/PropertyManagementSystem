@@ -156,3 +156,7 @@ void displayPropertyBy1() {
         }
     }
 }
+
+void displayProperty() {
+    displayPropertyBy1();
+}

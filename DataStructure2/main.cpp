@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "tenant/tenant.h"
+#include "property/property.h"
 using namespace std;
 
 void displayMenuList() {
@@ -17,6 +18,7 @@ void displayMenuList() {
 
 void displayMenu() {
     int choice;
+    initializeProperty(); //initialize the current property from csv file into linkedlist first
     initializeTenant(); //initialize the current tenant into linkedlist first
     displayMenuList();
     cin >> choice;
@@ -32,21 +34,21 @@ void displayMenu() {
     else
     {
         switch (choice) {
-        case 1:
+        case 1:             // Login as Tenant
             cout << endl;
-            loginTenant();
+            loginTenant();  
             break;
-        case 2:
+        case 2:             // Login as Manager
+            cout << endl; 
+            break;
+        case 3:             // Login as Admin
             cout << endl;
             break;
-        case 3:
-            cout << endl;
-            break;
-        case 4:
+        case 4:             // Register as Tenant
             cout << endl;
             signUpTenant();
             break;
-        case 5:
+        case 5:             // Exit
             cout << "Exiting..." << endl;
             break;
         default:
@@ -57,6 +59,8 @@ void displayMenu() {
 
     cout << endl;
 }
+
+
 
 int main()
 {

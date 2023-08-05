@@ -27,3 +27,4 @@ void addNewProperty(string ads_id, string prop_name, string completion_year, str
 void initializeProperty();
 void displayPropertyBy1();
 void displayPropertyDetails(Property* property);
+void displayProperty();
