@@ -143,9 +143,6 @@
     <ClInclude Include="property\property.h" />
     <ClInclude Include="tenant\tenant.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\mudah-apartment-kl-selangor.csv" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

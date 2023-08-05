@@ -1,8 +1,12 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
+#include <map>
+#include <regex>
 #include "admin.h"
 #include "../manager/manager.h"
+#include "../property/property.h"
 #include "../main.h"
 using namespace std;
 
@@ -190,5 +194,221 @@ void modifyManagerStatus() {
     }
     else {
         cout << endl << "Manager with ID '" << managerId << "' not found." << endl << endl;
+    }
+}
+
+void displayPropertyByType(const string& propertyType) {
+    Property* currentProperty = pHead;
+    bool propertyFound = false;
+
+    if (currentProperty == nullptr) {
+        cout << "No property in the list." << endl;
+        return;
+    }
+
+    while (currentProperty != nullptr) {
+        if (currentProperty->propertyType == propertyType) {
+            propertyFound = true;
+            cout << "================================" << endl;
+            cout << "Property ID: " << currentProperty->ads_id << endl;
+            cout << "Property Name: " << currentProperty->prop_name << endl;
+            cout << "Completion Year: " << currentProperty->completion_year << endl;
+            cout << "Monthly Rent: " << currentProperty->monthly_rent << endl;
+            cout << "Location: " << currentProperty->location << endl;
+            cout << "Property Type: " << currentProperty->propertyType << endl;
+            cout << "Number of Rooms: " << currentProperty->rooms << endl;
+            cout << "Parking: " << currentProperty->parking << endl;
+            cout << "Number of Bathrooms: " << currentProperty->bathroom << endl;
+            cout << "Size: " << currentProperty->size << endl;
+            cout << "Furnished: " << currentProperty->furnished << endl;
+            cout << "Facilities: " << currentProperty->facilities << endl;
+            cout << "Additional Facilities: " << currentProperty->additional_facilities << endl;
+            cout << "Region: " << currentProperty->region << endl;
+            cout << "================================" << endl << endl;
+
+            // Ask for user input to continue or go back
+            int userInput;
+            cout << "Enter '1' to view the next property, '2' to view the previous property, or any other number to exit: ";
+            cin >> userInput;
+
+            if (userInput == 2 && currentProperty == pHead) {
+                cout << "You are already at the beginning of the list." << endl << endl;
+            }
+            else if (userInput == 1) {
+                // Move to the next property
+                currentProperty = currentProperty->next;
+            }
+            else if (userInput == 2) {
+                // Move to the previous property
+                currentProperty = currentProperty->prev;
+            }
+            else {
+                // Exit the loop if any other number is entered
+                break;
+            }
+        }
+        else {
+            currentProperty = currentProperty->next;
+        }
+    }
+
+    if (!propertyFound) {
+        cout << "No properties found for the selected property type: " << propertyType << endl;
+    }
+}
+
+void choosePropertyType(){
+    int choice;
+    do {
+        cout << endl << "========== Property Type Menu ==========" << endl;
+        cout << "1. Condominium" << endl;
+        cout << "2. Apartment" << endl;
+        cout << "3. Service Residence" << endl;
+        cout << "4. Studio" << endl;
+        cout << "5. Flat" << endl;
+        cout << "6. Duplex" << endl;
+        cout << "7. Exit" << endl;
+        cout << "=======================================" << endl;
+        cout << "Enter your choice (1-7): ";
+        cin >> choice;
+
+        cout << endl;
+
+        switch (choice) {
+        case 1:
+            displayPropertyByType("Condominium");
+            break;
+        case 2:
+            displayPropertyByType("Apartment");
+            break;
+        case 3:
+            displayPropertyByType("Service Residence");
+            break;
+        case 4:
+            displayPropertyByType("Studio");
+            break;
+        case 5:
+            displayPropertyByType("Flat");
+            break;
+        case 6:
+            displayPropertyByType("Duplex");
+            break;
+        case 7:
+            cout << "Exiting..." << endl;
+            break;
+        default:
+            cout << "Invalid choice. Please select again." << endl;
+        }
+
+        cout << endl;
+    } while (choice != 7);
+
+}
+
+// Helper function to extract the numerical value from the monthly_rent string
+int extractMonthlyRentValue(const string& rentString) {
+    int rentValue = 0;
+    string numericalPart;
+
+    // Find the starting index of the numerical part (after "RM ")
+    size_t startPos = rentString.find("RM ");
+    if (startPos != string::npos) {
+        startPos += 3; // Skip "RM "
+        size_t endPos = rentString.find(" per month", startPos);
+        numericalPart = rentString.substr(startPos, endPos - startPos);
+    }
+
+    // Extract numerical value from the numericalPart
+    for (char c : numericalPart) {
+        if (isdigit(c)) {
+            rentValue = rentValue * 10 + (c - '0');
+        }
+    }
+
+    return rentValue;
+}
+
+void displayPropertiesByMonthlyRent() {
+    cout << "======== Display Properties by Monthly Rent ========" << endl;
+    cout << "Choose an option:" << endl;
+    cout << "1. Price less than RM 1000" << endl;
+    cout << "2. Price less than RM 2000" << endl;
+    cout << "3. Price less than RM 3000" << endl;
+    cout << "Enter your choice: ";
+
+    int option;
+    cin >> option;
+
+    if (option < 1 || option > 3) {
+        cout << "Invalid option. Please choose a valid option (1, 2, or 3)." << endl;
+        return;
+    }
+
+    // Filter properties by monthly rent based on the chosen option
+    int maxMonthlyRent;
+    switch (option) {
+    case 1:
+        maxMonthlyRent = 1000;
+        break;
+    case 2:
+        maxMonthlyRent = 2000;
+        break;
+    case 3:
+        maxMonthlyRent = 3000;
+        break;
+    }
+
+    // Traverse and display properties with rent less than the chosen maximum rent
+    Property* currentProperty = pHead;
+    bool found = false;
+    while (currentProperty != nullptr) {
+        int rentValue = extractMonthlyRentValue(currentProperty->monthly_rent);
+        if (rentValue < maxMonthlyRent) {
+            found = true;
+            cout << "================================" << endl;
+            cout << "Property ID: " << currentProperty->ads_id << endl;
+            cout << "Property Name: " << currentProperty->prop_name << endl;
+            cout << "Completion Year: " << currentProperty->completion_year << endl;
+            cout << "Monthly Rent: " << currentProperty->monthly_rent << endl;
+            cout << "Location: " << currentProperty->location << endl;
+            cout << "Property Type: " << currentProperty->propertyType << endl;
+            cout << "Number of Rooms: " << currentProperty->rooms << endl;
+            cout << "Parking: " << currentProperty->parking << endl;
+            cout << "Number of Bathrooms: " << currentProperty->bathroom << endl;
+            cout << "Size: " << currentProperty->size << endl;
+            cout << "Furnished: " << currentProperty->furnished << endl;
+            cout << "Facilities: " << currentProperty->facilities << endl;
+            cout << "Additional Facilities: " << currentProperty->additional_facilities << endl;
+            cout << "Region: " << currentProperty->region << endl;
+            cout << "================================" << endl << endl;
+
+            // Ask for user input to continue or go back
+            int userInput;
+            cout << "Enter '1' to view the next property, '2' to view the previous property, or any other number to exit: ";
+            cin >> userInput;
+
+            if (userInput == 2 && currentProperty == pHead) {
+                cout << "You are already at the beginning of the list." << endl << endl;
+            }
+            else if (userInput == 1) {
+                // Move to the next property
+                currentProperty = currentProperty->next;
+            }
+            else if (userInput == 2) {
+                // Move to the previous property
+                currentProperty = currentProperty->prev;
+            }
+            else {
+                // Exit the loop if any other number is entered
+                break;
+            }
+        }
+        else {
+            currentProperty = currentProperty->next;
+        }
+    }
+
+    if (!found) {
+        cout << "No properties found for the selected monthly rent " << endl;
     }
 }

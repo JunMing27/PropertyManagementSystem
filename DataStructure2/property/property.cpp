@@ -2,10 +2,12 @@
 #include <fstream>
 #include <string>
 #include "property.h"
+
 using namespace std;
 
-Property* head = nullptr;
-Property* tail = nullptr;
+Property* pHead = nullptr;
+Property* pTail = nullptr;
+
 void initializeProperty()
 {
     ifstream ip("../mudah-apartment-kl-selangor.csv");
@@ -29,6 +31,10 @@ void initializeProperty()
     string ignore; // create to ignore the ,
 
     while (ip.good()) {
+        // Read and discard the header line
+        string line;
+        getline(ip, line);
+
         // Get data from each line 
         getline(ip, ads_id, ',');
         getline(ip, prop_name, ',');
@@ -68,7 +74,6 @@ void initializeProperty()
         //Assign property value into linkedlist
         addNewProperty(ads_id, prop_name, completion_year, monthly_rent, location, propertyType, rooms, parking, bathroom, size, furnished, facilities, additional_facilities, region);
     }
-    displayPropertyBy5();
     ip.close();
 }
 
@@ -92,11 +97,11 @@ void addNewProperty(string ads_id, string prop_name, string completion_year, str
     newProperty->next = nullptr;
     newProperty->prev = nullptr;
 
-    if (head == NULL) {
-        head = newProperty;
+    if (pHead == NULL) {
+        pHead = newProperty;
     }
     else {
-        Property* temp = head;
+        Property* temp = pHead;
         while (temp->next != NULL) {
             temp = temp->next;
         }
@@ -105,29 +110,59 @@ void addNewProperty(string ads_id, string prop_name, string completion_year, str
     }
 }
 
-void displayPropertyBy5() {
-    Property* temp = head;
-    if (head == nullptr) {
+void displayPropertyBy1() {
+    int batchSize = 1;
+    int pageNum = 1;
+    Property* currentProperty = pHead;
+
+    if (currentProperty == nullptr) {
         cout << "No property in the list." << endl;
         return;
     }
-    while (temp != NULL) {
-        cout << "================================" << endl;
-        cout << "Property ID: " << temp->ads_id << endl;
-        cout << "Property Name: " << temp->prop_name << endl;
-        cout << "Completion Year: " << temp->completion_year << endl;
-        cout << "Monthly Rent: " << temp->monthly_rent << endl;
-        cout << "Location: " << temp->location << endl;
-        cout << "Property Type: " << temp->propertyType << endl;
-        cout << "Number of Rooms: " << temp->rooms << endl;
-        cout << "Parking: " << temp->parking << endl;
-        cout << "Number of Bathrooms: " << temp->bathroom << endl;
-        cout << "Size: " << temp->size << endl;
-        cout << "Furnished: " << temp->furnished << endl;
-        cout << "Facilities: " << temp->facilities << endl;
-        cout << "Additional Facilities: " << temp->additional_facilities << endl;
-        cout << "Region: " << temp->region << endl;
-        cout << "================================" << endl;
-        temp = temp->next;
+
+    while (currentProperty != nullptr) {
+        cout << "============== PAGE " << pageNum << " ===============" << endl;
+        cout << "Property ID: " << currentProperty->ads_id << endl;
+        cout << "Property Name: " << currentProperty->prop_name << endl;
+        cout << "Completion Year: " << currentProperty->completion_year << endl;
+        cout << "Monthly Rent: " << currentProperty->monthly_rent << endl;
+        cout << "Location: " << currentProperty->location << endl;
+        cout << "Property Type: " << currentProperty->propertyType << endl;
+        cout << "Number of Rooms: " << currentProperty->rooms << endl;
+        cout << "Parking: " << currentProperty->parking << endl;
+        cout << "Number of Bathrooms: " << currentProperty->bathroom << endl;
+        cout << "Size: " << currentProperty->size << endl;
+        cout << "Furnished: " << currentProperty->furnished << endl;
+        cout << "Facilities: " << currentProperty->facilities << endl;
+        cout << "Additional Facilities: " << currentProperty->additional_facilities << endl;
+        cout << "Region: " << currentProperty->region << endl;
+        cout << "============== PAGE " << pageNum << " ===============" << endl << endl;
+
+        // Ask for user input to continue or go back
+        int userInput;
+        cout << "Enter '1' to view the next property, '2' to view the previous property, or any other number to exit: ";
+        cin >> userInput;
+
+        if (userInput == 2 && currentProperty == pHead) {
+            cout << "You are already at the beginning of the list." << endl;
+        }
+        else if (userInput == 1) {
+            // Move to the next property
+            currentProperty = currentProperty->next;
+            pageNum = pageNum + 1;
+        }
+        else if (userInput == 2) {
+            // Move to the previous property
+            currentProperty = currentProperty->prev;
+            pageNum = pageNum - 1;
+        }
+        else {
+            // Exit the loop if any other number is entered
+            break;
+        }
     }
+}
+
+void displayProperty() {
+    displayPropertyBy1();
 }

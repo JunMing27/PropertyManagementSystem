@@ -4,6 +4,7 @@
 #include "tenant/tenant.h"
 #include "admin/admin.h"
 #include "manager/manager.h"
+#include "property/property.h"
 #include "main.h"
 using namespace std;
 
@@ -28,6 +29,7 @@ void displayMenu() {
 
     initializeTenant(); //initialize the current tenant into linkedlist first
     initializeAdmin(); //initialize the current admin into linkedlist first
+    initializeProperty();
 
     do {
         displayMenuList();
@@ -65,10 +67,10 @@ void displayMenu() {
                         modifyManagerStatus();
                         break;
                     case 3:
-
+                        displayPropertiesByMonthlyRent();
                         break;
                     case 4:
-
+                        choosePropertyType();
                         break;
                     case 5:
                         cout << endl;
@@ -97,8 +99,10 @@ void displayMenu() {
     } while (choice != 5);
 }
 
+
 int main()
 {
     displayMenu();
     return 0;
 }
+

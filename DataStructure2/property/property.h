@@ -23,7 +23,10 @@ struct Property {
     Property* next;
 };
 
+extern Property* pHead; // Declare pHead as extern
+extern Property* pTail; // Declare pTail as extern
+
 void addNewProperty(string ads_id, string prop_name, string completion_year, string monthly_rent, string location, string propertyType, string rooms, string parking, string bathroom, string size, string furnished, string facilities, string additional_facilities, string region);
 void initializeProperty();
-void displayPropertyBy5();
-void displayPropertyDetails(Property* property);
+void displayPropertyBy1();
+void displayProperty();
