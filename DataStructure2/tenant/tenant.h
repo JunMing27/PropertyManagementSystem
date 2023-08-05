@@ -22,6 +22,7 @@ void initializeTenant();
 void signUpTenant();
 void loginTenant();
 void displayTenantMenu();
+void displayTenantPropertyMenu();
 bool searchTenant(Tenant* tHead, string username, string password);
 void displayAllTenants();
 void displayTenantDetails(Tenant* tenant);

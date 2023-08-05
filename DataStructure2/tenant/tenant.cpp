@@ -106,13 +106,20 @@ void loginTenant() {
 
 void displayTenantMenu() {
     cout << "======== Tenant Operation ========" << endl;
+    cout << "1. View Property" << endl;
+    cout << "2. Sort" << endl;
+    cout << "3. Search" << endl;
+    cout << "4. Rent History" << endl;
+    cout << "===========================" << endl;
+    cout << "Enter your choice: ";
+}
+
+void displayTenantPropertyMenu() {
+    cout << "======== Tenant Operation ========" << endl;
     cout << "1. Next" << endl;
     cout << "2. Previous" << endl;
-    cout << "3. Sort" << endl;
-    cout << "4. Search" << endl;
-    cout << "5. Save fav" << endl;
-    cout << "6. Rent Property" << endl;
-    cout << "7. Rent History" << endl;
+    cout << "3. Save property into favourite" << endl;
+    cout << "4. Rent Property" << endl;
     cout << "===========================" << endl;
     cout << "Enter your choice: ";
 }

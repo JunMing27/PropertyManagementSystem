@@ -68,7 +68,6 @@ void initializeProperty()
         //Assign property value into linkedlist
         addNewProperty(ads_id, prop_name, completion_year, monthly_rent, location, propertyType, rooms, parking, bathroom, size, furnished, facilities, additional_facilities, region);
     }
-    displayPropertyBy5();
     ip.close();
 }
 
@@ -105,8 +104,9 @@ void addNewProperty(string ads_id, string prop_name, string completion_year, str
     }
 }
 
-void displayPropertyBy5() {
+void displayPropertyBy1() {
     int batchSize = 1;
+    int pageNum = 1;
     Property* currentProperty = head;
 
     if (currentProperty == nullptr) {
@@ -115,7 +115,7 @@ void displayPropertyBy5() {
     }
 
     while (currentProperty != nullptr) {
-        cout << "================================" << endl;
+        cout << "============== PAGE " << pageNum << " ===============" << endl;
         cout << "Property ID: " << currentProperty->ads_id << endl;
         cout << "Property Name: " << currentProperty->prop_name << endl;
         cout << "Completion Year: " << currentProperty->completion_year << endl;
@@ -130,7 +130,7 @@ void displayPropertyBy5() {
         cout << "Facilities: " << currentProperty->facilities << endl;
         cout << "Additional Facilities: " << currentProperty->additional_facilities << endl;
         cout << "Region: " << currentProperty->region << endl;
-        cout << "================================" << endl;
+        cout << "============== PAGE " << pageNum << " ===============" << endl << endl;
 
         // Ask for user input to continue or go back
         int userInput;
@@ -143,19 +143,16 @@ void displayPropertyBy5() {
         else if (userInput == 1) {
             // Move to the next property
             currentProperty = currentProperty->next;
+            pageNum = pageNum + 1;
         }
         else if (userInput == 2) {
             // Move to the previous property
             currentProperty = currentProperty->prev;
+            pageNum = pageNum - 1;
         }
         else {
             // Exit the loop if any other number is entered
             break;
         }
     }
-}
-
-int main() 
-{
-    initializeProperty();
 }
