@@ -22,4 +22,4 @@ void displayPropertyByType(const string& propertyType);
 void choosePropertyType();
 void displayPropertiesByMonthlyRent();
 int extractMonthlyRentValue(const string& rentString);
-void displayPropertiesByMonthlyRent();
+void displayTenantsByIsActive(bool isActive);

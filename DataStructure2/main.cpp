@@ -1,6 +1,7 @@
 //This file is the main file to run propertyManagement system
 
 #include <iostream>
+#include <chrono>
 #include "tenant/tenant.h"
 #include "admin/admin.h"
 #include "manager/manager.h"
@@ -31,6 +32,10 @@ void displayMenu() {
     initializeAdmin(); //initialize the current admin into linkedlist first
     initializeProperty();
 
+    displayTenantsByIsActive(true);
+    displayTenantsByIsActive(false);
+
+    /*
     do {
         displayMenuList();
         cin >> choice;
@@ -97,6 +102,7 @@ void displayMenu() {
 
         cout << endl;
     } while (choice != 5);
+    */
 }
 
 
@@ -105,4 +111,54 @@ int main()
     displayMenu();
     return 0;
 }
+
+// Comparison execution time - by Alan
+// Monthly Rent
+// 
+// Measure the execution time of displayPropertyMonthlyRent with quick sort
+//auto startQuickSort = chrono::high_resolution_clock::now();
+//displayPropertyMonthlyRent();
+//auto endQuickSort = chrono::high_resolution_clock::now();
+//chrono::duration<double> timeQuickSort = endQuickSort - startQuickSort;
+//cout << "Execution time with quick sort: " << timeQuickSort.count() << " seconds." << endl;
+//
+// Measure the execution time of displayPropertyMonthlyRent with merge sort
+//auto startMergeSort = chrono::high_resolution_clock::now();
+//displayPropertyMonthlyRent();
+//auto endMergeSort = chrono::high_resolution_clock::now();
+//chrono::duration<double> timeMergeSort = endMergeSort - startMergeSort;
+//cout << "Execution time with merge sort: " << timeMergeSort.count() << " seconds." << endl;
+// 
+// Size
+// 
+// Measure the execution time of displayPropertySize with quick sort
+//auto startQuickSort = chrono::high_resolution_clock::now();
+//displayPropertySize();
+//auto endQuickSort = chrono::high_resolution_clock::now();
+//chrono::duration<double> timeQuickSort = endQuickSort - startQuickSort;
+//cout << "Execution time with quick sort: " << timeQuickSort.count() << " seconds." << endl;
+//
+// Measure the execution time of displayPropertySize with merge sort
+//auto startMergeSort = chrono::high_resolution_clock::now();
+//displayPropertySize();
+//auto endMergeSort = chrono::high_resolution_clock::now();
+//chrono::duration<double> timeMergeSort = endMergeSort - startMergeSort;
+//cout << "Execution time with merge sort: " << timeMergeSort.count() << " seconds." << endl;
+// 
+// Location
+// 
+// Measure the execution time of displayPropertyLocation with quick sort
+//auto startQuickSort = chrono::high_resolution_clock::now();
+//displayPropertyLocation();
+//auto endQuickSort = chrono::high_resolution_clock::now();
+//chrono::duration<double> timeQuickSort = endQuickSort - startQuickSort;
+//cout << "Execution time with quick sort: " << timeQuickSort.count() << " seconds." << endl;
+//
+// Measure the execution time of displayPropertyLocation with merge sort
+//auto startMergeSort = chrono::high_resolution_clock::now();
+//displayPropertyLocation();
+//auto endMergeSort = chrono::high_resolution_clock::now();
+//chrono::duration<double> timeMergeSort = endMergeSort - startMergeSort;
+//cout << "Execution time with merge sort: " << timeMergeSort.count() << " seconds." << endl;
+
 

@@ -19,6 +19,9 @@ struct Tenant {
     Tenant* next;
 };
 
+extern Tenant* tHead; // Declare tHead as extern
+extern Tenant* tTail; // Declare tTail as extern
+
 void addNewTenant(string tenantId, string tenantName, string tenantUserName, string tenantPassword, string tenantEmail, string propertyId, string paymentHistory, bool leaseRenewed, bool isActive);
 void initializeTenant();
 void signUpTenant();

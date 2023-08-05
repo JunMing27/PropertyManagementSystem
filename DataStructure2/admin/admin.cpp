@@ -7,6 +7,7 @@
 #include "admin.h"
 #include "../manager/manager.h"
 #include "../property/property.h"
+#include "../tenant/tenant.h"
 #include "../main.h"
 using namespace std;
 
@@ -410,5 +411,65 @@ void displayPropertiesByMonthlyRent() {
 
     if (!found) {
         cout << "No properties found for the selected monthly rent " << endl;
+    }
+}
+
+// Function to display tenant details based on isActive
+void displayTenantsByIsActive(bool isActive) {
+    Tenant* currentTenant = tHead;
+
+    if (currentTenant == nullptr) {
+        cout << "No tenant in the list." << endl;
+        return;
+    }
+
+    int batchSize = 3; // Number of tenants to display per page
+    int pageNum = 1;    // Current page number
+
+    while (currentTenant != nullptr) {
+        // Check if the current tenant matches the isActive status
+        if (currentTenant->isActive == isActive) {
+            cout << "================================" << endl;
+            cout << "Tenant ID: " << currentTenant->tenantId << endl;
+            cout << "Tenant Name: " << currentTenant->tenantName << endl;
+            cout << "Username: " << currentTenant->tenantUserName << endl;
+            cout << "Email: " << currentTenant->tenantEmail << endl;
+            cout << "Property ID: " << currentTenant->propertyId << endl;
+            cout << "Payment History: " << currentTenant->paymentHistory << endl;
+            cout << "Lease Renewed: " << (currentTenant->leaseRenewed ? "Yes" : "No") << endl;
+            cout << "Is Active: " << (currentTenant->isActive ? "Yes" : "No") << endl;
+            cout << "================================" << endl << endl;
+
+            // Check if the current page is full (batchSize reached)
+            if (pageNum % batchSize == 0) {
+                // Ask for user input to continue or go back
+                int userInput;
+                std::cout << "Enter '1' to view the next page, '2' to view the previous page, or any other number to exit: ";
+                std::cin >> userInput;
+
+                if (userInput == 2 && pageNum <= batchSize) {
+                    std::cout << "You are already at the beginning of the list." << std::endl;
+                }
+                else if (userInput == 1) {
+                    // Move to the next page
+                    pageNum = pageNum + 1;
+                }
+                else if (userInput == 2) {
+                    // Move to the previous page
+                    pageNum = pageNum - batchSize;
+                }
+                else {
+                    // Exit the loop if any other number is entered
+                    break;
+                }
+            }
+        }
+
+        currentTenant = currentTenant->next;
+    }
+
+    // If there are remaining tenants after displaying all full pages
+    if (pageNum % batchSize != 0) {
+        cout << "No more tenants to display." << endl;
     }
 }
