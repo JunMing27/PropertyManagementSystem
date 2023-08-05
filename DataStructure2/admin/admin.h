@@ -1,7 +1,5 @@
 #pragma once
 #include <iostream>
-#include "../manager/manager.h"
-#include "../property/property.h"
 
 using namespace std;
 

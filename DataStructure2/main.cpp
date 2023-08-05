@@ -48,7 +48,7 @@ void displayMenu() {
             switch (choice) {
             case 1:
                 cout << endl;
-                loginTenant();
+                displayPropertyLocation();
                 break;
             case 2:
                 cout << endl;

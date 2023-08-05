@@ -1,7 +1,9 @@
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
+struct Property;
 
 struct Tenant {
     string tenantId;
@@ -25,3 +27,14 @@ void displayTenantMenu();
 bool searchTenant(Tenant* tHead, string username, string password);
 void displayAllTenants();
 void displayTenantDetails(Tenant* tenant);
+int partitionMonthlyRent(vector<Property*>& properties, int low, int high);
+void quickSortMonthlyRent(vector<Property*>& properties, int low, int high);
+void displayPropertyMonthlyRent();
+int extractSizeValue(const string& sizeString);
+int partitionSize(vector<Property*>& properties, int low, int high);
+void quickSortSize(vector<Property*>& properties, int low, int high);
+void displayPropertySize();
+bool compareLocationDesc(const string& location1, const string& location2);
+void mergeLocation(vector<Property*>& properties, int left, int mid, int right);
+void mergeSortLocation(vector<Property*>& properties, int left, int right);
+void displayPropertyLocation();

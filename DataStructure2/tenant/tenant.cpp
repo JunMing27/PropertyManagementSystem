@@ -10,7 +10,13 @@
 // -Display property renting history
 
 #include <iostream>
+#include <sstream>
+#include <vector>
+#include <string>
+#include <algorithm>
 #include "tenant.h"
+#include "../property/property.h"
+#include "../admin/admin.h"
 #include "../main.h"
 
 using namespace std;
@@ -142,3 +148,343 @@ void displayTenantMenu() {
 //     cout << "Lease Renewed: " << (tenant->leaseRenewed ? "Yes" : "No") << endl;
 //     cout << "================================" << endl;
 // }
+
+// Function to partition the properties based on their monthly rent for Quick Sort
+int partitionMonthlyRent(vector<Property*>& properties, int low, int high) {
+    int pivotValue = extractMonthlyRentValue(properties[high]->monthly_rent);
+    int i = low - 1;
+
+    for (int j = low; j <= high - 1; j++) {
+        if (extractMonthlyRentValue(properties[j]->monthly_rent) >= pivotValue) {
+            i++;
+            swap(properties[i], properties[j]);
+        }
+    }
+
+    swap(properties[i + 1], properties[high]);
+    return i + 1;
+}
+
+// Function to implement Quick Sort for sorting properties based on their monthly rent
+void quickSortMonthlyRent(vector<Property*>& properties, int low, int high) {
+    if (low < high) {
+        int pivotIndex = partitionMonthlyRent(properties, low, high);
+        quickSortMonthlyRent(properties, low, pivotIndex - 1);
+        quickSortMonthlyRent(properties, pivotIndex + 1, high);
+    }
+}
+
+// Function to sort and display property information in descending order based on monthly rent using Quick Sort
+void displayPropertyMonthlyRent() {
+    int batchSize = 3;
+    int pageNum = 1;
+    Property* currentProperty = pHead;
+
+    if (currentProperty == nullptr) {
+        cout << "No property in the list." << endl;
+        return;
+    }
+
+    // Create a vector to store the properties
+    vector<Property*> properties;
+
+    // Add properties to the vector
+    while (currentProperty != nullptr) {
+        properties.push_back(currentProperty);
+        currentProperty = currentProperty->next;
+    }
+
+    // Sort the properties vector based on monthly rent in descending order using Quick Sort
+    quickSortMonthlyRent(properties, 0, properties.size() - 1);
+
+    // Display the properties in batches with navigation options
+    int propertyIndex = 0;
+    int totalProperties = properties.size();
+
+    while (propertyIndex < totalProperties) {
+        cout << "============== PAGE " << pageNum << " ===============" << endl;
+        for (int i = propertyIndex; i < min(propertyIndex + batchSize, totalProperties); i++) {
+            Property* prop = properties[i];
+            cout << "Property ID: " << prop->ads_id << endl;
+            cout << "Property Name: " << prop->prop_name << endl;
+            cout << "Completion Year: " << prop->completion_year << endl;
+            cout << "Monthly Rent: " << prop->monthly_rent << endl;
+            cout << "Location: " << prop->location << endl;
+            cout << "Property Type: " << prop->propertyType << endl;
+            cout << "Number of Rooms: " << prop->rooms << endl;
+            cout << "Parking: " << prop->parking << endl;
+            cout << "Number of Bathrooms: " << prop->bathroom << endl;
+            cout << "Size: " << prop->size << endl;
+            cout << "Furnished: " << prop->furnished << endl;
+            cout << "Facilities: " << prop->facilities << endl;
+            cout << "Additional Facilities: " << prop->additional_facilities << endl;
+            cout << "Region: " << prop->region << endl;
+            cout << "============== PROPERTY " << (i + 1) << " ===============" << endl << endl;
+        }
+
+        // Ask for user input to continue or go back
+        int userInput;
+        cout << "Enter '1' to view the next properties, '2' to view the previous properties, or any other number to exit: ";
+        cin >> userInput;
+
+        if (userInput == 2 && propertyIndex == 0) {
+            cout << "You are already at the beginning of the list." << endl;
+        }
+        else if (userInput == 1) {
+            // Move to the next batch of properties
+            propertyIndex += batchSize;
+            pageNum++;
+        }
+        else if (userInput == 2) {
+            // Move to the previous batch of properties
+            propertyIndex = max(0, propertyIndex - batchSize);
+            pageNum = max(1, pageNum - 1);
+        }
+        else {
+            // Exit the loop if any other number is entered
+            break;
+        }
+    }
+}
+
+// Helper function to extract the numeric part of the "size" field
+int extractSizeValue(const string& sizeString) {
+    // Remove all non-digit characters from the sizeString
+    string numericPart;
+    for (char c : sizeString) {
+        if (isdigit(c)) {
+            numericPart += c;
+        }
+    }
+    // Convert the numeric part to an integer
+    int sizeValue;
+    istringstream(numericPart) >> sizeValue;
+    return sizeValue;
+}
+
+int partitionSize(vector<Property*>& properties, int low, int high) {
+    int pivot = extractSizeValue(properties[high]->size);
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (extractSizeValue(properties[j]->size) >= pivot) {
+            i++;
+            swap(properties[i], properties[j]);
+        }
+    }
+    swap(properties[i + 1], properties[high]);
+    return i + 1;
+}
+
+void quickSortSize(vector<Property*>& properties, int low, int high) {
+    if (low < high) {
+        int pi = partitionSize(properties, low, high);
+        quickSortSize(properties, low, pi - 1);
+        quickSortSize(properties, pi + 1, high);
+    }
+}
+
+void displayPropertySize() {
+    int batchSize = 3; // Display 3 properties per page
+    int pageNum = 1;
+    Property* currentProperty = pHead;
+
+    if (currentProperty == nullptr) {
+        cout << "No property in the list." << endl;
+        return;
+    }
+
+    // Create a vector to store the properties
+    vector<Property*> properties;
+
+    // Add properties to the vector
+    while (currentProperty != nullptr) {
+        properties.push_back(currentProperty);
+        currentProperty = currentProperty->next;
+    }
+
+    // Sort the properties vector based on size in descending order using Quick Sort
+    quickSortSize(properties, 0, properties.size() - 1);
+
+    // Display the properties in batches with navigation options
+    int propertyIndex = 0;
+    int totalProperties = properties.size();
+
+    while (propertyIndex < totalProperties) {
+        cout << "============== PAGE " << pageNum << " ===============" << endl;
+        for (int i = propertyIndex; i < min(propertyIndex + batchSize, totalProperties); i++) {
+            Property* prop = properties[i];
+            cout << "Property ID: " << prop->ads_id << endl;
+            cout << "Property Name: " << prop->prop_name << endl;
+            cout << "Completion Year: " << prop->completion_year << endl;
+            cout << "Monthly Rent: " << prop->monthly_rent << endl;
+            cout << "Location: " << prop->location << endl;
+            cout << "Property Type: " << prop->propertyType << endl;
+            cout << "Number of Rooms: " << prop->rooms << endl;
+            cout << "Parking: " << prop->parking << endl;
+            cout << "Number of Bathrooms: " << prop->bathroom << endl;
+            cout << "Size: " << prop->size << endl;
+            cout << "Furnished: " << prop->furnished << endl;
+            cout << "Facilities: " << prop->facilities << endl;
+            cout << "Additional Facilities: " << prop->additional_facilities << endl;
+            cout << "Region: " << prop->region << endl;
+            cout << "============== PROPERTY " << (i + 1) << " ===============" << endl << endl;
+        }
+
+        // Ask for user input to continue or go back
+        int userInput;
+        cout << "Enter '1' to view the next properties, '2' to view the previous properties, or any other number to exit: ";
+        cin >> userInput;
+
+        if (userInput == 2 && propertyIndex == 0) {
+            cout << "You are already at the beginning of the list." << endl;
+        }
+        else if (userInput == 1) {
+            // Move to the next batch of properties
+            propertyIndex += batchSize;
+            pageNum++;
+        }
+        else if (userInput == 2) {
+            // Move to the previous batch of properties
+            propertyIndex = max(0, propertyIndex - batchSize);
+            pageNum = max(1, pageNum - 1);
+        }
+        else {
+            // Exit the loop if any other number is entered
+            break;
+        }
+    }
+}
+
+// Helper function to compare two location strings for descending order sorting
+bool compareLocationDesc(const string& location1, const string& location2) {
+    return location1 > location2;
+}
+
+// Merge two sorted parts of the array during merge sort
+void mergeLocation(vector<Property*>& properties, int left, int mid, int right) {
+    int leftSize = mid - left + 1;
+    int rightSize = right - mid;
+
+    vector<Property*> leftArray(leftSize);
+    vector<Property*> rightArray(rightSize);
+
+    for (int i = 0; i < leftSize; i++) {
+        leftArray[i] = properties[left + i];
+    }
+    for (int i = 0; i < rightSize; i++) {
+        rightArray[i] = properties[mid + 1 + i];
+    }
+
+    int leftIndex = 0;
+    int rightIndex = 0;
+    int mergedIndex = left;
+
+    while (leftIndex < leftSize && rightIndex < rightSize) {
+        if (compareLocationDesc(leftArray[leftIndex]->location, rightArray[rightIndex]->location)) {
+            properties[mergedIndex] = leftArray[leftIndex];
+            leftIndex++;
+        }
+        else {
+            properties[mergedIndex] = rightArray[rightIndex];
+            rightIndex++;
+        }
+        mergedIndex++;
+    }
+
+    while (leftIndex < leftSize) {
+        properties[mergedIndex] = leftArray[leftIndex];
+        leftIndex++;
+        mergedIndex++;
+    }
+
+    while (rightIndex < rightSize) {
+        properties[mergedIndex] = rightArray[rightIndex];
+        rightIndex++;
+        mergedIndex++;
+    }
+}
+
+// Merge sort algorithm for sorting properties based on location in descending order
+void mergeSortLocation(vector<Property*>& properties, int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+        mergeSortLocation(properties, left, mid);
+        mergeSortLocation(properties, mid + 1, right);
+        mergeLocation(properties, left, mid, right);
+    }
+}
+
+void displayPropertyLocation() {
+    vector<Property*> propertyVector;
+
+    // Traverse the linked list and add each property node's pointer to the vector
+    Property* currentProperty = pHead;
+    while (currentProperty != nullptr) {
+        propertyVector.push_back(currentProperty);
+        currentProperty = currentProperty->next;
+    }
+
+    // Sort the vector based on location in descending order using merge sort
+    mergeSortLocation(propertyVector, 0, propertyVector.size() - 1);
+
+    int batchSize = 5;
+    int pageNum = 1;
+    int startIndex = 0;
+    int endIndex = min(startIndex + batchSize - 1, static_cast<int>(propertyVector.size() - 1));
+
+    if (propertyVector.empty()) {
+        cout << "No property in the list." << endl;
+        return;
+    }
+
+    while (startIndex <= endIndex) {
+        cout << "============== PAGE " << pageNum << " ===============" << endl;
+        for (int i = startIndex; i <= endIndex; i++) {
+            Property* currentProperty = propertyVector[i];
+            cout << "Property ID: " << currentProperty->ads_id << endl;
+            cout << "Property Name: " << currentProperty->prop_name << endl;
+            cout << "Completion Year: " << currentProperty->completion_year << endl;
+            cout << "Monthly Rent: " << currentProperty->monthly_rent << endl;
+            cout << "Location: " << currentProperty->location << endl;
+            cout << "Property Type: " << currentProperty->propertyType << endl;
+            cout << "Number of Rooms: " << currentProperty->rooms << endl;
+            cout << "Parking: " << currentProperty->parking << endl;
+            cout << "Number of Bathrooms: " << currentProperty->bathroom << endl;
+            cout << "Size: " << currentProperty->size << endl;
+            cout << "Furnished: " << currentProperty->furnished << endl;
+            cout << "Facilities: " << currentProperty->facilities << endl;
+            cout << "Additional Facilities: " << currentProperty->additional_facilities << endl;
+            cout << "Region: " << currentProperty->region << endl;
+            cout << "============== PROPERTY " << (i + 1) << " ===============" << endl << endl;
+        }
+
+        // Ask for user input to continue or go back
+        int userInput;
+        cout << "Enter '1' to view the next page, '2' to view the previous page, or any other number to exit: ";
+        cin >> userInput;
+
+        if (userInput == 2 && startIndex == 0) {
+            cout << "You are already at the beginning of the list." << endl;
+        }
+        else if (userInput == 1 && endIndex == propertyVector.size() - 1) {
+            cout << "You are already at the end of the list." << endl;
+        }
+        else if (userInput == 1) {
+            // Move to the next page
+            startIndex = min(endIndex + 1, static_cast<int>(propertyVector.size() - 1));
+            endIndex = min(startIndex + batchSize - 1, static_cast<int>(propertyVector.size() - 1));
+            pageNum++;
+        }
+        else if (userInput == 2) {
+            // Move to the previous page
+            endIndex = max(startIndex - 1, 0);
+            startIndex = max(endIndex - batchSize + 1, 0);
+            pageNum--;
+        }
+        else {
+            // Exit the loop if any other number is entered
+            break;
+        }
+    }
+}
