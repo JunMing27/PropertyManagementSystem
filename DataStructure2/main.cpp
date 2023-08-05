@@ -1,6 +1,8 @@
 //This file is the main file to run propertyManagement system
 
 #include <iostream>
+#include <fstream>
+#include <string>
 #include "tenant/tenant.h"
 #include "property/property.h"
 using namespace std;
@@ -18,8 +20,6 @@ void displayMenuList() {
 
 void displayMenu() {
     int choice;
-    initializeProperty(); //initialize the current property from csv file into linkedlist first
-    initializeTenant(); //initialize the current tenant into linkedlist first
     displayMenuList();
     cin >> choice;
     if (cin.fail()) //validate the input, ensure it is integer only continue with loop
@@ -64,6 +64,8 @@ void displayMenu() {
 
 int main()
 {
+    initializeProperty(); //initialize the current property from csv file into linkedlist first
+    initializeTenant(); //initialize the current tenant into linkedlist first
     displayMenu();
     return 0;
 }

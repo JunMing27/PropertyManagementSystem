@@ -163,7 +163,7 @@ void inputTenantPropertyMenu() {
             displayTenantMenu();
         }
         else {
-            // Back to TenantMenu if any other number is entered
+            // Exit the loop if any other number is entered
             displayTenantMenu();
         }
     }

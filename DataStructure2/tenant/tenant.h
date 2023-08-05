@@ -24,7 +24,6 @@ void loginTenant();
 void displayTenantMenu();
 void displayTenantPropertyMenu();
 void inputTenantMenu();
-void inputTenantPropertyMenu();
 bool searchTenant(Tenant* tHead, string username, string password);
 void displayAllTenants();
 void displayTenantDetails(Tenant* tenant);
