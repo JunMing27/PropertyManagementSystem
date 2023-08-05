@@ -27,7 +27,7 @@ void displayAllTenants();
 void displayTenantDetails(Tenant* tenant);
 
 
-//by hoiyi
+//by hoiyi (manager)
 //for display
 void showAllTenants();
 
@@ -37,4 +37,5 @@ Tenant* searchTenantById(Tenant* tHead, string tenantId);
 void displaySingleTenant(Tenant* tenant);
 
 //for delete due to inactive
-void deleteInactiveTenants();
+void displayDeleteInactiveTenants();
+void deleteInactive(Tenant* tHead, string tenantId);

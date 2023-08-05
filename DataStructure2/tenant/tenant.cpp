@@ -203,7 +203,6 @@ void displaySingleTenant(Tenant* tenant)
     cout << "Tenant Property ID: " << tenant->propertyId << endl;
     cout << "Tenant Payment History: " << tenant->paymentHistory << endl;
     cout << "Tenant Lease Renewed: " << tenant->leaseRenewed << endl;
-    cout << "=======================================" << endl;
 }
 
 void searchTenantDetails()
@@ -223,9 +222,44 @@ void searchTenantDetails()
 }
 
 //delete inactive tenant
-void deleteInactiveTenants()
+void deleteInactive(Tenant* tHead, string tenantId)
+{
+    //if want to delete is the first one
+    if (tHead->tenantId == tenantId)
+    {
+        Tenant* temp = tHead;
+        tHead = tHead->next;
+        delete temp;
+        cout << "Tenant with ID : " << tenantId << " deleted successfully." << endl;
+        return;
+    }
+
+    Tenant* current = tHead;
+    //loop through list, stop when found
+    while (current->next != nullptr && current->next->tenantId != tenantId)
+    {
+        current = current->next;
+    }
+
+    //if found
+    if (current->next != nullptr)
+    {
+        Tenant* temp = current->next;
+        current->next = current->next->next;
+        delete temp;
+        cout << "Tenant with ID: " << tenantId << " deleted successfully." << endl;
+    }
+    else
+    {
+        cout << "Tenant not found with ID: " << tenantId << endl;
+    }
+}
+
+void displayDeleteInactiveTenants()
 {
     Tenant* current = tHead;
+    bool foundInactive = false;
+
     while (current != nullptr)
     {
         if (!current->isActive) //inactive
@@ -233,25 +267,34 @@ void deleteInactiveTenants()
             //display
             cout << endl << "Inactive Tenant Details:" << endl;
             displaySingleTenant(current);
-
-            //delete
-            if (current == tHead)
-            {
-                tHead = current->next;
-                delete current;
-                current = tHead;
-            }
-            else
-            {
-                Tenant* temp = current;
-                current = current->next;
-                delete temp;
-            }
-
-            cout << endl << "Deleted successfully" << endl;
-
+            foundInactive = true;
         }
         current = current->next;
     }
+
+    if (!foundInactive)
+    {
+        cout << "No inactive tenants found." << endl;
+        return;
+    }
+    else
+    {
+        //ask user whether want delete
+        string tenantID;
+        cout << "Enter tenant ID to delete or type 'exit' to cancel: ";
+        cin >> tenantID;
+
+        if (tenantID == "exit")
+        {
+            cout << "Operation cancelled." << endl;
+            return;
+        }
+        else
+        {
+            deleteInactive(tHead, tenantID);
+        }
+    }
+    
+        
 
 }

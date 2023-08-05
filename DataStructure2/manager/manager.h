@@ -22,7 +22,6 @@ void logout();
 void displayManagerMenu();
 
 //Functionality
-void summarizeTop10Property();
 void manageTenancyProcess();
 void managePayment();
 

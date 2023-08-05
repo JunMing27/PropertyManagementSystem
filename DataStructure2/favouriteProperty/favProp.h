@@ -16,4 +16,6 @@ struct FavProperty
 void addNewFavProp(string propId, string propName, string favTenantId);
 void initializeFavProp(); //for sample only
 
+//by hoiyi
+//for summarize
 void summarizeTop10FavProp();

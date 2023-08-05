@@ -2,7 +2,7 @@
 // - Display registered tenant details (in tenant.cpp)
 // - Search tenant details (in tenant.cpp)
 // - Delete tenant account based on inactivity status (in tenant.cpp)
-// - Summarize top 10 based on fav property list
+// - Summarize top 10 based on fav property list (in favProp.cpp), and generate a report
 // - manage tenancy process, should be yes or no or text based input 
 // - manage payment of confirmed tenancy
 
@@ -109,7 +109,7 @@ void displayManagerMenu()
             searchTenantDetails();
             break;
         case 3:
-            deleteInactiveTenants();
+            displayDeleteInactiveTenants();
             break;
         case 4:
             summarizeTop10FavProp();
