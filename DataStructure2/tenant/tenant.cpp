@@ -1,4 +1,4 @@
-// display property 1. Next 5 2. Previous 5 3. Sort 4. Search 5. Save fav 6.rent property 7. rent histry
+// display property 1. Next 5 2. Previous 5 3. Sort 4. Search 5. View fav 6.rent property 7. rent histry
 // - Sort and display property information in descending order based on monthly rent, location, and size as per square feet.
 // (merge sort, quick sort)
 // - Search and display property details based on tenant/customer decision.
@@ -13,6 +13,7 @@
 #include "tenant.h"
 #include "../main.h"
 #include "../property/property.h"
+#include "../favouriteProperty/favProp.h"
 
 using namespace std;
 // -------------------------
@@ -108,10 +109,11 @@ void loginTenant() {
 void displayTenantMenu() {
     cout << "======== Tenant Operation ========" << endl;
     cout << "1. View Property" << endl;
-    cout << "2. Sort Property" << endl;
-    cout << "3. Search Property" << endl;
-    cout << "4. Rent History" << endl;
-    cout << "5. Sign Out" << endl;
+    cout << "2. View Favourite Property" << endl;
+    cout << "3. Sort Property" << endl;
+    cout << "4. Search Property" << endl;
+    cout << "5. Rent History" << endl;
+    cout << "6. Sign Out" << endl;
     cout << "===========================" << endl;
     cout << "Enter your choice: ";
     inputTenantMenu();
@@ -122,8 +124,26 @@ void displayTenantPropertyMenu() {
     cout << "1. Next" << endl;
     cout << "2. Previous" << endl;
     cout << "3. Save property into favourite" << endl;
-    cout << "4. Rent Property" << endl;
-    cout << "5. Back to Menu" << endl;
+    cout << "4. Back to Menu" << endl;
+    cout << "===========================" << endl;
+    cout << "Enter your choice: ";
+}
+
+void displayTenantFavPropMenu() {
+    cout << "======== Tenant Operation ========" << endl;
+    cout << "1. Next" << endl;
+    cout << "2. Previous" << endl;
+    cout << "3. Rent This Property" << endl;
+    cout << "4. Back to Menu" << endl;
+    cout << "===========================" << endl;
+    cout << "Enter your choice: ";
+}
+
+void displayTenantRentPropMenu() {
+    cout << "======== Tenant Operation ========" << endl;
+    cout << "1. Next" << endl;
+    cout << "2. Previous" << endl;
+    cout << "3. Back to Menu" << endl;
     cout << "===========================" << endl;
     cout << "Enter your choice: ";
 }
@@ -147,16 +167,20 @@ void inputTenantMenu() {
             cout << endl;
             inputTenantPropertyMenu();
             break;
-        case 2:             //Sort Property
+        case 2:             //View Favourite Property
+            cout << endl;
+            displayFavPropTenant();
+            break;
+        case 3:             //Sort Property
             cout << endl;
             break;
-        case 3:             //Search Property
+        case 4:             //Search Property
             cout << endl;
             break;
-        case 4:             //Rent History
+        case 5:             //Rent History
             cout << endl;
             break;
-        case 5:             //Sign Out
+        case 6:             //Sign Out
             cout << " You have signed out! Come Back Next Time!" << endl;
             displayMenu();
             break;

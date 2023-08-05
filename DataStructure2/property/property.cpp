@@ -3,6 +3,7 @@
 #include <string>
 #include "property.h"
 #include "../tenant/tenant.h"
+#include "../favouriteProperty/favProp.h"
 using namespace std;
 
 Property* head = nullptr;
@@ -106,6 +107,8 @@ void addNewProperty(string ads_id, string prop_name, string completion_year, str
     }
 }
 
+
+
 void inputTenantPropertyMenu() {
     int batchSize = 1;
     int pageNum = 1;
@@ -140,7 +143,7 @@ void inputTenantPropertyMenu() {
         cin >> choice;
 
         if (choice == 2 && currentProperty == head) {
-            cout << "You are already at the beginning of the list." << endl;
+            cout << "You are already at the beginning of the list." << endl << endl;
         }
         else if (choice == 1) {
             // Move to the next property
@@ -154,15 +157,22 @@ void inputTenantPropertyMenu() {
         }
         else if (choice == 3) {
             //Save property into favourite
+            bool isPropertyFavorite = verifyFavProp(currentProperty->ads_id); //to check if property is already favourite, if its favourite then user cant add again 
+            if (isPropertyFavorite) {
+                cout << "This property has been added into the favourite list already. Please Select Another" << endl << endl;
+            }
+            else {
+                addNewFavProp(currentProperty->ads_id, currentProperty->prop_name, "T1");
+                cout << "Added into favourite property" << endl << endl;
+            }
         }
         else if (choice == 4) {
-            //Rent Property
-        }
-        else if (choice == 5) {
             //Back to TenantMenu
+            cout << endl;
             displayTenantMenu();
         }
         else {
+            cout << "Invalid Input..... Redirecting to Tenant Menu......" << endl << endl;
             // Back to TenantMenu if any other number is entered
             displayTenantMenu();
         }

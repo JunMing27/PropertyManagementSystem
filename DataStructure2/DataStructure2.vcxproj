@@ -127,11 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="favouriteProperty\favProp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="property\property.cpp" />
     <ClCompile Include="tenant\tenant.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="favouriteProperty\favProp.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="property\property.h" />
     <ClInclude Include="tenant\tenant.h" />
