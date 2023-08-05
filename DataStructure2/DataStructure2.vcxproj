@@ -127,19 +127,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="favouriteProperty\favProp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager\manager.cpp" />
     <ClCompile Include="property\property.cpp" />
     <ClCompile Include="tenant\tenant.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="favouriteProperty\favProp.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="manager\manager.h" />
     <ClInclude Include="property\property.h" />
     <ClInclude Include="tenant\tenant.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\mudah-apartment-kl-selangor.csv" />
+    <None Include="..\..\Assignment\mudah-apartment-kl-selangor.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

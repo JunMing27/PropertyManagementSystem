@@ -3,6 +3,7 @@
 #include <iostream>
 #include "manager/manager.h"
 #include "tenant/tenant.h"
+#include "favouriteProperty/favProp.h"
 using namespace std;
 
 void displayMenuList() {
@@ -21,6 +22,8 @@ void displayMenu() {
 
     initializeTenant(); //initialize the current tenant into linkedlist first
     initializeManager();
+    initializeFavProp();
+
     displayMenuList();
     cin >> choice;
     if (cin.fail()) //validate the input, ensure it is integer only continue with loop

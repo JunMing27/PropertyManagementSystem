@@ -1,7 +1,7 @@
 // Manager 
 // - Display registered tenant details (in tenant.cpp)
 // - Search tenant details (in tenant.cpp)
-// - Delete tenant account based on inactivity status
+// - Delete tenant account based on inactivity status (in tenant.cpp)
 // - Summarize top 10 based on fav property list
 // - manage tenancy process, should be yes or no or text based input 
 // - manage payment of confirmed tenancy
@@ -12,7 +12,7 @@
 #include "manager.h"
 #include "../tenant/tenant.h"
 #include "../main.h"
-#include "../property/property.h"
+#include "../favouriteProperty/favProp.h"
 
 using namespace std;
 
@@ -38,9 +38,9 @@ void addNewManager(string managerId, string managerUsername, string managerPassw
 }
 
 void initializeManager() {
-    addNewManager("M1", "junming", "junming123", "active");
-    addNewManager("M2", "hoiyi", "hoiyi123", "active");
-    addNewManager("M3", "alan", "alan123", "inactive");
+    addNewManager("M1", "junming", "junming123", "true");
+    addNewManager("M2", "hoiyi", "hoiyi123", "false");
+    addNewManager("M3", "alan", "alan123", "true");
 }
 
 
@@ -72,7 +72,7 @@ void loginManager()
     cin >> managerPassword;
     bool loggedIn = searchManager(managerUsername, managerPassword);
     if (loggedIn) {
-        cout << endl <<"Login successful. Welcome, " << managerUsername << " !" << endl;
+        cout << endl <<"Login successful. Welcome, " << managerUsername << " !";
         displayManagerMenu();
     }
     else {
@@ -89,7 +89,7 @@ void displayManagerMenu()
 
     while (managerLogIn)
     {
-        cout << "======== Manager Menu ========" << endl;
+        cout << endl << "======== Manager Menu ========" << endl;
         cout << "1. Display all tenants' details" << endl;
         cout << "2. Search tenant details" << endl;
         cout << "3. Delete inactive tenants" << endl;
@@ -112,8 +112,7 @@ void displayManagerMenu()
             deleteInactiveTenants();
             break;
         case 4:
-            //summarizeTop10Property(propertyList);
-            cout << "4 ING";
+            summarizeTop10FavProp();
             break;
         case 5:
             //manageTenancyProcess(tenantList, propertyList);
@@ -136,46 +135,6 @@ void displayManagerMenu()
 }
 
 
-// int deleteInactive(int inactiveThresholdDays)
-// {
-//     int deletedCount = 0;
-//     Node<T>* current = head;
-//     Node<T>* prev = nullptr;
-
-//     while (current != nullptr) {
-//         // Check if the tenant is inactive
-//         if (current->data.isInactive(inactiveThresholdDays)) {
-//             if (prev == nullptr) {
-//                 // If the inactive tenant is the head node
-//                 head = current->next;
-//                 delete current;
-//                 current = head;
-//             } else {
-//                 // If the inactive tenant is in the middle or end of the list
-//                 prev->next = current->next;
-//                 delete current;
-//                 current = prev->next;
-//             }
-//             deletedCount++;
-//         } else {
-//             // Move to the next node
-//             prev = current;
-//             current = current->next;
-//         }
-//     }
-
-//     return deletedCount;
-// }
-
-// void deleteInactiveTenants(LinkedList<Tenant>& tenantList) 
-// {
-//     int inactiveThresholdDays;
-//     cout << "Enter the number of inactive days threshold: ";
-//     cin >> inactiveThresholdDays;
-
-//     int deletedCount = deleteInactive(inactiveThresholdDays);
-//     cout << "Deleted " << deletedCount << " inactive tenants." << endl;
-// }
 
 // void summarizeTop10Property(LinkedList<Property>& propertyList)
 // {

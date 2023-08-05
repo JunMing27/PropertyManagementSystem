@@ -15,13 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DataStructure2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="property\property.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tenant\tenant.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="manager\manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="favouriteProperty\favProp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,8 +41,14 @@
     <ClInclude Include="main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="manager\manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="favouriteProperty\favProp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\mudah-apartment-kl-selangor.csv" />
+    <None Include="..\..\Assignment\mudah-apartment-kl-selangor.csv" />
   </ItemGroup>
 </Project>

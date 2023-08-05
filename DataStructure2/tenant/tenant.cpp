@@ -194,6 +194,7 @@ Tenant* searchTenantById(Tenant* tHead, string tenantId)
 
 void displaySingleTenant(Tenant* tenant)
 {
+    cout << "=======================================" << endl;
     cout << "Tenant ID: " << tenant->tenantId << endl;
     cout << "Tenant Name: " << tenant->tenantName << endl;
     cout << "Tenant UserName: " << tenant->tenantUserName << endl;
@@ -202,6 +203,7 @@ void displaySingleTenant(Tenant* tenant)
     cout << "Tenant Property ID: " << tenant->propertyId << endl;
     cout << "Tenant Payment History: " << tenant->paymentHistory << endl;
     cout << "Tenant Lease Renewed: " << tenant->leaseRenewed << endl;
+    cout << "=======================================" << endl;
 }
 
 void searchTenantDetails()
