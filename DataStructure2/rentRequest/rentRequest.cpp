@@ -44,6 +44,11 @@ void addRent(string propId, string propName, string tenantId, string tenantName,
     }
 }
 
+void initializeRentRequest()
+{
+    addRent("P1", "Under Bridge", "T1", "JunMing", 2, 200, "Pending");
+}
+
 void displayAllRequests()
 {
     RentRequest* current = rHead;
@@ -80,6 +85,7 @@ void displayPendingRequest(RentRequest* rHead)
 {
     RentRequest* current = rHead;
     string approvalChoice;
+    char endChoice;
     
     if (current == nullptr)
     {
@@ -93,11 +99,24 @@ void displayPendingRequest(RentRequest* rHead)
         {
             if (current->next != nullptr) {
                 current = current->next;
-                continue;
             }
             else {
-                cout << "End of rent request list reached." << endl;
-                break;
+                cout << "End of rent request list reached. Do you want to move to previous rent request ? (Y/N)" << endl;
+                cin >> endChoice;
+
+                if (endChoice == 'Y' || endChoice == 'y')
+                {
+                    if (current->prev != nullptr) {
+                        current = current->prev;
+                    }
+                    else {
+                        cout << "Start of rent request list reached." << endl;
+                    }
+                }
+                else
+                {
+                    break;
+                }
             }
         }
 
@@ -131,7 +150,23 @@ void displayPendingRequest(RentRequest* rHead)
                 current = current->next;
             }
             else {
-                cout << "End of rent request list reached." << endl;
+                cout << "End of rent request list reached. Do you want to move to previous rent request ? (Y/N)" << endl;
+                cin >> endChoice;
+
+                if (endChoice == 'Y' || endChoice == 'y')
+                {
+                    if (current->prev != nullptr) {
+                        current = current->prev;
+                    }
+                    else {
+                        cout << "Start of rent request list reached." << endl;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+
             }
         }
         else if (approvalChoice == "P" || approvalChoice == "p")
@@ -195,7 +230,6 @@ void updateRentRequest(RentRequest* rHead, bool approval)
     }
 
     if (approval) {
-        cout << "Rent request ID " << current->rentRequestId << " has been approved." << endl;
         // Update payment details
         string startDate, endDate;
         double totalAmount;
@@ -203,9 +237,25 @@ void updateRentRequest(RentRequest* rHead, bool approval)
         cin >> startDate;
         cout << "Enter end date (DD-MM-YYYY): ";
         cin >> endDate;
+        while (true) {
+            cout << "Enter total amount: ";
+            cin >> totalAmount;
+
+            if (cin.fail()) {
+                // Clear error flags
+                cin.clear();
+                // Discard invalid input
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Invalid input. Please enter a valid number for total amount." << endl;
+            }
+            else {
+                break; // Input is a valid double, exit the loop
+            }
+        }
         cout << "Enter total amount: ";
         cin >> totalAmount;
         addPayment(startDate, endDate, totalAmount, 0);
+        cout << "Rent request ID " << current->rentRequestId << " has been approved." << endl;
     }
     else {
         cout << "Rent request ID " << current->rentRequestId << " has been rejected." << endl;

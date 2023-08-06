@@ -4,7 +4,7 @@
 // - Delete tenant account based on inactivity status (in tenant.cpp)
 // - Summarize top 10 based on fav property list and generate a report (in favProp.cpp)
 // - manage tenancy process, should be yes or no or text based input (in rentRequest.cpp)
-// - manage payment of confirmed tenancy
+// - manage payment of confirmed tenancy (in payment.cpp)
 
 
 #include <iostream>

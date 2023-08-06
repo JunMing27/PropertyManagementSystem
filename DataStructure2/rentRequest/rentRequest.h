@@ -20,6 +20,7 @@ struct RentRequest
 //by hoiyi (manager)
 void addRent(string propId, string propName, string tenantId, string tenantName, int durationMonths, double rentalAmount, bool rentingApproval);
 void displayAllRequests();
+void initializeRentRequest(); //for sample only
 
 //for manage tenancy process
 void displayPendingRequest(RentRequest* rHead);

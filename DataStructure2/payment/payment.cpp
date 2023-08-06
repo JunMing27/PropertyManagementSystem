@@ -89,8 +89,21 @@ void displaySinglePayment()
 
         if (choice == "yes" || choice == "Yes")
         {
-            cout << "Enter Paid Amount: ";
-            cin >> payAmount;
+            while (true) {
+                cout << "Enter Paid amount: ";
+                cin >> payAmount;
+
+                if (cin.fail()) {
+                    // Clear error flags
+                    cin.clear();
+                    // Discard invalid input
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    cout << "Invalid input. Please enter a valid number for total amount." << endl;
+                }
+                else {
+                    break; // Input is a valid double, exit the loop
+                }
+            }
             current->paidAmount = payAmount;
             cout << "Paid amount updated successfully." << endl << endl;
         }

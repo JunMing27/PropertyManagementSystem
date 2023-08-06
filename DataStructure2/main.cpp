@@ -4,6 +4,7 @@
 #include "manager/manager.h"
 #include "tenant/tenant.h"
 #include "favouriteProperty/favProp.h"
+#include "rentRequest/rentRequest.h"
 
 using namespace std;
 
@@ -23,47 +24,52 @@ void displayMenu() {
 
     initializeTenant(); //initialize the current tenant into linkedlist first
     initializeManager();
-    initializeFavProp();
+    initializeFavProp(); //only sample
+    initializeRentRequest(); //only sample
 
-    displayMenuList();
-    cin >> choice;
-    if (cin.fail()) //validate the input, ensure it is integer only continue with loop
+    while (true)
     {
-        // clear error flags
-        cin.clear();
-        // Wrong input remains on the stream, so you need to get rid of it
-        cin.ignore();
-        cout << "Invalid choice. Please try again." << endl;
-        displayMenu();
-    }
-    else
-    {
-        switch (choice) {
-        case 1:
-            cout << endl;
-            loginTenant();
-            break;
-        case 2:
-            cout << endl;
-            loginManager();
-            break;
-        case 3:
-            cout << endl;
-            break;
-        case 4:
-            cout << endl;
-            signUpTenant();
-            break;
-        case 5:
-            cout << "Exiting..." << endl;
-            break;
-        default:
+        displayMenuList();
+        cin >> choice;
+        if (cin.fail()) //validate the input, ensure it is integer only continue with loop
+        {
+            // clear error flags
+            cin.clear();
+            // Wrong input remains on the stream, so you need to get rid of it
+            cin.ignore();
             cout << "Invalid choice. Please try again." << endl;
-            displayMenu();
+            displayMenuList();
         }
-    }
+        else
+        {
+            switch (choice) {
+            case 1:
+                cout << endl;
+                loginTenant();
+                break;
+            case 2:
+                cout << endl;
+                loginManager();
+                break;
+            case 3:
+                cout << endl;
+                break;
+            case 4:
+                cout << endl;
+                signUpTenant();
+                break;
+            case 5:
+                cout << "Exiting..." << endl;
+                return;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+                displayMenu();
+            }
+        }
 
-    cout << endl;
+        cout << endl;
+    }
+    
 }
 
 
