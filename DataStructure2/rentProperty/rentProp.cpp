@@ -111,3 +111,4 @@ bool verifyRentProp(string propertyId) //to check if property is already favouri
 		return false;
 	}
 }
+

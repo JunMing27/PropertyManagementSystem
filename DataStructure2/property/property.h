@@ -27,3 +27,4 @@ void addNewProperty(string ads_id, string prop_name, string completion_year, str
 void initializeProperty();
 void inputTenantPropertyMenu();
 void displayPropertyDetails(Property* property);
+void displayTenantTenancyPropInfo(string PropId);

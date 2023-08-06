@@ -5,7 +5,45 @@
 #include <string>
 #include "tenant/tenant.h"
 #include "property/property.h"
+#include "main.h"
 using namespace std;
+
+tempUser* tempHead = nullptr;
+tempUser* tempTail = nullptr;
+void addNewTempUser(string userId)
+{
+    tempUser* newTempUser = new tempUser;
+    newTempUser->userId = userId;
+    newTempUser->prev = nullptr;
+    newTempUser->next = nullptr;
+
+    if (tempHead == NULL) {
+        tempHead = newTempUser;
+    }
+    else {
+        tempUser* temp = tempHead;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newTempUser;
+        newTempUser->prev = temp;
+    }
+}
+
+string getTempUser() 
+{
+    tempUser* currentTempUser= tempHead;
+    return currentTempUser->userId;
+}
+
+void cleanTempUser() {
+    tempUser* currentTempUser = tempHead;
+    while (tempHead != nullptr) {
+        tempUser* temp = tempHead;
+        tempHead = tempHead->next;
+        delete temp;
+    }
+}
 
 void displayMenuList() {
     cout << "======== Main Menu ========" << endl;
@@ -50,6 +88,7 @@ void displayMenu() {
             break;
         case 5:             // Exit
             cout << "Exiting..." << endl;
+            exit(0);
             break;
         default:
             cout << "Invalid choice. Please try again." << endl;
@@ -59,8 +98,6 @@ void displayMenu() {
 
     cout << endl;
 }
-
-
 
 int main()
 {

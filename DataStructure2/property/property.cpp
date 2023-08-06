@@ -3,6 +3,7 @@
 #include <string>
 #include "property.h"
 #include "../tenant/tenant.h"
+#include "../main.h"
 #include "../favouriteProperty/favProp.h"
 using namespace std;
 
@@ -162,7 +163,7 @@ void inputTenantPropertyMenu() {
                 cout << "This property has been added into the favourite list already. Please Select Another" << endl << endl;
             }
             else {
-                addNewFavProp(currentProperty->ads_id, currentProperty->prop_name, "T1");
+                addNewFavProp(currentProperty->ads_id, currentProperty->prop_name, getTempUser());
                 cout << "Added into favourite property" << endl << endl;
             }
         }
@@ -179,3 +180,29 @@ void inputTenantPropertyMenu() {
     }
 }
 
+void displayTenantTenancyPropInfo(string PropId) 
+{
+    Property* currentProperty = head;
+    while (currentProperty != NULL) {
+        if (currentProperty->ads_id == PropId) {
+            cout << "============== TENANCY INFORMATION ===============" << endl;
+            cout << "Property ID: " << currentProperty->ads_id << endl;
+            cout << "Property Name: " << currentProperty->prop_name << endl;
+            cout << "Completion Year: " << currentProperty->completion_year << endl;
+            cout << "Monthly Rent: " << currentProperty->monthly_rent << endl;
+            cout << "Location: " << currentProperty->location << endl;
+            cout << "Property Type: " << currentProperty->propertyType << endl;
+            cout << "Number of Rooms: " << currentProperty->rooms << endl;
+            cout << "Parking: " << currentProperty->parking << endl;
+            cout << "Number of Bathrooms: " << currentProperty->bathroom << endl;
+            cout << "Size: " << currentProperty->size << endl;
+            cout << "Furnished: " << currentProperty->furnished << endl;
+            cout << "Facilities: " << currentProperty->facilities << endl;
+            cout << "Additional Facilities: " << currentProperty->additional_facilities << endl;
+            cout << "Region: " << currentProperty->region << endl;
+            cout << "============== TENANCY INFORMATION ===============" << endl << endl;
+            break;
+        }
+        currentProperty = currentProperty->next;
+    }
+}

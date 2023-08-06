@@ -2,7 +2,6 @@
 
 using namespace std;
 
-
 struct Tenant {
     string tenantId;
     string tenantName;
@@ -10,6 +9,7 @@ struct Tenant {
     string tenantPassword;
     string tenantEmail;
     string propertyId;
+    bool isRent;
     string paymentHistory;
     bool leaseRenewed;
     bool isActive;
@@ -17,7 +17,7 @@ struct Tenant {
     Tenant* next;
 };
 
-void addNewTenant(string tenantId, string tenantName, string tenantUserName, string tenantPassword, string tenantEmail, string propertyId, string paymentHistory, bool leaseRenewed, bool isActive);
+void addNewTenant(string tenantId, string tenantName, string tenantUserName, string tenantPassword, string tenantEmail, string propertyId, bool isRent, string paymentHistory, bool leaseRenewed, bool isActive);
 void initializeTenant();
 void signUpTenant();
 void loginTenant();
@@ -27,6 +27,9 @@ void displayTenantFavPropMenu();
 void displayTenantRentPropMenu();
 void inputTenantMenu();
 bool searchTenant(Tenant* tHead, string username, string password);
+void tenantRentProperty(string tenantId, string newPropertyId);
+void tenantDisplayTenancy(string tenantId);
+void tenantDisplayTenancyMenu();
 void displayAllTenants();
 void displayTenantDetails(Tenant* tenant);
 

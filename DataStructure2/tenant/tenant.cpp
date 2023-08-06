@@ -22,9 +22,9 @@ using namespace std;
 
 Tenant* tHead = nullptr;
 Tenant* tTail = nullptr;
-
-
-void addNewTenant(string tenantId, string tenantName, string tenantUserName, string tenantPassword, string tenantEmail, string propertyId, string paymentHistory, bool leaseRenewed, bool isActive) {
+tempUser tempUserObj;
+string tempUserId;
+void addNewTenant(string tenantId, string tenantName, string tenantUserName, string tenantPassword, string tenantEmail, string propertyId, bool isRent, string paymentHistory, bool leaseRenewed, bool isActive) {
     Tenant* newTenant = new Tenant;
     newTenant->tenantId = tenantId;
     newTenant->tenantName = tenantName;
@@ -32,6 +32,7 @@ void addNewTenant(string tenantId, string tenantName, string tenantUserName, str
     newTenant->tenantPassword = tenantPassword;
     newTenant->tenantEmail = tenantEmail;
     newTenant->propertyId = propertyId;
+    newTenant->isRent = isRent;
     newTenant->paymentHistory = paymentHistory;
     newTenant->leaseRenewed = leaseRenewed;
     newTenant->isActive = isActive;
@@ -53,21 +54,25 @@ void addNewTenant(string tenantId, string tenantName, string tenantUserName, str
 }
 
 void initializeTenant() {
-    addNewTenant("T1", "Jun Ming", "junming", "junming123", "jm@gmail.com", "100323185", "Paid on time", true, false);
-    addNewTenant("T2", "Hoi Yi", "hoiyi", "hoiyi123", "hy@gmail.com", "100203973", "Paid on time", true, true);
-    addNewTenant("T3", "Alan", "alan", "alan123", "alan@gmail.com", "100323128", "Paid on time", true, true);
+    addNewTenant("T1", "Jun Ming", "junming", "junming123", "jm@gmail.com", "", true, "Paid on time", true, false);
+    addNewTenant("T2", "Hoi Yi", "hoiyi", "hoiyi123", "hy@gmail.com", "", true, "Paid on time", true, true);
+    addNewTenant("T3", "Alan", "alan", "alan123", "alan@gmail.com", "", false, "Paid on time", true, true);
 }
 
 bool searchTenant(Tenant* tHead, string username, string password) {
     Tenant* temp = tHead;
     do {
         if (temp->tenantUserName == username && temp->tenantPassword == password) {
+            //if user is in this list, store user Id as temporary data T1
+            addNewTempUser(temp->tenantId);
             return true;
+            break;
         }
         temp = temp->next;
-    } while (temp != tHead);
+    } while (temp != nullptr);
     return false;
 }
+
 // -------------------------
 // DISPLAY FUNCTION
 // -------------------------
@@ -82,7 +87,7 @@ void signUpTenant() {
     cin >> tenantPassword;
     cout << "Enter your email: ";
     cin >> tenantEmail;
-    addNewTenant("T4", tenantName, tenantUserName, tenantPassword, tenantEmail, "100191767", "Paid on time", false, false);
+    addNewTenant("T4", tenantName, tenantUserName, tenantPassword, tenantEmail, "", false, "Paid on time", false, false);
     cout << endl << "You have successfully signed up " << endl << endl;
     displayMenu();
 }
@@ -114,7 +119,7 @@ void displayTenantMenu() {
     cout << "4. Search Property" << endl;
     cout << "5. Rent History" << endl;
     cout << "6. Sign Out" << endl;
-    cout << "===========================" << endl;
+    cout << "==================================" << endl;
     cout << "Enter your choice: ";
     inputTenantMenu();
 }
@@ -125,7 +130,7 @@ void displayTenantPropertyMenu() {
     cout << "2. Previous" << endl;
     cout << "3. Save property into favourite" << endl;
     cout << "4. Back to Menu" << endl;
-    cout << "===========================" << endl;
+    cout << "==================================" << endl;
     cout << "Enter your choice: ";
 }
 
@@ -135,7 +140,7 @@ void displayTenantFavPropMenu() {
     cout << "2. Previous" << endl;
     cout << "3. Rent This Property" << endl;
     cout << "4. Back to Menu" << endl;
-    cout << "===========================" << endl;
+    cout << "==================================" << endl;
     cout << "Enter your choice: ";
 }
 
@@ -144,7 +149,7 @@ void displayTenantRentPropMenu() {
     cout << "1. Next" << endl;
     cout << "2. Previous" << endl;
     cout << "3. Back to Menu" << endl;
-    cout << "===========================" << endl;
+    cout << "==================================" << endl;
     cout << "Enter your choice: ";
 }
 
@@ -178,10 +183,12 @@ void inputTenantMenu() {
             cout << endl;
             break;
         case 5:             //Rent History
+            tenantDisplayTenancy(getTempUser());
             cout << endl;
             break;
         case 6:             //Sign Out
             cout << " You have signed out! Come Back Next Time!" << endl;
+            cleanTempUser();
             displayMenu();
             break;
         default:
@@ -193,68 +200,49 @@ void inputTenantMenu() {
     cout << endl;
 }
 
-//void inputTenantPropertyMenu() {
-//    displayPropertyBy1();
-//    int choice;
-//    cin >> choice;
-//    if (cin.fail()) //validate the input, ensure it is integer only continue with loop
-//    {
-//        // clear error flags
-//        cin.clear();
-//        // Wrong input remains on the stream, so you need to get rid of it
-//        cin.ignore();
-//        cout << "Invalid choice. Please try again." << endl;
-//        displayTenantPropertyMenu();
-//    }
-//    else
-//    {
-//        switch (choice) {
-//        case 1:             //View Property, Next Page
-//            cout << endl;
-//            break;
-//        case 2:             //View Property, Previous Page
-//            cout << endl;
-//            break;
-//        case 3:             //Save property into favourite
-//            cout << endl;
-//            break;
-//        case 4:             //Rent Property
-//            cout << endl;
-//            break;
-//        case 5:             //Back to TenantMenu
-//            cout << endl;
-//            break;
-//        default:
-//            cout << "Invalid choice. Please try again." << endl;
-//            displayTenantPropertyMenu();
-//        }
-//    }
-//
-//    cout << endl;
-//}
+void tenantRentProperty(string tenantId, string newPropertyId) {
+    Tenant* temp = tHead;
+    while (temp != NULL) {
+        if (temp->tenantId == tenantId) {
+            if (temp->propertyId == "") {
+                temp->propertyId = newPropertyId;
+                cout << "Successfully sent rent request for this property." << endl << endl;
+                break;
+            }
+            else {
+                cout << "Failed to add property. You have existing tenancy already" << endl << endl;
+            }
+        }
+        temp = temp->next;
+    }
+}
 
-// void displayAllTenants() {
-//     if (tHead == nullptr) {
-//         cout << "No tenants in the list." << endl;
-//         return;
-//     }
+void tenantDisplayTenancy(string tenantId) {
+    Tenant* temp = tHead;
+    while (temp != NULL) {
+        if (temp->tenantId == tenantId && temp->propertyId != "" && temp->isRent == true) {
+            displayTenantTenancyPropInfo(temp->propertyId);
+            tenantDisplayTenancyMenu();
+            break;
+        }else{
+            cout << "You have not rented any Property. You will need approval from manager after sending rent request." << endl << endl;
+            displayTenantMenu();
+        }
+        temp = temp->next;
+    }
+}
 
-//     cout << "======== All Tenant Information ========" << endl;
-//     Tenant *temp = tHead;
-//     do {
-//         displayTenantDetails(temp);
-//         temp = temp->next;
-//     } while (temp != NULL);
-// }
-
-// void displayTenantDetails(Tenant* tenant) {
-//     string tenantId = tenant->tenantId; 
-//     cout << "Tenant ID: " << tenant->tenantId << endl;
-//     cout << "Tenant Name: " << tenant->tenantName << endl;
-//     cout << "Tenant Username: " << tenant->tenantUserName << endl;
-//     cout << "Tenant Email: " << tenant->tenantEmail << endl;
-//     cout << "Property ID: " << tenant->propertyId << endl;
-//     cout << "Payment History: " << tenant->paymentHistory << endl;
-//     cout << "Lease Renewed: " << (tenant->leaseRenewed ? "Yes" : "No") << endl;
-//     cout << "================================" << endl;
-// }
+void tenantDisplayTenancyMenu() {
+    cout << "======== Tenant Operation ========" << endl;
+    cout << "1. Back to Menu" << endl;
+    cout << "==================================" << endl;
+    cout << "Enter your choice: ";
+    int choice;
+    cin >> choice;
+    if (choice == 1) {
+        displayTenantMenu();
+    }
+    else {
+        cout << "Invalid choice. Please try again." << endl;
+    }
+}

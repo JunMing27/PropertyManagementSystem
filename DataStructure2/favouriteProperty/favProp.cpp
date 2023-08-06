@@ -3,6 +3,7 @@
 #include "../property/property.h"
 #include "../tenant/tenant.h"
 #include "../rentProperty/rentProp.h"
+#include "../main.h"
 #include "favProp.h"
 #include <unordered_map>
 #include <unordered_set>
@@ -45,6 +46,7 @@ void displayFavPropTenant()
 {
 	int batchSize = 1;
 	int pageNum = 1;
+	bool nextOrPrev = true;
 	FavProperty* currentFavProperty = favHead;
 
 	if (currentFavProperty == nullptr) {
@@ -52,52 +54,64 @@ void displayFavPropTenant()
 		displayTenantMenu();
 	}
 
-	while (currentFavProperty != nullptr) {
-		cout << "============== Favourite Property List ===============" << endl;
-		cout << "Property ID: " << currentFavProperty->propId << endl;
-		cout << "Property Name: " << currentFavProperty->propName << endl;
-		cout << "Completion Year: " << currentFavProperty->favTenantId << endl;
-		cout << "============== PAGE " << pageNum << " ===============" << endl << endl;
-
-		// Ask for user input to continue or go back
-		int choice;
-		displayTenantFavPropMenu();
-		cin >> choice;
-
-		if (choice == 2 && currentFavProperty == favHead) {
-			cout << "You are already at the beginning of the list." << endl << endl;
+	while (currentFavProperty != nullptr ) {
+		if (currentFavProperty->favTenantId != getTempUser() && nextOrPrev ==true) {
+			currentFavProperty = currentFavProperty->next;
 		}
-		else if (choice == 1) {
-			// Move to the next property
-			if (currentFavProperty->next != nullptr) {
-				currentFavProperty = currentFavProperty->next;
-				pageNum = pageNum + 1;
-			}
-			else {
-				cout << "Reached the end of the list." << endl << endl;
-			}
-		}
-		else if (choice == 2) {
-			// Move to the previous property
+		else if (currentFavProperty->favTenantId != getTempUser() && nextOrPrev == false) {
 			currentFavProperty = currentFavProperty->prev;
-			pageNum = pageNum - 1;
-		}
-		else if (choice == 3) {
-			//Rent This Current Property
-			addNewRentProp(currentFavProperty->propId, currentFavProperty->propName);
-			cout << "Rented this property" << endl << endl;
-		}
-		else if (choice == 4) {
-			//Back to TenantMenu
-			cout << endl;
-			displayTenantMenu();
 		}
 		else {
-			cout << "Invalid Input..... Redirecting to Tenant Menu......" << endl << endl;
-			// Back to TenantMenu if any other number is entered
-			displayTenantMenu();
+			cout << "============== Favourite Property List ===============" << endl;
+			cout << "Property ID: " << currentFavProperty->propId << endl;
+			cout << "Property Name: " << currentFavProperty->propName << endl;
+			cout << "Tenant ID: " << currentFavProperty->favTenantId << endl;
+			cout << "============== PAGE " << pageNum << " ===============" << endl << endl;
+
+			// Ask for user input to continue or go back
+			int choice;
+			displayTenantFavPropMenu();
+			cin >> choice;
+
+			if (choice == 2 && currentFavProperty == favHead) {
+				cout << "You are already at the beginning of the list." << endl << endl;
+			}
+			else if (choice == 1) {
+				// Move to the next property
+				if (currentFavProperty->next != nullptr) {
+					nextOrPrev = true;
+					currentFavProperty = currentFavProperty->next;
+					pageNum = pageNum + 1;
+				}
+				else {
+					cout << "Reached the end of the list." << endl << endl;
+				}
+			}
+			else if (choice == 2) {
+				// Move to the previous property
+				nextOrPrev = false;
+				currentFavProperty = currentFavProperty->prev;
+				pageNum = pageNum - 1;
+			}
+			else if (choice == 3) {
+				//Rent This Current Property
+				tenantRentProperty(getTempUser(), currentFavProperty->propId);
+			}
+			else if (choice == 4) {
+				//Back to TenantMenu
+				cout << endl;
+				displayTenantMenu();
+			}
+			else {
+				cout << "Invalid Input..... Redirecting to Tenant Menu......" << endl << endl;
+				// Back to TenantMenu if any other number is entered
+				displayTenantMenu();
+			}
 		}
+		
 	}
+	cout << "Thats the end of menu" << endl << endl;
+	displayTenantMenu();
 }
 
 
@@ -158,7 +172,7 @@ bool verifyFavProp(string propertyId) //to check if property is already favourit
 	}
 	else {
 		do {
-			if (currentFavProperty->propId == propertyId) {
+			if (currentFavProperty->propId == propertyId && currentFavProperty->favTenantId==getTempUser()) {
 				return true;
 				break;
 			}
