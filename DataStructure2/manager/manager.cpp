@@ -14,6 +14,7 @@
 #include "../main.h"
 #include "../favouriteProperty/favProp.h"
 #include "../rentRequest/rentRequest.h"
+#include "../payment/payment.h"
 
 using namespace std;
 
@@ -119,8 +120,7 @@ void displayManagerMenu()
             manageTenancyProcess();
             break;
         case 6:
-            //managePayment(tenantList);
-            cout << "6 ING";
+            managePayment();
             break;
         case 7:
             managerLogIn = false;
@@ -133,86 +133,4 @@ void displayManagerMenu()
     }
     
 }
-
-
-
-// void summarizeTop10Property(LinkedList<Property>& propertyList)
-// {
-//     cout << "Summarizing the top 10 properties:" << endl;
-//     propertyList.displayTop10();
-// }
-
-// void manageTenancyProcess(LinkedList<Tenant>& tenantList, LinkedList<Property>& propertyList) 
-// {
-//     string tenantID, propertyID;
-//     cout << "Enter tenant ID: ";
-//     cin >> tenantID;
-//     cout << "Enter property ID: ";
-//     cin >> propertyID;
-
-//     const Tenant* tenant = tenantList.search(tenantID);
-//     const Property* property = propertyList.search(propertyID);
-
-//     if (tenant && property) 
-//     {
-//         TenancyRecord newTenancy;
-//         newTenancy.tenantID = tenantID;
-//         newTenancy.propertyID = propertyID;
-
-//         newTenancy.monthlyRent = property->getMonthlyRent();
-
-//         cout << "Tenancy agreement created between tenant: " << tenant->getName()
-//                   << " and property: " << property->getPropName() << endl;
-
-//         //Handle rent payment
-//         tenant->setRentDue(newTenancy.monthlyRent);
-//         tenant->setNextPaymentDueDate(/* Calculate next payment due date */);
-
-//         //Add tenancy record
-//         tenant->addTenancyRecord(newTenancy);
-//         property->addTenancyRecord(newTenancy);
-
-//     } else 
-//     {
-//         cout << "Tenant or property not found with the provided IDs." << endl;
-//     }
-// }
-
-// void managePayment(LinkedList<Tenant>& tenantList) {
-//     string tenantID;
-//     cout << "Enter tenant ID to manage payment: ";
-//     cin >> tenantID;
-
-//     Tenant* tenant = tenantList.search(tenantID);
-//     if (tenant) 
-//     {
-//         // Assuming Tenant has a method to get the monthly rent.
-//         double rentDue = tenant->getMonthlyRent(); 
-
-//         // Record payment
-//         double paymentAmount;
-//         cout << "Enter payment amount: ";
-//         cin >> paymentAmount;
-
-//         // Add to payment history
-//         tenant->recordPayment(paymentAmount);
-
-//         // Check for late payment
-//         double lateFee = 0.0;
-//         if (paymentAmount < rentDue) 
-//         {
-//             cout << "Payment is late. Applying late fee..." << endl;
-//             // Apply late fee calculation, if required.
-//             lateFee = calculateLateFee(paymentAmount, rentDue);
-//         }
-
-//         // Update tenant payment history
-//         tenant->updatePaymentHistory(paymentAmount, lateFee);
-
-//         cout << "Payment receipt sent to " << tenant->getName() << endl;
-//     } else 
-//     {
-//         cout << "Tenant not found with ID: " << tenantID << endl;
-//     }
-// }
 

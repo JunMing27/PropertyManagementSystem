@@ -21,8 +21,5 @@ bool searchManager(string username, string password);
 void logout();
 void displayManagerMenu();
 
-//Functionality
-void managePayment();
-
 
 

@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include "rentRequest.h"
+#include "../payment/payment.h"
 
 using namespace std;
 
@@ -46,6 +47,12 @@ void addRent(string propId, string propName, string tenantId, string tenantName,
 void displayAllRequests()
 {
     RentRequest* current = rHead;
+    if (current == nullptr)
+    {
+        cout << "No rent requests found." << endl;
+        return;
+    }
+
     while (current != nullptr) {
         cout << "=======================================" << endl;
         cout << "Rent Request ID: " << current->rentRequestId << endl;
@@ -74,6 +81,12 @@ void displayPendingRequest(RentRequest* rHead)
     RentRequest* current = rHead;
     string approvalChoice;
     
+    if (current == nullptr)
+    {
+        cout << "No rent requests found." << endl;
+        return;
+    }
+
     while (true) //only false when q
     {
         if (current->isProcessed)
@@ -144,13 +157,29 @@ void displayPendingRequest(RentRequest* rHead)
 
 void manageTenancyProcess()
 {
-    displayAllRequests();
     char choice;
-    cout << "Do you want to review the rent requests? (y/n): ";
-    cin >> choice;
-    if (choice == 'y' || choice == 'Y')
+    while (true)
     {
-        displayPendingRequest(rHead);
+        cout << "Do you want to see all requests or only review the rent requests?" << endl;
+        cout << "1. See all requests" << endl;
+        cout << "2. Review pending rent requests" << endl;
+        cout << "Enter your choice : ";
+        cin >> choice;
+
+        if (choice == '1' )
+        {
+            displayAllRequests();
+            break;
+        }
+        else if (choice == '2')
+        {   
+            displayPendingRequest(rHead);
+            break;
+        }
+        else
+        {
+            cout << "Invalid input. Please enter '1' or '2'." << endl;
+        }
     }
 }
 
@@ -167,6 +196,16 @@ void updateRentRequest(RentRequest* rHead, bool approval)
 
     if (approval) {
         cout << "Rent request ID " << current->rentRequestId << " has been approved." << endl;
+        // Update payment details
+        string startDate, endDate;
+        double totalAmount;
+        cout << "Enter start date (DD-MM-YYYY): ";
+        cin >> startDate;
+        cout << "Enter end date (DD-MM-YYYY): ";
+        cin >> endDate;
+        cout << "Enter total amount: ";
+        cin >> totalAmount;
+        addPayment(startDate, endDate, totalAmount, 0);
     }
     else {
         cout << "Rent request ID " << current->rentRequestId << " has been rejected." << endl;
