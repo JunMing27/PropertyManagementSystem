@@ -206,3 +206,191 @@ void displayTenantTenancyPropInfo(string PropId)
         currentProperty = currentProperty->next;
     }
 }
+
+void inputTenantPropertySearch() {
+    int inputSearchCriteria;
+    string searchCriteria;
+    int inputSearchMethod;
+    string searchMethod;
+    string searchInput;
+    cout << "======== Search Criteria ========" << endl;
+    cout << "1. Property Name" << endl;
+    cout << "2. Location" << endl;
+    cout << "3. Region" << endl;
+    cout << "4. Back" << endl;
+    cout << "==================================" << endl;
+    cout << "Enter your choice: ";
+    cin >> inputSearchCriteria;
+    if (inputSearchCriteria == 1) {
+        searchCriteria = "propertyName";
+    }
+    else if (inputSearchCriteria == 2) {
+        searchCriteria = "location";
+    }
+    else if (inputSearchCriteria == 3) {
+        searchCriteria = "region";
+    }
+    else if (inputSearchCriteria == 4) {
+        displayTenantMenu();
+    }
+    else {
+        cout << "Invalid Input..... Redirecting to search property Menu......" << endl << endl;
+        // Back to search menu if any other number is entered
+        inputTenantPropertySearch();
+    }
+    cout << "======== Search Method ========" << endl;
+    cout << "1. Linear Search" << endl;
+    cout << "2. Binary Search" << endl;
+    cout << "==================================" << endl;
+    cout << "Enter your choice: ";
+    cin >> inputSearchMethod;
+    if (inputSearchMethod == 1) {
+        searchMethod = "linear";
+    }
+    else if (inputSearchMethod == 2) {
+        searchMethod = "binary";
+    }
+    else {
+        cout << "Invalid Input..... Redirecting to search property Menu......" << endl << endl;
+        // Back to search menu if any other number is entered
+        inputTenantPropertySearch();
+    }
+    if (searchCriteria != "" && searchMethod != "") {
+        cout << "Enter your search Input: ";
+        cin >> searchInput;
+        //Run search
+        displaySearchResult(searchCriteria, searchMethod, searchInput);
+    }
+}
+
+void displayTenantPropertySearchMenu() {
+    cout << "======== Tenant Operation ========" << endl;
+    cout << "1. Next" << endl;
+    cout << "2. Previous" << endl;
+    cout << "3. Back" << endl;
+    cout << "==================================" << endl;
+}
+
+Property* binarySearch(Property* head, string searchCriteria, string searchInput) {
+    Property* low = head;
+    Property* high = NULL;
+
+    // Find the last node in the linked list
+    Property* temp = head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+    high = temp;
+
+    while (low != high && high->next != low) {
+        Property* mid = low;
+        int count = 0;
+        while (mid != high && mid->next != high) {
+            mid = mid->next;
+            count++;
+        }
+        if (count % 2 != 0) {
+            mid = mid->next;
+        }
+
+        // Here, you can specify different criteria to perform binary search
+        if (searchCriteria == "propertyName") {
+            if (mid->prop_name == searchInput) {
+                return mid;
+            }
+            else if (mid->prop_name < searchInput) {
+                low = mid->next;
+            }
+            else {
+                high = mid;
+            }
+        }
+        else if (searchCriteria == "location") {
+            if (mid->location == searchInput) {
+                return mid;
+            }
+            else if (mid->location < searchInput) {
+                low = mid->next;
+            }
+            else {
+                high = mid;
+            }
+        }
+        else if (searchCriteria == "region") {
+            if (mid->region == searchInput) {
+                return mid;
+            }
+            else if (mid->region < searchInput) {
+                low = mid->next;
+            }
+            else {
+                high = mid;
+            }
+        }
+
+    }
+
+    return NULL; // Not found
+}
+
+void displaySearchResult(string searchCriteria, string searchMethod, string searchInput) {
+    Property* result = NULL;
+    if (searchMethod == "linear") {
+        // Implement linear search here (not shown in the provided code)
+    }
+    else if (searchMethod == "binary") {
+        result = binarySearch(head, searchCriteria, searchInput);
+    }
+    else {
+        cout << "An error has occurred..... Redirecting to tenant Menu......" << endl << endl;
+        displayTenantMenu();
+        return; // Return from the function after displaying the error message
+    }
+
+    if (result != NULL) {
+        int batchSize = 1;
+        int pageNum = 1;
+        while (result != NULL) { // Check if result is not NULL
+            cout << "============== PAGE " << pageNum << " ===============" << endl;
+            cout << "Property ID: " << result->ads_id << endl;
+            cout << "Property Name: " << result->prop_name << endl;
+            // Display other information...
+            cout << "============== PAGE " << pageNum << " ===============" << endl << endl;
+
+            // Ask for user input to continue or go back
+            int choice;
+            displayTenantPropertySearchMenu();
+            cin >> choice;
+
+            if (choice == 2 && result == head) {
+                cout << "You are already at the beginning of the list." << endl << endl;
+            }
+            else if (choice == 1) {
+                // Move to the next property
+                result = result->next;
+                pageNum = pageNum + 1;
+            }
+            else if (choice == 2) {
+                // Move to the previous property
+                result = result->prev;
+                pageNum = pageNum - 1;
+            }
+            else if (choice == 3) {
+                // Back to TenantMenu
+                cout << endl;
+                displayTenantMenu();
+                return; // Return from the function after going back to TenantMenu
+            }
+            else {
+                cout << "Invalid Input..... Redirecting to Tenant Menu......" << endl << endl;
+                // Back to TenantMenu if any other number is entered
+                displayTenantMenu();
+                return; // Return from the function after displaying the error message
+            }
+        }
+    }
+    else {
+        cout << "Property not found." << endl;
+        displayTenantMenu();
+    }
+}

@@ -28,3 +28,7 @@ void initializeProperty();
 void inputTenantPropertyMenu();
 void displayPropertyDetails(Property* property);
 void displayTenantTenancyPropInfo(string PropId);
+void inputTenantPropertySearch();
+void displayTenantPropertySearchMenu();
+Property* binarySearch(Property* head,string searchCriteria,string searchValue);
+void displaySearchResult(string searchCriteria, string searchMethod, string searchInput);

@@ -180,6 +180,7 @@ void inputTenantMenu() {
             cout << endl;
             break;
         case 4:             //Search Property
+            inputTenantPropertySearch();
             cout << endl;
             break;
         case 5:             //Rent History
