@@ -76,13 +76,19 @@ void displayAdminMenu() {
     cout << "1. Add New Manager" << endl;
     cout << "2. Modify Status Manager" << endl;
     cout << "3. Display Tenant Information" << endl;
-    cout << "4. Display Properties Information" << endl;
-    cout << "5. Logout" << endl;
+    cout << "4. Display Properties Information based on Monthly Rent" << endl;
+    cout << "5. Display Properties Information based on Property Type" << endl;
+    cout << "6. Logout" << endl;
     cout << "===========================" << endl;
     cout << "Enter your choice: ";
 }
 
-void addNewManager(string managerId, string managerUserName, string managerPassword, bool managerStatus) {
+void addNewManager() {
+
+    string managerId;
+    string managerUserName;
+    string managerPassword; 
+    bool managerStatus = false;
 
     // Ask the user to enter manager details
     cout << endl << "Enter Manager ID: ";
@@ -200,6 +206,8 @@ void modifyManagerStatus() {
 
 void displayPropertyByType(const string& propertyType) {
     Property* currentProperty = pHead;
+    int batchSize = 1;
+    int pageNum = 1;
     bool propertyFound = false;
 
     if (currentProperty == nullptr) {
@@ -210,7 +218,8 @@ void displayPropertyByType(const string& propertyType) {
     while (currentProperty != nullptr) {
         if (currentProperty->propertyType == propertyType) {
             propertyFound = true;
-            cout << "================================" << endl;
+            cout << endl;
+            cout << "============== PAGE " << pageNum << " ===============" << endl;
             cout << "Property ID: " << currentProperty->ads_id << endl;
             cout << "Property Name: " << currentProperty->prop_name << endl;
             cout << "Completion Year: " << currentProperty->completion_year << endl;
@@ -225,27 +234,32 @@ void displayPropertyByType(const string& propertyType) {
             cout << "Facilities: " << currentProperty->facilities << endl;
             cout << "Additional Facilities: " << currentProperty->additional_facilities << endl;
             cout << "Region: " << currentProperty->region << endl;
-            cout << "================================" << endl << endl;
+            cout << "============== PAGE " << pageNum << " ===============" << endl << endl;
 
-            // Ask for user input to continue or go back
-            int userInput;
-            cout << "Enter '1' to view the next property, '2' to view the previous property, or any other number to exit: ";
-            cin >> userInput;
+            // Check if the current page is full (batchSize reached)
+            if (pageNum % batchSize == 0) {
+                // Ask for user input to continue or go back
+                int userInput;
+                cout << "Enter '1' to view the next page, '2' to view the previous page, or any other number to exit: ";
+                cin >> userInput;
 
-            if (userInput == 2 && currentProperty == pHead) {
-                cout << "You are already at the beginning of the list." << endl << endl;
-            }
-            else if (userInput == 1) {
-                // Move to the next property
-                currentProperty = currentProperty->next;
-            }
-            else if (userInput == 2) {
-                // Move to the previous property
-                currentProperty = currentProperty->prev;
-            }
-            else {
-                // Exit the loop if any other number is entered
-                break;
+                if (userInput == 2 && pageNum <= batchSize) {
+                    cout << "You are already at the beginning of the list." << endl;
+                }
+                else if (userInput == 1) {
+                    // Move to the next page
+                    currentProperty = currentProperty->next;
+                    pageNum = pageNum + 1;
+                }
+                else if (userInput == 2) {
+                    // Move to the previous page
+                    currentProperty = currentProperty->prev;
+                    pageNum = pageNum - batchSize;
+                }
+                else {
+                    // Exit the loop if any other number is entered
+                    break;
+                }
             }
         }
         else {
@@ -261,7 +275,8 @@ void displayPropertyByType(const string& propertyType) {
 void choosePropertyType(){
     int choice;
     do {
-        cout << endl << "========== Property Type Menu ==========" << endl;
+        cout << endl;
+        cout << "========== Property Type Menu ==========" << endl;
         cout << "1. Condominium" << endl;
         cout << "2. Apartment" << endl;
         cout << "3. Service Residence" << endl;
@@ -329,21 +344,38 @@ int extractMonthlyRentValue(const string& rentString) {
     return rentValue;
 }
 
+
 void displayPropertiesByMonthlyRent() {
-    cout << "======== Display Properties by Monthly Rent ========" << endl;
-    cout << "Choose an option:" << endl;
-    cout << "1. Price less than RM 1000" << endl;
-    cout << "2. Price less than RM 2000" << endl;
-    cout << "3. Price less than RM 3000" << endl;
-    cout << "Enter your choice: ";
-
+    
     int option;
-    cin >> option;
 
-    if (option < 1 || option > 3) {
-        cout << "Invalid option. Please choose a valid option (1, 2, or 3)." << endl;
-        return;
+    while (true) {
+        cout << endl;
+        cout << "======== Display Properties by Monthly Rent ========" << endl;
+        cout << "Choose an option:" << endl;
+        cout << "1. Price less than RM 1000" << endl;
+        cout << "2. Price less than RM 2000" << endl;
+        cout << "3. Price less than RM 3000" << endl;
+        cout << "4. Exit" << endl;
+        cout << "Enter your choice: ";
+
+        cin >> option;
+
+        if (option >= 1 && option <= 4) {
+            break; // Valid choice, exit the loop
+        }
+        else {
+            cout << "Invalid option. Please choose a valid option !" << endl;
+            cin.clear(); // Clear error flags
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear input buffer
+        }
     }
+
+    if (option == 4) {
+        cout << endl << "Exiting..." << endl << endl;
+        return; // Exit the function if option 4 is chosen
+    }
+
 
     // Filter properties by monthly rent based on the chosen option
     int maxMonthlyRent;
@@ -361,12 +393,16 @@ void displayPropertiesByMonthlyRent() {
 
     // Traverse and display properties with rent less than the chosen maximum rent
     Property* currentProperty = pHead;
+    int batchSize = 1;
+    int pageNum = 1;
     bool found = false;
+
     while (currentProperty != nullptr) {
         int rentValue = extractMonthlyRentValue(currentProperty->monthly_rent);
         if (rentValue < maxMonthlyRent) {
             found = true;
-            cout << "================================" << endl;
+            cout << endl;
+            cout << "============== PAGE " << pageNum << " ===============" << endl;
             cout << "Property ID: " << currentProperty->ads_id << endl;
             cout << "Property Name: " << currentProperty->prop_name << endl;
             cout << "Completion Year: " << currentProperty->completion_year << endl;
@@ -381,27 +417,32 @@ void displayPropertiesByMonthlyRent() {
             cout << "Facilities: " << currentProperty->facilities << endl;
             cout << "Additional Facilities: " << currentProperty->additional_facilities << endl;
             cout << "Region: " << currentProperty->region << endl;
-            cout << "================================" << endl << endl;
+            cout << "============== PAGE " << pageNum << " ===============" << endl << endl;
 
-            // Ask for user input to continue or go back
-            int userInput;
-            cout << "Enter '1' to view the next property, '2' to view the previous property, or any other number to exit: ";
-            cin >> userInput;
+            // Check if the current page is full (batchSize reached)
+            if (pageNum % batchSize == 0) {
+                // Ask for user input to continue or go back
+                int userInput;
+                cout << "Enter '1' to view the next page, '2' to view the previous page, or any other number to exit: ";
+                cin >> userInput;
 
-            if (userInput == 2 && currentProperty == pHead) {
-                cout << "You are already at the beginning of the list." << endl << endl;
-            }
-            else if (userInput == 1) {
-                // Move to the next property
-                currentProperty = currentProperty->next;
-            }
-            else if (userInput == 2) {
-                // Move to the previous property
-                currentProperty = currentProperty->prev;
-            }
-            else {
-                // Exit the loop if any other number is entered
-                break;
+                if (userInput == 2 && pageNum <= batchSize) {
+                    cout << "You are already at the beginning of the list." << endl;
+                }
+                else if (userInput == 1) {
+                    // Move to the next page
+                    currentProperty = currentProperty->next;
+                    pageNum = pageNum + 1;
+                }
+                else if (userInput == 2) {
+                    // Move to the previous page
+                    currentProperty = currentProperty->prev;
+                    pageNum = pageNum - batchSize;
+                }
+                else {
+                    // Exit the loop if any other number is entered
+                    break;
+                }
             }
         }
         else {
@@ -409,8 +450,38 @@ void displayPropertiesByMonthlyRent() {
         }
     }
 
+    // Display a message if no properties are found for the selected monthly rent
     if (!found) {
-        cout << "No properties found for the selected monthly rent " << endl;
+        cout << "No properties found for the selected monthly rent." << endl;
+    }
+}
+
+// Function to display the admin menu
+void chooseTenantStatus() {
+    cout << endl;
+    cout << "======== Select Tenant Status ========" << endl;
+    cout << "1. Display Active Tenants" << endl;
+    cout << "2. Display Inactive Tenants" << endl;
+    cout << "3. Exit" << endl;
+    cout << "Enter your choice: ";
+
+    int choice;
+    cin >> choice;
+
+    switch (choice) {
+    case 1:
+        displayTenantsByIsActive(true); // Display active tenants
+        break;
+    case 2:
+        displayTenantsByIsActive(false); // Display inactive tenants
+        break;
+    case 3:
+        cout << endl << "Exiting..." << endl << endl;
+        return; // Exit the function and return to the main menu
+    default:
+        cout << "Invalid choice. Please choose a valid option !" << endl;
+        chooseTenantStatus(); // Display the admin menu again
+        break;
     }
 }
 
@@ -423,13 +494,16 @@ void displayTenantsByIsActive(bool isActive) {
         return;
     }
 
-    int batchSize = 3; // Number of tenants to display per page
+    int batchSize = 1; // Number of tenants to display per page
     int pageNum = 1;    // Current page number
+    bool found = false; // To keep track if any tenants are found for the given isActive status
 
     while (currentTenant != nullptr) {
         // Check if the current tenant matches the isActive status
         if (currentTenant->isActive == isActive) {
-            cout << "================================" << endl;
+            found = true;
+            cout << endl;
+            cout << "============== PAGE " << pageNum << " ===============" << endl;
             cout << "Tenant ID: " << currentTenant->tenantId << endl;
             cout << "Tenant Name: " << currentTenant->tenantName << endl;
             cout << "Username: " << currentTenant->tenantUserName << endl;
@@ -438,24 +512,26 @@ void displayTenantsByIsActive(bool isActive) {
             cout << "Payment History: " << currentTenant->paymentHistory << endl;
             cout << "Lease Renewed: " << (currentTenant->leaseRenewed ? "Yes" : "No") << endl;
             cout << "Is Active: " << (currentTenant->isActive ? "Yes" : "No") << endl;
-            cout << "================================" << endl << endl;
+            cout << "============== PAGE " << pageNum << " ===============" << endl << endl;
 
             // Check if the current page is full (batchSize reached)
             if (pageNum % batchSize == 0) {
                 // Ask for user input to continue or go back
                 int userInput;
-                std::cout << "Enter '1' to view the next page, '2' to view the previous page, or any other number to exit: ";
-                std::cin >> userInput;
+                cout << "Enter '1' to view the next page, '2' to view the previous page, or any other number to exit: ";
+                cin >> userInput;
 
                 if (userInput == 2 && pageNum <= batchSize) {
-                    std::cout << "You are already at the beginning of the list." << std::endl;
+                    cout << "You are already at the beginning of the list." << endl;
                 }
-                else if (userInput == 1) {
+                else if(userInput == 1) {
                     // Move to the next page
+                    currentTenant = currentTenant->next;
                     pageNum = pageNum + 1;
                 }
-                else if (userInput == 2) {
+                else if (userInput == 2 && pageNum > batchSize) {
                     // Move to the previous page
+                    currentTenant = currentTenant->prev;
                     pageNum = pageNum - batchSize;
                 }
                 else {
@@ -463,13 +539,17 @@ void displayTenantsByIsActive(bool isActive) {
                     break;
                 }
             }
+            else {
+                currentTenant = currentTenant->next;
+            }
         }
-
-        currentTenant = currentTenant->next;
+        else {
+            currentTenant = currentTenant->next;
+        }
     }
 
-    // If there are remaining tenants after displaying all full pages
-    if (pageNum % batchSize != 0) {
-        cout << "No more tenants to display." << endl;
+    // Display a message if no tenants are found for the selected isActive status
+    if (!found) {
+        cout << "No tenants found for the selected status." << endl;
     }
 }

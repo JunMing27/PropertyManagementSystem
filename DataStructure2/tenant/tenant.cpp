@@ -101,7 +101,7 @@ void loginTenant() {
     bool isTenantFound = searchTenant(tHead, tenantUserName, tenantPassword);
     if (isTenantFound) {
         cout << "Login Successfully" << endl << endl;
-        displayTenantMenu();
+        //displayTenantMenu();
     }
     else {
         cout << "Login Failed. Please double check your username and password" << endl << endl;
@@ -119,6 +119,7 @@ void displayTenantMenu() {
     cout << "5. Save fav" << endl;
     cout << "6. Rent Property" << endl;
     cout << "7. Rent History" << endl;
+    cout << "8. Logout" << endl;
     cout << "===========================" << endl;
     cout << "Enter your choice: ";
 }
@@ -487,4 +488,41 @@ void displayPropertyLocation() {
             break;
         }
     }
+}
+
+void choosePropertySort() {
+    int choice;
+    do {
+        cout << endl;
+        cout << "========== Property Information Menu ==========" << endl;
+        cout << "1. Sort Monthly Rent (Desc)" << endl;
+        cout << "2. Sort Location (Desc)" << endl;
+        cout << "3. Sort Size as per square feet (Desc)" << endl;
+        cout << "4. Exit" << endl;
+        cout << "=======================================" << endl;
+        cout << "Enter your choice (1-4): ";
+        cin >> choice;
+
+        cout << endl;
+
+        switch (choice) {
+        case 1:
+            displayPropertyMonthlyRent();
+            break;
+        case 2:
+            displayPropertyLocation();
+            break;
+        case 3:
+            displayPropertySize();
+            break;
+        case 4:
+            cout << "Exiting..." << endl;
+            break;
+        default:
+            cout << "Invalid choice. Please select again." << endl;
+        }
+
+        cout << endl;
+    } while (choice != 4);
+
 }

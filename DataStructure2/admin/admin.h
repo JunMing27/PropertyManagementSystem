@@ -3,6 +3,7 @@
 
 using namespace std;
 
+
 struct Admin {
     string adminId;
     string adminUserName;
@@ -16,10 +17,11 @@ void initializeAdmin();
 void loginAdmin();
 void displayAdminMenu();
 bool searchAdmin(Admin* tHead, string username, string password);
-void addNewManager(string managerId, string managerUserName, string managerPassword, bool managerStatus);
+void addNewManager();
 void modifyManagerStatus();
 void displayPropertyByType(const string& propertyType);
 void choosePropertyType();
 void displayPropertiesByMonthlyRent();
 int extractMonthlyRentValue(const string& rentString);
+void chooseTenantStatus();
 void displayTenantsByIsActive(bool isActive);

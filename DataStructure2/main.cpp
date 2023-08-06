@@ -21,21 +21,12 @@ void displayMenuList() {
 }
 
 void displayMenu() {
-    int choice, choiceAdmin;
-
-    string managerId;
-    string managerUserName;
-    string managerPassword;
-    bool managerStatus = false;
+    int choice;
 
     initializeTenant(); //initialize the current tenant into linkedlist first
     initializeAdmin(); //initialize the current admin into linkedlist first
     initializeProperty();
-
-    displayTenantsByIsActive(true);
-    displayTenantsByIsActive(false);
-
-    /*
+    
     do {
         displayMenuList();
         cin >> choice;
@@ -53,7 +44,40 @@ void displayMenu() {
             switch (choice) {
             case 1:
                 cout << endl;
-                displayPropertyLocation();
+                loginTenant();
+                do {
+                    displayTenantMenu();
+                    cin >> choice;
+                    switch (choice) {
+                    case 1:
+                        
+                        break;
+                    case 2:
+                        
+                        break;
+                    case 3:
+                        choosePropertySort();
+                        break;
+                    case 4:
+                        
+                        break;
+                    case 5:
+                        
+                        break;
+                    case 6:
+                        
+                        break;
+                    case 7:
+                        
+                        break;
+                    case 8:
+                        cout << endl;
+                        displayMenu();
+                        break;
+                    default:
+                        cout << "Invalid choice. Please try again." << endl << endl;
+                    }
+                } while (choice != 8);
                 break;
             case 2:
                 cout << endl;
@@ -63,28 +87,32 @@ void displayMenu() {
                     loginAdmin();
                     do {
                     displayAdminMenu();
-                    cin >> choiceAdmin;
-                    switch (choiceAdmin) {
+                    cin >> choice;
+                    switch (choice) {
                     case 1:
-                        addNewManager(managerId, managerUserName, managerPassword, managerStatus);
+                        addNewManager();
                         break;
                     case 2:
                         modifyManagerStatus();
                         break;
                     case 3:
-                        displayPropertiesByMonthlyRent();
+                        chooseTenantStatus();
                         break;
                     case 4:
-                        choosePropertyType();
+                        displayPropertiesByMonthlyRent();
                         break;
                     case 5:
+                        cout << endl;
+                        choosePropertyType();
+                        break;
+                    case 6:
                         cout << endl;
                         displayMenu();
                         break;
                     default:
                         cout << "Invalid choice. Please try again." << endl << endl;
                     }
-                } while (choiceAdmin != 5);
+                } while (choice != 6);
                 break;
             case 4:
                 cout << endl;
@@ -102,7 +130,7 @@ void displayMenu() {
 
         cout << endl;
     } while (choice != 5);
-    */
+    
 }
 
 

@@ -41,3 +41,4 @@ bool compareLocationDesc(const string& location1, const string& location2);
 void mergeLocation(vector<Property*>& properties, int left, int mid, int right);
 void mergeSortLocation(vector<Property*>& properties, int left, int right);
 void displayPropertyLocation();
+void choosePropertySort();
