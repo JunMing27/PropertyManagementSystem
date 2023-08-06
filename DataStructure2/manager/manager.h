@@ -22,7 +22,6 @@ void logout();
 void displayManagerMenu();
 
 //Functionality
-void manageTenancyProcess();
 void managePayment();
 
 

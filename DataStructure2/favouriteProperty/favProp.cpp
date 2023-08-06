@@ -39,6 +39,28 @@ void initializeFavProp()
 	addNewFavProp("100239196", "Greenview Apartments", "T3");
 }
 
+void showAllFavProp()
+{
+	FavProperty* current = favHead;
+	if (current == nullptr)
+	{
+		cout << "Tenant List is Empty." << endl;
+	}
+	else
+	{
+		while (current != nullptr)
+		{
+			cout << "Favourite Property ID: " << current->propId << endl;
+			cout << "Favourite Property Name: " << current->propName << endl;
+			cout << "Favourite By Tenant ID: " << current->favTenantId << endl;
+			cout << "================================" << endl;
+			current = current->next;
+		}
+	}
+
+
+}
+
 //summarize
 void summarizeTop10FavProp()
 {
@@ -48,40 +70,64 @@ void summarizeTop10FavProp()
 	}
 	else
 	{
-		unordered_map<string, pair <int, string>> propertyCountMap;
-		unordered_set<string> displayedProperties;
-
-		FavProperty* current = favHead;
-
-		//count total number of favourite property
-		while (current != nullptr)
+		//show all first then ask want to summarize or not
+		showAllFavProp();
+		char choice;
+		cout << "Do you want to summarize the top 10 favourite properties? (y/n): ";
+		cin >> choice;
+		if (choice == 'y' || choice == 'Y')
 		{
-			propertyCountMap[current->propId].first++; //to count
-			propertyCountMap[current->propId].second = current-> propName; //to store property name
-			current = current->next;
-		}
+			unordered_map<string, pair <int, string>> propertyCountMap;
+			unordered_set<string> displayedProperties;
 
-		//display top 10
-		cout << "======== Top 10 Favourite Properties ======== " << endl;
-		int count = 0;
-		current = favHead;
-		while (current != nullptr && count < 10) 
-		{
-			if (displayedProperties.find(current->propId) == displayedProperties.end())
+			FavProperty* current = favHead;
+
+			//count total number of favourite property
+			while (current != nullptr)
 			{
-				cout << "Property ID: " << current->propId
-					<< ", Property Name: " << propertyCountMap[current->propId].second
-					<< ", Favorites Count: " << propertyCountMap[current->propId].first <<endl;
-				displayedProperties.insert(current->propId);
-				count++;
+				propertyCountMap[current->propId].first++; //to count
+				propertyCountMap[current->propId].second = current-> propName; //to store property name
+				current = current->next;
 			}
-			current = current->next;
+
+			//display top 10
+			cout << "======== Top 10 Favourite Properties Report ======== " << endl;
+			int count = 0;
+			current = favHead;
+			while (current != nullptr && count < 10) 
+			{
+				if (displayedProperties.find(current->propId) == displayedProperties.end())
+				{
+					cout << "Property ID: " << current->propId
+						<< ", Property Name: " << propertyCountMap[current->propId].second
+						<< ", Favorites Count: " << propertyCountMap[current->propId].first <<endl;
+					displayedProperties.insert(current->propId);
+					count++;
+				}
+				current = current->next;
+			}
 		}
+		else //if choice is n or N
+		{
+			cout << "Top 10 favourite property summarization skipped." << endl;
+		}
+
+		/*char reportChoice;
+		cout << "Do you want to generate a report? (y/n): ";
+		cin >> reportChoice;
+		if (reportChoice == 'y' || reportChoice == 'Y')
+		{
+			generateReport();
+		}
+		else
+		{
+			cout << "Report generation skipped." << endl;
+		}*/
+		
 
 	}
-
 	
-
-
 }
+
+
 

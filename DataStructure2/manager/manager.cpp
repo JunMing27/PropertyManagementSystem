@@ -2,8 +2,8 @@
 // - Display registered tenant details (in tenant.cpp)
 // - Search tenant details (in tenant.cpp)
 // - Delete tenant account based on inactivity status (in tenant.cpp)
-// - Summarize top 10 based on fav property list (in favProp.cpp), and generate a report
-// - manage tenancy process, should be yes or no or text based input 
+// - Summarize top 10 based on fav property list and generate a report (in favProp.cpp)
+// - manage tenancy process, should be yes or no or text based input (in rentRequest.cpp)
 // - manage payment of confirmed tenancy
 
 
@@ -13,6 +13,7 @@
 #include "../tenant/tenant.h"
 #include "../main.h"
 #include "../favouriteProperty/favProp.h"
+#include "../rentRequest/rentRequest.h"
 
 using namespace std;
 
@@ -115,8 +116,7 @@ void displayManagerMenu()
             summarizeTop10FavProp();
             break;
         case 5:
-            //manageTenancyProcess(tenantList, propertyList);
-            cout << "5 ING";
+            manageTenancyProcess();
             break;
         case 6:
             //managePayment(tenantList);

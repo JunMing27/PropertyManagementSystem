@@ -131,6 +131,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager\manager.cpp" />
     <ClCompile Include="property\property.cpp" />
+    <ClCompile Include="rentRequest\rentRequest.cpp" />
     <ClCompile Include="tenant\tenant.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +139,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="manager\manager.h" />
     <ClInclude Include="property\property.h" />
+    <ClInclude Include="rentRequest\rentRequest.h" />
     <ClInclude Include="tenant\tenant.h" />
   </ItemGroup>
   <ItemGroup>

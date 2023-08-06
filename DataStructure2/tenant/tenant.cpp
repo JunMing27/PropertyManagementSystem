@@ -295,6 +295,4 @@ void displayDeleteInactiveTenants()
         }
     }
     
-        
-
 }

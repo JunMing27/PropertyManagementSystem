@@ -17,5 +17,7 @@ void addNewFavProp(string propId, string propName, string favTenantId);
 void initializeFavProp(); //for sample only
 
 //by hoiyi
-//for summarize
+//for summarize and generate report
+void showAllFavProp();
 void summarizeTop10FavProp();
+void generateReport();
