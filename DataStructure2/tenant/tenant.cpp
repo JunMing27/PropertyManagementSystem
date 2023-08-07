@@ -101,7 +101,8 @@ void loginTenant() {
     bool isTenantFound = searchTenant(tHead, tenantUserName, tenantPassword);
     if (isTenantFound) {
         cout << "Login Successfully" << endl << endl;
-        //displayTenantMenu();
+        cout << endl << "Login successful. Welcome, " << tenantUserName << " !" << endl << endl;
+        displayTenantMenu();
     }
     else {
         cout << "Login Failed. Please double check your username and password" << endl << endl;
@@ -111,6 +112,11 @@ void loginTenant() {
 }
 
 void displayTenantMenu() {
+    int tenantOption;
+    bool tenantLogIn = true;
+
+    while (tenantLogIn)
+    {
     cout << "======== Tenant Operation ========" << endl;
     cout << "1. Next" << endl;
     cout << "2. Previous" << endl;
@@ -122,6 +128,34 @@ void displayTenantMenu() {
     cout << "8. Logout" << endl;
     cout << "===========================" << endl;
     cout << "Enter your choice: ";
+
+    cin >> tenantOption;
+    switch (tenantOption)
+    {
+    case 1:
+        addNewManager();
+        break;
+    case 2:
+        modifyManagerStatus();
+        break;
+    case 3:
+        chooseTenantStatus();
+        break;
+    case 4:
+        displayPropertiesByMonthlyRent();
+        break;
+    case 5:
+        choosePropertyType();
+        break;
+    case 6:
+        tenantLogIn = false;
+        cout << "Logged out successfully." << endl;
+        break;
+    default:
+        cout << "Invalid Option. Please Try Again." << endl;
+        break;
+    }
+    }
 }
 
 // void displayAllTenants() {
@@ -150,6 +184,159 @@ void displayTenantMenu() {
 //     cout << "================================" << endl;
 // }
 
+//Hoi Yi Part
+//display all tenants
+void showAllTenants()
+{
+    Tenant* current = tHead;
+    if (current == nullptr)
+    {
+        cout << "Tenant List is Empty." << endl;
+    }
+    else
+    {
+        while (current != nullptr)
+        {
+            /*cout << "Tenant ID: " << current->tenantId << endl;
+            cout << "Tenant Name: " << current->tenantName << endl;
+            cout << "Tenant Username: " << current->tenantUserName << endl;
+            cout << "Tenant Email: " << current->tenantEmail << endl;
+            cout << "Property ID: " << current->propertyId << endl;
+            cout << "Payment History: " << current->paymentHistory << endl;
+            cout << "Lease Renewed: " << (current->leaseRenewed ? "Yes" : "No") << endl;
+            cout << "================================" << endl;*/
+            displaySingleTenant(current);
+            current = current->next;
+        }
+    }
+
+
+}
+
+
+//search tenant details (linear search)
+bool isTenantFound;
+Tenant* searchTenantById(Tenant* tHead, string tenantId)
+{
+    Tenant* temp = tHead;
+    isTenantFound = false;
+    while (temp != nullptr) {
+        if (temp->tenantId == tenantId) {
+            isTenantFound = true;
+            return temp;
+        }
+        temp = temp->next;
+    }
+    return nullptr;
+}
+
+void displaySingleTenant(Tenant* tenant)
+{
+    cout << "=======================================" << endl;
+    cout << "Tenant ID: " << tenant->tenantId << endl;
+    cout << "Tenant Name: " << tenant->tenantName << endl;
+    cout << "Tenant UserName: " << tenant->tenantUserName << endl;
+    cout << "Tenant Password: " << tenant->tenantPassword << endl;
+    cout << "Tenant Email: " << tenant->tenantEmail << endl;
+    cout << "Tenant Property ID: " << tenant->propertyId << endl;
+    cout << "Tenant Payment History: " << tenant->paymentHistory << endl;
+    cout << "Tenant Lease Renewed: " << tenant->leaseRenewed << endl;
+}
+
+void searchTenantDetails()
+{
+    string tenantID;
+    cout << "Enter tenant ID to search: ";
+    cin >> tenantID;
+
+    Tenant* foundTenant = searchTenantById(tHead, tenantID);
+    if (isTenantFound) {
+        cout << "Tenant found!" << endl;
+        displaySingleTenant(foundTenant);
+    }
+    else {
+        cout << "Tenant not found with ID: " << tenantID << endl;
+    }
+}
+
+//delete inactive tenant
+void deleteInactive(Tenant* tHead, string tenantId)
+{
+    //if want to delete is the first one
+    if (tHead->tenantId == tenantId)
+    {
+        Tenant* temp = tHead;
+        tHead = tHead->next;
+        delete temp;
+        cout << "Tenant with ID : " << tenantId << " deleted successfully." << endl;
+        return;
+    }
+
+    Tenant* current = tHead;
+    //loop through list, stop when found
+    while (current->next != nullptr && current->next->tenantId != tenantId)
+    {
+        current = current->next;
+    }
+
+    //if found
+    if (current->next != nullptr)
+    {
+        Tenant* temp = current->next;
+        current->next = current->next->next;
+        delete temp;
+        cout << "Tenant with ID: " << tenantId << " deleted successfully." << endl;
+    }
+    else
+    {
+        cout << "Tenant not found with ID: " << tenantId << endl;
+    }
+}
+
+void displayDeleteInactiveTenants()
+{
+    Tenant* current = tHead;
+    bool foundInactive = false;
+
+    while (current != nullptr)
+    {
+        if (!current->isActive) //inactive
+        {
+            //display
+            cout << endl << "Inactive Tenant Details:" << endl;
+            displaySingleTenant(current);
+            foundInactive = true;
+        }
+        current = current->next;
+    }
+
+    if (!foundInactive)
+    {
+        cout << "No inactive tenants found." << endl;
+        return;
+    }
+    else
+    {
+        //ask user whether want delete
+        string tenantID;
+        cout << "Enter tenant ID to delete or type 'exit' to cancel: ";
+        cin >> tenantID;
+
+        if (tenantID == "exit")
+        {
+            cout << "Operation cancelled." << endl;
+            return;
+        }
+        else
+        {
+            deleteInactive(tHead, tenantID);
+        }
+    }
+
+}
+
+
+// Alan Part
 // Function to partition the properties based on their monthly rent for Quick Sort
 int partitionMonthlyRent(vector<Property*>& properties, int low, int high) {
     int pivotValue = extractMonthlyRentValue(properties[high]->monthly_rent);
@@ -490,6 +677,323 @@ void displayPropertyLocation() {
     }
 }
 
+// Function to compare two properties based on monthly rent, location, and size
+bool comparePropertiesMergeSort(Property* prop1, Property* prop2) {
+    // First, compare based on monthly rent (descending order)
+    int rentValue1 = extractMonthlyRentValue(prop1->monthly_rent);
+    int rentValue2 = extractMonthlyRentValue(prop2->monthly_rent);
+
+    if (rentValue1 != rentValue2) {
+        return rentValue1 > rentValue2;
+    }
+
+    // If the monthly rent is the same, compare based on location (alphabetical order)
+    if (prop1->location != prop2->location) {
+        return prop1->location < prop2->location;
+    }
+
+    // If both monthly rent and location are the same, compare based on size (descending order)
+    int sizeValue1 = extractSizeValue(prop1->size);
+    int sizeValue2 = extractSizeValue(prop2->size);
+
+    return sizeValue1 > sizeValue2;
+}
+
+// Function to perform merge sort on the properties based on multiple criteria
+Property* mergeSortProperties(Property* head) {
+    if (head == nullptr || head->next == nullptr) {
+        return head;
+    }
+
+    Property* middle = findMiddleMergeSort(head);
+    Property* nextToMiddle = middle->next;
+    middle->next = nullptr;
+
+    Property* left = mergeSortProperties(head);
+    Property* right = mergeSortProperties(nextToMiddle);
+
+    return mergeProperties(left, right);
+}
+
+// Function to find the middle of the linked list for merge sort
+Property* findMiddleMergeSort(Property* head) {
+    Property* slow = head;
+    Property* fast = head->next;
+
+    while (fast != nullptr && fast->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    return slow;
+}
+
+// Function to merge two sorted linked lists for merge sort
+Property* mergeProperties(Property* left, Property* right) {
+    Property dummy;
+    Property* current = &dummy;
+
+    while (left != nullptr && right != nullptr) {
+        if (comparePropertiesMergeSort(left, right)) {
+            current->next = left;
+            left = left->next;
+        }
+        else {
+            current->next = right;
+            right = right->next;
+        }
+        current = current->next;
+    }
+
+    if (left != nullptr) {
+        current->next = left;
+    }
+    else {
+        current->next = right;
+    }
+
+    return dummy.next;
+}
+
+// Function to display properties after sorting based on multiple criteria
+void displayPropertiesByMultipleCriteriaMergeSort() {
+    cout << endl;
+    cout << "======== Display Properties by Multiple Criteria ========" << endl;
+
+    // Perform merge sort on the properties based on multiple criteria
+    pHead = mergeSortProperties(pHead);
+
+    // Traverse and display the sorted properties
+    Property* currentProperty = pHead;
+    int pageNum = 1;
+    int batchSize = 1;
+
+    while (currentProperty != nullptr) {
+        cout << endl;
+        cout << "============== PAGE " << pageNum << " ===============" << endl;
+        cout << "Property ID: " << currentProperty->ads_id << endl;
+        cout << "Property Name: " << currentProperty->prop_name << endl;
+        cout << "Completion Year: " << currentProperty->completion_year << endl;
+        cout << "Monthly Rent: " << currentProperty->monthly_rent << endl;
+        cout << "Location: " << currentProperty->location << endl;
+        cout << "Property Type: " << currentProperty->propertyType << endl;
+        cout << "Number of Rooms: " << currentProperty->rooms << endl;
+        cout << "Parking: " << currentProperty->parking << endl;
+        cout << "Number of Bathrooms: " << currentProperty->bathroom << endl;
+        cout << "Size: " << currentProperty->size << endl;
+        cout << "Furnished: " << currentProperty->furnished << endl;
+        cout << "Facilities: " << currentProperty->facilities << endl;
+        cout << "Additional Facilities: " << currentProperty->additional_facilities << endl;
+        cout << "Region: " << currentProperty->region << endl;
+        cout << "============== PAGE " << pageNum << " ===============" << endl << endl;
+
+        // Check if the current page is full (batchSize reached)
+        if (pageNum % batchSize == 0) {
+            // Ask for user input to continue or go back
+            int userInput;
+            cout << "Enter '1' to view the next page, '2' to view the previous page, or any other number to exit: ";
+            cin >> userInput;
+
+            if (userInput == 2 && pageNum <= batchSize) {
+                cout << "You are already at the beginning of the list." << endl;
+            }
+            else if (userInput == 1) {
+                // Move to the next page
+                currentProperty = currentProperty->next;
+                pageNum = pageNum + 1;
+            }
+            else if (userInput == 2) {
+                // Move to the previous page
+                currentProperty = currentProperty->prev;
+                pageNum = pageNum - batchSize;
+            }
+            else {
+                // Exit the loop if any other number is entered
+                break;
+            }
+        }
+        currentProperty = currentProperty->next;
+    }
+}
+
+// Function to compare two properties based on monthly rent, location, and size
+bool comparePropertiesQuickSort(Property* prop1, Property* prop2) {
+    // First, compare based on monthly rent (descending order)
+    int rentValue1 = extractMonthlyRentValue(prop1->monthly_rent);
+    int rentValue2 = extractMonthlyRentValue(prop2->monthly_rent);
+
+    if (rentValue1 != rentValue2) {
+        return rentValue1 > rentValue2;
+    }
+
+    // If the monthly rent is the same, compare based on location (alphabetical order)
+    if (prop1->location != prop2->location) {
+        return prop1->location < prop2->location;
+    }
+
+    // If both monthly rent and location are the same, compare based on size (descending order)
+    int sizeValue1 = extractSizeValue(prop1->size);
+    int sizeValue2 = extractSizeValue(prop2->size);
+
+    return sizeValue1 > sizeValue2;
+}
+
+// Function to perform quicksort on the properties based on multiple criteria
+Property* quickSortProperties(Property* head) {
+    if (head == nullptr || head->next == nullptr) {
+        return head;
+    }
+
+    Property* pivot = findPivotQuickSort(head);
+    Property* smallerHead = nullptr;
+    Property* largerHead = nullptr;
+    Property* equalHead = nullptr;
+    partitionPropertiesQuickSort(head, pivot, smallerHead, equalHead, largerHead);
+
+    smallerHead = quickSortProperties(smallerHead);
+    largerHead = quickSortProperties(largerHead);
+
+    return concatenatePropertiesQuickSort(smallerHead, equalHead, largerHead);
+}
+
+// Function to find the pivot for quicksort
+Property* findPivotQuickSort(Property* head) {
+    // For simplicity, we can choose the last property as the pivot
+    Property* current = head;
+    while (current->next != nullptr) {
+        current = current->next;
+    }
+    return current;
+}
+
+// Function to partition the properties for quicksort
+void partitionPropertiesQuickSort(Property* head, Property* pivot, Property*& smallerHead, Property*& equalHead, Property*& largerHead) {
+    Property* smaller = nullptr;
+    Property* equal = nullptr;
+    Property* larger = nullptr;
+
+    Property* current = head;
+    while (current != nullptr) {
+        Property* next = current->next;
+        if (comparePropertiesQuickSort(current, pivot)) {
+            current->next = larger;
+            larger = current;
+        }
+        else if (comparePropertiesQuickSort(pivot, current)) {
+            current->next = smaller;
+            smaller = current;
+        }
+        else {
+            current->next = equal;
+            equal = current;
+        }
+        current = next;
+    }
+
+    smallerHead = smaller;
+    equalHead = equal;
+    largerHead = larger;
+}
+
+// Function to concatenate the properties for quicksort
+Property* concatenatePropertiesQuickSort(Property* smallerHead, Property* equalHead, Property* largerHead) {
+    Property* head = nullptr;
+    Property* tail = nullptr;
+
+    if (smallerHead != nullptr) {
+        head = smallerHead;
+        tail = smallerHead;
+        while (tail->next != nullptr) {
+            tail = tail->next;
+        }
+    }
+
+    if (equalHead != nullptr) {
+        if (head == nullptr) {
+            head = equalHead;
+        }
+        else {
+            tail->next = equalHead;
+        }
+        tail = equalHead;
+        while (tail->next != nullptr) {
+            tail = tail->next;
+        }
+    }
+
+    if (largerHead != nullptr) {
+        if (head == nullptr) {
+            head = largerHead;
+        }
+        else {
+            tail->next = largerHead;
+        }
+    }
+
+    return head;
+}
+
+// Function to display properties after sorting based on multiple criteria
+void displayPropertiesByMultipleCriteriaQuickSort() {
+    cout << endl;
+    cout << "======== Display Properties by Multiple Criteria ========" << endl;
+
+    // Perform quicksort on the properties based on multiple criteria
+    pHead = quickSortProperties(pHead);
+
+    // Traverse and display the sorted properties
+    Property* currentProperty = pHead;
+    int pageNum = 1;
+    int batchSize = 1;
+
+    while (currentProperty != nullptr) {
+        cout << endl;
+        cout << "============== PAGE " << pageNum << " ===============" << endl;
+        cout << "Property ID: " << currentProperty->ads_id << endl;
+        cout << "Property Name: " << currentProperty->prop_name << endl;
+        cout << "Completion Year: " << currentProperty->completion_year << endl;
+        cout << "Monthly Rent: " << currentProperty->monthly_rent << endl;
+        cout << "Location: " << currentProperty->location << endl;
+        cout << "Property Type: " << currentProperty->propertyType << endl;
+        cout << "Number of Rooms: " << currentProperty->rooms << endl;
+        cout << "Parking: " << currentProperty->parking << endl;
+        cout << "Number of Bathrooms: " << currentProperty->bathroom << endl;
+        cout << "Size: " << currentProperty->size << endl;
+        cout << "Furnished: " << currentProperty->furnished << endl;
+        cout << "Facilities: " << currentProperty->facilities << endl;
+        cout << "Additional Facilities: " << currentProperty->additional_facilities << endl;
+        cout << "Region: " << currentProperty->region << endl;
+        cout << "============== PAGE " << pageNum << " ===============" << endl << endl;
+
+        // Check if the current page is full (batchSize reached)
+        if (pageNum % batchSize == 0) {
+            // Ask for user input to continue or go back
+            int userInput;
+            cout << "Enter '1' to view the next page, '2' to view the previous page, or any other number to exit: ";
+            cin >> userInput;
+
+            if (userInput == 2 && pageNum <= batchSize) {
+                cout << "You are already at the beginning of the list." << endl;
+            }
+            else if (userInput == 1) {
+                // Move to the next page
+                currentProperty = currentProperty->next;
+                pageNum = pageNum + 1;
+            }
+            else if (userInput == 2) {
+                // Move to the previous page
+                currentProperty = currentProperty->prev;
+                pageNum = pageNum - batchSize;
+            }
+            else {
+                // Exit the loop if any other number is entered
+                break;
+            }
+        }
+        currentProperty = currentProperty->next;
+    }
+}
+
 void choosePropertySort() {
     int choice;
     do {
@@ -498,9 +1002,11 @@ void choosePropertySort() {
         cout << "1. Sort Monthly Rent (Desc)" << endl;
         cout << "2. Sort Location (Desc)" << endl;
         cout << "3. Sort Size as per square feet (Desc)" << endl;
-        cout << "4. Exit" << endl;
+        cout << "4. Sort by Multiple Criteria (Merge Sort)" << endl;
+        cout << "5. Sort by Multiple Criteria (Quick Sort)" << endl;
+        cout << "6. Exit" << endl;
         cout << "=======================================" << endl;
-        cout << "Enter your choice (1-4): ";
+        cout << "Enter your choice (1-6): ";
         cin >> choice;
 
         cout << endl;
@@ -516,6 +1022,12 @@ void choosePropertySort() {
             displayPropertySize();
             break;
         case 4:
+            displayPropertiesByMultipleCriteriaMergeSort();
+            break;
+        case 5:
+            displayPropertiesByMultipleCriteriaQuickSort();
+            break;
+        case 6:
             cout << "Exiting..." << endl;
             break;
         default:
@@ -523,6 +1035,7 @@ void choosePropertySort() {
         }
 
         cout << endl;
-    } while (choice != 4);
+    } while (choice != 6);
 
 }
+

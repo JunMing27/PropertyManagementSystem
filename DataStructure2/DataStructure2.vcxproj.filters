@@ -33,6 +33,15 @@
     <ClCompile Include="manager\manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="favouriteProperty\favProp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rentRequest\rentRequest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="payment\payment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="property\property.h">
@@ -48,6 +57,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="manager\manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="favouriteProperty\favProp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rentRequest\rentRequest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="payment\payment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

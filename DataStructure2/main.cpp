@@ -6,6 +6,8 @@
 #include "admin/admin.h"
 #include "manager/manager.h"
 #include "property/property.h"
+#include "favouriteProperty/favProp.h"
+#include "rentRequest/rentRequest.h"
 #include "main.h"
 using namespace std;
 
@@ -45,74 +47,14 @@ void displayMenu() {
             case 1:
                 cout << endl;
                 loginTenant();
-                do {
-                    displayTenantMenu();
-                    cin >> choice;
-                    switch (choice) {
-                    case 1:
-                        
-                        break;
-                    case 2:
-                        
-                        break;
-                    case 3:
-                        choosePropertySort();
-                        break;
-                    case 4:
-                        
-                        break;
-                    case 5:
-                        
-                        break;
-                    case 6:
-                        
-                        break;
-                    case 7:
-                        
-                        break;
-                    case 8:
-                        cout << endl;
-                        displayMenu();
-                        break;
-                    default:
-                        cout << "Invalid choice. Please try again." << endl << endl;
-                    }
-                } while (choice != 8);
                 break;
             case 2:
                 cout << endl;
+                loginManager();
                 break;
             case 3:
-                    cout << endl;
-                    loginAdmin();
-                    do {
-                    displayAdminMenu();
-                    cin >> choice;
-                    switch (choice) {
-                    case 1:
-                        addNewManager();
-                        break;
-                    case 2:
-                        modifyManagerStatus();
-                        break;
-                    case 3:
-                        chooseTenantStatus();
-                        break;
-                    case 4:
-                        displayPropertiesByMonthlyRent();
-                        break;
-                    case 5:
-                        cout << endl;
-                        choosePropertyType();
-                        break;
-                    case 6:
-                        cout << endl;
-                        displayMenu();
-                        break;
-                    default:
-                        cout << "Invalid choice. Please try again." << endl << endl;
-                    }
-                } while (choice != 6);
+                cout << endl;
+                loginAdmin();
                 break;
             case 4:
                 cout << endl;

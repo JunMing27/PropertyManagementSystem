@@ -43,44 +43,78 @@ void initializeAdmin() {
     addNewAdmin("A3", "alan", "alan123");
 }
 
-bool searchAdmin(Admin* aHead, string username, string password) {
-    Admin* temp = aHead;
-    do {
-        if (temp->adminUserName == username && temp->adminPassword == password) {
+bool searchAdmin(string username, string password) {
+    while (aHead != nullptr) {
+        if (aHead->adminUserName == username && aHead->adminPassword == password) {
             return true;
         }
-        temp = temp->next;
-    } while (temp != aHead);
+        aHead = aHead->next;
+    }
     return false;
 }
 
 void loginAdmin() {
-    string adminUserName; string adminPassword;
+    string adminUserName; 
+    string adminPassword;
     cout << "======== Admin Login ========" << endl;
     cout << "Enter your username: ";
     cin >> adminUserName;
     cout << "Enter your password: ";
     cin >> adminPassword;
-    bool isAdminFound = searchAdmin(aHead, adminUserName, adminPassword);
+    bool isAdminFound = searchAdmin(adminUserName, adminPassword);
     if (isAdminFound) {
-        cout << "Login Successfully" << endl << endl;
+        cout << endl << "Login successful. Welcome, " << adminUserName << " !" << endl << endl;
+        displayAdminMenu();
     }
     else {
-        cout << "Login Failed. Please double check your username and password" << endl << endl;
+        cout << "Login failed. Please try again." << endl << endl;
         displayMenu();
     }
 }
 
 void displayAdminMenu() {
-    cout << "======== Admin Operation ========" << endl;
-    cout << "1. Add New Manager" << endl;
-    cout << "2. Modify Status Manager" << endl;
-    cout << "3. Display Tenant Information" << endl;
-    cout << "4. Display Properties Information based on Monthly Rent" << endl;
-    cout << "5. Display Properties Information based on Property Type" << endl;
-    cout << "6. Logout" << endl;
-    cout << "===========================" << endl;
-    cout << "Enter your choice: ";
+    int adminOption;
+    bool adminLogIn = true;
+
+    while (adminLogIn)
+    {
+        cout << "======== Admin Menu ========" << endl;
+        cout << "1. Add New Manager" << endl;
+        cout << "2. Modify Status Manager" << endl;
+        cout << "3. Display Tenant Information" << endl;
+        cout << "4. Display Properties Information based on Monthly Rent" << endl;
+        cout << "5. Display Properties Information based on Property Type" << endl;
+        cout << "6. Logout" << endl;
+        cout << "===========================" << endl;
+        cout << "Enter your choice: ";
+
+        cin >> adminOption;
+        switch (adminOption)
+        {
+        case 1:
+            addNewManager();
+            break;
+        case 2:
+            modifyManagerStatus();
+            break;
+        case 3:
+            chooseTenantStatus();
+            break;
+        case 4:
+            displayPropertiesByMonthlyRent();
+            break;
+        case 5:
+            choosePropertyType();
+            break;
+        case 6:
+            adminLogIn = false;
+            cout << "Logged out successfully." << endl;
+            break;
+        default:
+            cout << "Invalid Option. Please Try Again." << endl;
+            break;
+        }
+    }
 }
 
 void addNewManager() {
