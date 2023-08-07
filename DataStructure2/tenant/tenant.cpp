@@ -10,6 +10,9 @@
 // -Display property renting history
 
 #include <iostream>
+#include <vector>
+#include<utility>
+#include<map>
 #include "tenant.h"
 #include "../main.h"
 #include "../property/property.h"
@@ -247,3 +250,68 @@ void tenantDisplayTenancyMenu() {
         cout << "Invalid choice. Please try again." << endl;
     }
 }
+
+void inputTenantPropertySearch() {
+    int inputSearchCriteria;
+    string searchCriteria;
+    int inputSearchMethod;
+    string searchMethod;
+    string searchInput;
+    cout << "======== Search Criteria ========" << endl;
+    cout << "1. Property Name" << endl;
+    cout << "2. Location" << endl;
+    cout << "3. Region" << endl;
+    cout << "4. Back" << endl;
+    cout << "==================================" << endl;
+    cout << "Enter your choice: ";
+    cin >> inputSearchCriteria;
+    if (inputSearchCriteria == 1) {
+        searchCriteria = "propertyName";
+    }
+    else if (inputSearchCriteria == 2) {
+        searchCriteria = "location";
+    }
+    else if (inputSearchCriteria == 3) {
+        searchCriteria = "region";
+    }
+    else if (inputSearchCriteria == 4) {
+        displayTenantMenu();
+    }
+    else {
+        cout << "Invalid Input..... Redirecting to search property Menu......" << endl << endl;
+        // Back to search menu if any other number is entered
+        inputTenantPropertySearch();
+    }
+    cout << "======== Search Method ========" << endl;
+    cout << "1. Linear Search" << endl;
+    cout << "2. Binary Search" << endl;
+    cout << "==================================" << endl;
+    cout << "Enter your choice: ";
+    cin >> inputSearchMethod;
+    if (inputSearchMethod == 1) {
+        searchMethod = "linear";
+    }
+    else if (inputSearchMethod == 2) {
+        searchMethod = "binary";
+    }
+    else {
+        cout << "Invalid Input..... Redirecting to search property Menu......" << endl << endl;
+        // Back to search menu if any other number is entered
+        inputTenantPropertySearch();
+    }
+    if (searchCriteria != "" && searchMethod != "") {
+        cout << "Enter your search Input: ";
+        cin >> searchInput;
+        //Run search
+        linearOrBinary(searchCriteria, searchMethod, searchInput);
+    }
+}
+
+void displayTenantPropertySearchMenu() {
+    cout << "======== Tenant Operation ========" << endl;
+    cout << "1. Next" << endl;
+    cout << "2. Previous" << endl;
+    cout << "3. Back" << endl;
+    cout << "==================================" << endl;
+}
+

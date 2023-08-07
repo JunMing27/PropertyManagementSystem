@@ -7,8 +7,8 @@
 #include "../favouriteProperty/favProp.h"
 using namespace std;
 
-Property* head = nullptr;
-Property* tail = nullptr;
+Property* pHead = nullptr;
+Property* pTail = nullptr;
 void initializeProperty()
 {
     ifstream ip;
@@ -95,11 +95,11 @@ void addNewProperty(string ads_id, string prop_name, string completion_year, str
     newProperty->next = nullptr;
     newProperty->prev = nullptr;
 
-    if (head == NULL) {
-        head = newProperty;
+    if (pHead == NULL) {
+        pHead = newProperty;
     }
     else {
-        Property* temp = head;
+        Property* temp = pHead;
         while (temp->next != NULL) {
             temp = temp->next;
         }
@@ -113,7 +113,7 @@ void addNewProperty(string ads_id, string prop_name, string completion_year, str
 void inputTenantPropertyMenu() {
     int batchSize = 1;
     int pageNum = 1;
-    Property* currentProperty = head;
+    Property* currentProperty = pHead;
 
     if (currentProperty == nullptr) {
         cout << "No property in the list." << endl;
@@ -143,7 +143,7 @@ void inputTenantPropertyMenu() {
         displayTenantPropertyMenu();
         cin >> choice;
 
-        if (choice == 2 && currentProperty == head) {
+        if (choice == 2 && currentProperty == pHead) {
             cout << "You are already at the beginning of the list." << endl << endl;
         }
         else if (choice == 1) {
@@ -182,7 +182,7 @@ void inputTenantPropertyMenu() {
 
 void displayTenantTenancyPropInfo(string PropId) 
 {
-    Property* currentProperty = head;
+    Property* currentProperty = pHead;
     while (currentProperty != NULL) {
         if (currentProperty->ads_id == PropId) {
             cout << "============== TENANCY INFORMATION ===============" << endl;
@@ -207,199 +207,194 @@ void displayTenantTenancyPropInfo(string PropId)
     }
 }
 
-void inputTenantPropertySearch() {
-    int inputSearchCriteria;
-    string searchCriteria;
-    int inputSearchMethod;
-    string searchMethod;
-    string searchInput;
-    cout << "======== Search Criteria ========" << endl;
-    cout << "1. Property Name" << endl;
-    cout << "2. Location" << endl;
-    cout << "3. Region" << endl;
-    cout << "4. Back" << endl;
-    cout << "==================================" << endl;
-    cout << "Enter your choice: ";
-    cin >> inputSearchCriteria;
-    if (inputSearchCriteria == 1) {
-        searchCriteria = "propertyName";
-    }
-    else if (inputSearchCriteria == 2) {
-        searchCriteria = "location";
-    }
-    else if (inputSearchCriteria == 3) {
-        searchCriteria = "region";
-    }
-    else if (inputSearchCriteria == 4) {
-        displayTenantMenu();
-    }
-    else {
-        cout << "Invalid Input..... Redirecting to search property Menu......" << endl << endl;
-        // Back to search menu if any other number is entered
-        inputTenantPropertySearch();
-    }
-    cout << "======== Search Method ========" << endl;
-    cout << "1. Linear Search" << endl;
-    cout << "2. Binary Search" << endl;
-    cout << "==================================" << endl;
-    cout << "Enter your choice: ";
-    cin >> inputSearchMethod;
-    if (inputSearchMethod == 1) {
-        searchMethod = "linear";
-    }
-    else if (inputSearchMethod == 2) {
-        searchMethod = "binary";
-    }
-    else {
-        cout << "Invalid Input..... Redirecting to search property Menu......" << endl << endl;
-        // Back to search menu if any other number is entered
-        inputTenantPropertySearch();
-    }
-    if (searchCriteria != "" && searchMethod != "") {
-        cout << "Enter your search Input: ";
-        cin >> searchInput;
-        //Run search
-        displaySearchResult(searchCriteria, searchMethod, searchInput);
-    }
+// Helper function to compare two attribute strings for descending order sorting
+bool compareAttributeDesc(const string& attribute1, const string& attribute2) {
+    return attribute1 > attribute2;
 }
 
-void displayTenantPropertySearchMenu() {
-    cout << "======== Tenant Operation ========" << endl;
-    cout << "1. Next" << endl;
-    cout << "2. Previous" << endl;
-    cout << "3. Back" << endl;
-    cout << "==================================" << endl;
-}
-
-void mergeSortIterative(Property** headRef, string searchCriteria) {
-    if (*headRef == NULL || (*headRef)->next == NULL) {
-        // If the list is empty or has only one node, it is already sorted.
-        return;
-    }
-
-    int listSize = 0;
-    Property* current = *headRef;
-    while (current != NULL) {
-        listSize++;
+void mergeSortForBinarySearch(Property* pHead, string searchCriteria) {
+    Property* current = pHead;
+    int length = 0;
+    while (current) {
+        length++;
         current = current->next;
     }
 
-    for (int blockSize = 1; blockSize < listSize; blockSize *= 2) {
-        Property* prev = NULL;
-        current = *headRef;
-
-        while (current != NULL) {
+    for (int size = 1; size < length; size *= 2) {
+        Property* previous = nullptr;
+        current = pHead;
+        while (current) {
             Property* left = current;
-            Property* right = splitListIterative(current, blockSize);
-            current = splitListIterative(right, blockSize);
+            Property* mid = getMidNode(current, size);
+            Property* right = getMidNode(mid, size);
 
-            *headRef = merge(left, right, searchCriteria, prev);
-            prev = getLastNode(*headRef);
+            current = right ? right->next : nullptr;
+
+            if (right) {
+                right->next = nullptr;
+            }
+
+            mergeForBinarySearch(pHead, left, mid, right, searchCriteria);
+
+            if (previous) {
+                previous->next = left;
+            }
+            else {
+                pHead = left;
+            }
+
+            previous = getTailNode(left);
         }
     }
 }
 
-Property* splitListIterative(Property* head, int blockSize) {
-    Property* current = head;
+void mergeForBinarySearch(Property*& pHead, Property* left, Property* mid, Property* right, string searchCriteria) {
+    Property* leftList = left;
+    Property* rightList = mid->next;
+    Property* mergedHead = NULL;
+    Property** mergedTailPtr = &mergedHead;
 
-    while (--blockSize && current != NULL) {
+    while (leftList && rightList) {
+        if (searchCriteria == "propertyName") {
+            if (compareAttributeDesc(leftList->prop_name, rightList->prop_name)) {
+                *mergedTailPtr = leftList;
+                leftList = leftList->next;
+            }
+            else {
+                *mergedTailPtr = rightList;
+                rightList = rightList->next;
+            }
+        }
+        else if (searchCriteria == "location") {
+            if (compareAttributeDesc(leftList->location, rightList->location)) {
+                *mergedTailPtr = leftList;
+                leftList = leftList->next;
+            }
+            else {
+                *mergedTailPtr = rightList;
+                rightList = rightList->next;
+            }
+        }
+        else if (searchCriteria == "region") {
+            if (compareAttributeDesc(leftList->region, rightList->region)) {
+                *mergedTailPtr = leftList;
+                leftList = leftList->next;
+            }
+            else {
+                *mergedTailPtr = rightList;
+                rightList = rightList->next;
+            }
+        }
+
+        mergedTailPtr = &((*mergedTailPtr)->next);
+    }
+
+    *mergedTailPtr = leftList ? leftList : rightList;
+
+    mid->next = mergedHead;
+}
+
+// Helper function to get the middle node of the linked list
+Property* getMidNode(Property* head, int size) {
+    Property* current = head;
+    for (int i = 1; i < size && current && current->next; i++) {
         current = current->next;
     }
-
-    if (current == NULL) {
-        return NULL;
-    }
-
-    Property* next = current->next;
-    current->next = NULL;
-    return next;
+    return current;
 }
 
-Property* merge(Property* left, Property* right, string searchCriteria, Property*& prev) {
-    Property* result = NULL;
-
-    if (left == NULL) {
-        return right;
+// Helper function to get the tail node of the linked list
+Property* getTailNode(Property* head) {
+    Property* current = head;
+    while (current && current->next) {
+        current = current->next;
     }
-    if (right == NULL) {
-        return left;
-    }
-
-    if (searchCriteria == "propertyName" && left->prop_name <= right->prop_name) {
-        result = left;
-        result->next = merge(left->next, right, searchCriteria, prev);
-    }
-    else if (searchCriteria == "propertyName" && left->prop_name > right->prop_name) {
-        result = right;
-        result->next = merge(left, right->next, searchCriteria, prev);
-    }
-    else if (searchCriteria == "location" && left->location <= right->location) {
-        result = left;
-        result->next = merge(left->next, right, searchCriteria, prev);
-    }
-    else if (searchCriteria == "location" && left->location > right->location) {
-        result = right;
-        result->next = merge(left, right->next, searchCriteria, prev);
-    }
-    else if (searchCriteria == "region" && left->region <= right->region) {
-        result = left;
-        result->next = merge(left->next, right, searchCriteria, prev);
-    }
-    else if (searchCriteria == "region" && left->region > right->region) {
-        result = right;
-        result->next = merge(left, right->next, searchCriteria, prev);
-    }
-
-    if (prev != NULL) {
-        prev->next = result;
-    }
-    prev = getLastNode(result); // Update prev to the last node of the merged list
-    result->prev = NULL; // Set prev of the result to NULL since it is the new head
-    return result;
+    return current;
 }
 
-Property* getLastNode(Property* head) {
-    while (head != NULL && head->next != NULL) {
-        head = head->next;
-    }
-    return head;
-}
-
-Property* binarySearch(Property* head, string searchCriteria, string searchInput) {
-    // First, sort the linked list using Merge Sort based on the search criteria
-    mergeSortIterative(&head, searchCriteria);
-
-    // Now, perform binary search on the sorted list
+Property* binarySearchOnSortedList(Property* head, string searchCriteria, string searchInput) {
     Property* low = head;
-    Property* high = NULL;
+    Property* high = nullptr;
 
-    // Find the last node in the linked list
-    Property* temp = head;
-    while (temp->next != NULL) {
-        temp = temp->next;
+    // Find the last node of the sorted list
+    while (low && low->next) {
+        low = low->next;
     }
-    high = temp;
 
-    // Rest of the binary search implementation remains the same
-    // ...
+    high = low; // 'high' points to the last node
 
-    return NULL; // Not found
+    while (low && high && low != high && high->next != low) {
+        Property* mid = getMidNode(low, high);
+        if (!mid)
+            break;
+
+        if (searchCriteria == "propertyName") {
+            if (mid->prop_name == searchInput)
+                return mid;
+            else if (mid->prop_name > searchInput)
+                high = mid;
+            else
+                low = mid->next;
+        }
+        else if (searchCriteria == "location") {
+            if (mid->location == searchInput)
+                return mid;
+            else if (mid->location > searchInput)
+                high = mid;
+            else
+                low = mid->next;
+        }
+        else if (searchCriteria == "region") {
+            if (mid->region == searchInput)
+                return mid;
+            else if (mid->region > searchInput)
+                high = mid;
+            else
+                low = mid->next;
+        }
+    }
+
+    // If the search key is not found
+    return nullptr;
 }
 
-void displaySearchResult(string searchCriteria, string searchMethod, string searchInput) {
-    Property* result = NULL;
+// Helper function to get the middle node of the linked list between low and high
+Property* getMidNode(Property* low, Property* high) {
+    if (!low)
+        return nullptr;
+
+    Property* slow = low;
+    Property* fast = low->next;
+
+    while (fast != high) {
+        fast = fast->next;
+        if (fast != high) {
+            slow = slow->next;
+            fast = fast->next;
+        }
+    }
+
+    return slow;
+}
+
+void linearOrBinary(string searchCriteria, string searchMethod, string searchInput) {
+    Property* current = pHead;
     if (searchMethod == "linear") {
         // Implement linear search here (not shown in the provided code)
     }
     else if (searchMethod == "binary") {
-        result = binarySearch(head, searchCriteria, searchInput);
+        mergeSortForBinarySearch(pHead, searchCriteria);
+        Property* result = binarySearchOnSortedList(pHead, searchCriteria, searchInput);
+        displaySearchResult(result);
     }
     else {
         cout << "An error has occurred..... Redirecting to tenant Menu......" << endl << endl;
         displayTenantMenu();
         return; // Return from the function after displaying the error message
     }
+}
 
+void displaySearchResult(Property* result) {
     if (result != NULL) {
         int pageNum = 1;
         while (result != NULL) { // Check if result is not NULL

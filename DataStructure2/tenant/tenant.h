@@ -30,6 +30,6 @@ bool searchTenant(Tenant* tHead, string username, string password);
 void tenantRentProperty(string tenantId, string newPropertyId);
 void tenantDisplayTenancy(string tenantId);
 void tenantDisplayTenancyMenu();
-void displayAllTenants();
-void displayTenantDetails(Tenant* tenant);
+void inputTenantPropertySearch();
+void displayTenantPropertySearchMenu();
 
