@@ -39,11 +39,14 @@ void addNewManager(string managerId, string managerUsername, string managerPassw
     }
 }
 
+// No need these functions, since admin can add new manager
+/*
 void initializeManager() {
     addNewManager("M1", "junming", "junming123", "true");
     addNewManager("M2", "hoiyi", "hoiyi123", "false");
     addNewManager("M3", "alan", "alan123", "true");
 }
+
 
 
 bool searchManager(string username, string password)
@@ -56,7 +59,7 @@ bool searchManager(string username, string password)
     }
     return false;
 }
-
+*/
 
 void logout()
 {
