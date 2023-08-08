@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -28,5 +29,11 @@ void addNewProperty(string ads_id, string prop_name, string completion_year, str
 void initializeProperty();
 void inputTenantPropertyMenu();
 void displayTenantTenancyPropInfo(string PropId);
+bool compareLocationDesc(const string& location1, const string& location2);
+bool isSubstring(const string& str, const string& sub);
+void merge(vector<Property>& properties, int left, int mid, int right);
+void mergeSort(vector<Property>& properties, int left, int right);
+vector<int> binarySearch(const vector<Property>& properties, int left, int right, string target, string searchCriteria);
+void displayAfterSearch(const Property& property);
 void linearOrBinary(string searchCriteria, string searchMethod, string searchInput);
 void displaySearchResult(Property* result);

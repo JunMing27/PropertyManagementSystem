@@ -46,6 +46,7 @@ void cleanTempUser() {
 }
 
 void displayMenuList() {
+    cout << "======== Mudah Apartment ========" << endl;
     cout << "======== Main Menu ========" << endl;
     cout << "1. Login as Tenant" << endl;
     cout << "2. Login as Manager" << endl;

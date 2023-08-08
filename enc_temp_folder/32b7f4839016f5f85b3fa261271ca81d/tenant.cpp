@@ -280,6 +280,9 @@ void inputTenantPropertySearch() {
     else if (inputSearchCriteria == 4) {
         displayTenantMenu();
     }
+    else if (inputSearchCriteria == 5) {
+        searchCriteria = "ID";
+    }
     else {
         cout << "Invalid Input..... Redirecting to search property Menu......" << endl << endl;
         // Back to search menu if any other number is entered

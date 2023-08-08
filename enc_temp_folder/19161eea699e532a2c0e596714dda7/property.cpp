@@ -304,6 +304,29 @@ vector<int> binarySearch(const vector<Property>& properties, int left, int right
 
     while (left <= right) {
         int mid = left + (right - left) / 2;
+        if (searchCriteria == "ID") {
+            if (properties[mid].ads_id == target) {
+                indexValues.push_back(mid);
+
+                int leftProperty = mid - 1;
+                while (leftProperty >= left && (properties[leftProperty].ads_id == target)) {
+                    indexValues.push_back(leftProperty);
+                    leftProperty--;
+                }
+                int rightProperty = mid + 1;
+                while (rightProperty >= right && (properties[rightProperty].ads_id == target)) {
+                    indexValues.push_back(rightProperty);
+                    rightProperty++;
+                }
+                return indexValues;
+            }
+            else if (properties[mid].ads_id == target) {
+                left = mid + 1;
+            }
+            else {
+                right = mid - 1;
+            }
+        }
         if (searchCriteria == "propertyName") {
             if (properties[mid].prop_name == target) {
                 indexValues.push_back(mid);
