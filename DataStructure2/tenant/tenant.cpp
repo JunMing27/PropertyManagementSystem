@@ -20,6 +20,7 @@
 #include "../main.h"
 #include "../property/property.h"
 #include "../favouriteProperty/favProp.h"
+#include "../rentRequest/rentRequest.h"
 
 using namespace std;
 // -------------------------
@@ -227,8 +228,8 @@ void tenantRentProperty(string tenantId, string newPropertyId) {
 void tenantDisplayTenancy(string tenantId) {
     Tenant* temp = tHead;
     while (temp != NULL) {
-        if (temp->tenantId == tenantId && temp->propertyId != "" && temp->isRent == true) {
-            displayTenantTenancyPropInfo(temp->propertyId);
+        if (temp->tenantId == tenantId) {
+            displayTenantTenancyPropInfo(temp->tenantId);
             tenantDisplayTenancyMenu();
             break;
         }else{
@@ -241,16 +242,22 @@ void tenantDisplayTenancy(string tenantId) {
 
 void tenantDisplayTenancyMenu() {
     cout << "======== Tenant Operation ========" << endl;
+    cout << "1. Pay" << endl;
     cout << "1. Back to Menu" << endl;
     cout << "==================================" << endl;
     cout << "Enter your choice: ";
     int choice;
     cin >> choice;
     if (choice == 1) {
+        cout << "You have paid for the rental!" << endl << endl;
+        displayTenantMenu(); 
+    }
+    else if (choice == 2) {
         displayTenantMenu();
     }
     else {
         cout << "Invalid choice. Please try again." << endl;
+        tenantDisplayTenancyMenu();
     }
 }
 
@@ -318,3 +325,15 @@ void displayTenantPropertySearchMenu() {
     cout << "==================================" << endl;
 }
 
+string returnTenantNameWithID(string id){
+    Tenant* temp = tHead;
+    do {
+        if (temp->tenantId == id) {
+            //if user is in this list, store user Id as temporary data T1
+            return temp->tenantName;
+            break;
+        }
+        temp = temp->next;
+    } while (temp != nullptr);
+    return NULL;
+}

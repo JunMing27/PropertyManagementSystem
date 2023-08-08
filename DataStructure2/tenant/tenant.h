@@ -32,4 +32,5 @@ void tenantDisplayTenancy(string tenantId);
 void tenantDisplayTenancyMenu();
 void inputTenantPropertySearch();
 void displayTenantPropertySearchMenu();
+string returnTenantNameWithID(string id);
 

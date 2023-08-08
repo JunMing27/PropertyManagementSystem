@@ -176,32 +176,7 @@ void inputTenantPropertyMenu() {
     }
 }
 
-void displayTenantTenancyPropInfo(string PropId) 
-{
-    Property* currentProperty = pHead;
-    while (currentProperty != NULL) {
-        if (currentProperty->ads_id == PropId) {
-            cout << "============== TENANCY INFORMATION ===============" << endl;
-            cout << "Property ID: " << currentProperty->ads_id << endl;
-            cout << "Property Name: " << currentProperty->prop_name << endl;
-            cout << "Completion Year: " << currentProperty->completion_year << endl;
-            cout << "Monthly Rent: " << currentProperty->monthly_rent << endl;
-            cout << "Location: " << currentProperty->location << endl;
-            cout << "Property Type: " << currentProperty->propertyType << endl;
-            cout << "Number of Rooms: " << currentProperty->rooms << endl;
-            cout << "Parking: " << currentProperty->parking << endl;
-            cout << "Number of Bathrooms: " << currentProperty->bathroom << endl;
-            cout << "Size: " << currentProperty->size << endl;
-            cout << "Furnished: " << currentProperty->furnished << endl;
-            cout << "Facilities: " << currentProperty->facilities << endl;
-            cout << "Additional Facilities: " << currentProperty->additional_facilities << endl;
-            cout << "Region: " << currentProperty->region << endl;
-            cout << "============== TENANCY INFORMATION ===============" << endl << endl;
-            break;
-        }
-        currentProperty = currentProperty->next;
-    }
-}
+
 
 vector<Property> convertLinkedListToVector(Property* head) {
     vector<Property> properties;
@@ -430,4 +405,17 @@ void displaySearchResult(Property* result) {
         cout << "Property not found." << endl;
         displayTenantMenu();
     }
+}
+
+string returnPropertyPriceWithID(string id) {
+    Property* temp = pHead;
+    do {
+        if (temp->ads_id == id) {
+            //if user is in this list, store user Id as temporary data T1
+            return temp->monthly_rent;
+            break;
+        }
+        temp = temp->next;
+    } while (temp != nullptr);
+    return NULL;
 }

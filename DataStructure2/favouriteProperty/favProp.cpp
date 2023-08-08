@@ -3,6 +3,7 @@
 #include "../property/property.h"
 #include "../tenant/tenant.h"
 #include "../rentProperty/rentProp.h"
+#include "../rentRequest/rentRequest.h"
 #include "../main.h"
 #include "favProp.h"
 #include <unordered_map>
@@ -95,7 +96,13 @@ void displayFavPropTenant()
 			}
 			else if (choice == 3) {
 				//Rent This Current Property
-				tenantRentProperty(getTempUser(), currentFavProperty->propId);
+				int rentMonth;
+				cout << "How many months do you want to rent this property? (e.g.: 3)" << endl;
+				cin >> rentMonth;
+				string tenantName = returnTenantNameWithID(currentFavProperty->favTenantId);
+				string monthlyPrice = returnPropertyPriceWithID(currentFavProperty->propId);
+				addRent(currentFavProperty->propId, currentFavProperty->propName, currentFavProperty->favTenantId, tenantName, rentMonth, monthlyPrice, "Pending");
+				
 			}
 			else if (choice == 4) {
 				//Back to TenantMenu
