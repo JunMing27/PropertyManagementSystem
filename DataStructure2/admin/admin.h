@@ -16,7 +16,7 @@ void addNewAdmin(string adminId, string adminUserName, string adminPassword);
 void initializeAdmin();
 void loginAdmin();
 void displayAdminMenu();
-bool searchAdmin(Admin* tHead, string username, string password);
+bool searchAdmin(string username, string password);
 void addNewManager();
 void modifyManagerStatus();
 void displayPropertyByType(const string& propertyType);

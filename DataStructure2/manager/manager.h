@@ -17,7 +17,7 @@ extern Manager* mTail; // Declare mTail as extern
 
 //Add all
 void initializeManager();
-void addNewManager(string managerId, string managerUsername, string managerPassword, bool managerStatus);
+void addInManager(string managerId, string managerUsername, string managerPassword, bool managerStatus);
 
 //Login
 void loginManager();

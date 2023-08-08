@@ -27,6 +27,7 @@ void displayMenu() {
 
     initializeTenant(); //initialize the current tenant into linkedlist first
     initializeAdmin(); //initialize the current admin into linkedlist first
+    initializeManager();
     initializeProperty();
     
     do {

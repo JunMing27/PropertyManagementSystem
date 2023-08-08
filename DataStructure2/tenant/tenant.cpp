@@ -133,7 +133,7 @@ void displayTenantMenu() {
     switch (tenantOption)
     {
     case 1:
-        addNewManager();
+        
         break;
     case 2:
         modifyManagerStatus();

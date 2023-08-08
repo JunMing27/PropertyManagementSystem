@@ -120,37 +120,19 @@ void displayAdminMenu() {
 void addNewManager() {
 
     string managerId;
-    string managerUserName;
-    string managerPassword; 
-    bool managerStatus = false;
+    string managerUsername;
+    string managerPassword;
+    bool managerStatus = true;
 
     // Ask the user to enter manager details
-    cout << endl << "Enter Manager ID: ";
+    cout << "Enter Manager ID: ";
     cin >> managerId;
 
-    // Check if the manager ID already exists in the linked list
-    Manager* temp = mHead;
-    while (temp != nullptr) {
-        if (temp->managerId == managerId) {
-            cout << "Manager ID already exists. Please enter a different Manager ID." << endl << endl;
-            cout << "Enter Manager ID: ";
-            cin >> managerId;
-            // Reset the temp pointer to the beginning of the linked list to recheck the new ID
-            temp = mHead;
-        }
-        else {
-            temp = temp->next;
-        }
-    }
-
     cout << "Enter Manager Username: ";
-    cin >> managerUserName;
+    cin >> managerUsername;
 
     cout << "Enter Manager Password: ";
     cin >> managerPassword;
-
-    // Set the managerStatus to true (assuming managerStatus represents an active status)
-    managerStatus = true;
 
     // Ask for confirmation to save the new manager
     char confirm;
@@ -158,34 +140,14 @@ void addNewManager() {
     cin >> confirm;
 
     if (confirm == 'Y' || confirm == 'y') {
-        // Create a new Manager node
-        Manager* newManager = new Manager;
-        newManager->managerId = managerId;
-        newManager->managerUsername = managerUserName;
-        newManager->managerPassword = managerPassword;
-        newManager->managerStatus = managerStatus;
-        newManager->next = nullptr;
-
-        // Add the new manager to the linked list
-        if (mHead == nullptr) {
-            mHead = newManager;
-        }
-        else {
-            Manager* temp = mHead;
-            while (temp->next != nullptr) {
-                temp = temp->next;
-            }
-            temp->next = newManager;
-        }
-
-        cout << endl << "New Manager Details Saved Successfully." << endl << endl;
+        addInManager(managerId, managerUsername, managerPassword, managerStatus);
 
         // Print the details of the newly added manager
-        cout << "New Manager Details:" << endl;
-        cout << "Manager ID: " << newManager->managerId << endl;
-        cout << "Manager Username: " << newManager->managerUsername << endl;
-        cout << "Manager Password: " << newManager->managerPassword << endl;
-        cout << "Manager Status: " << (newManager->managerStatus ? "Active" : "Inactive") << endl << endl;
+        cout << endl << "New Manager Details Saved Successfully." << endl;
+        cout << "Manager ID: " << managerId << endl;
+        cout << "Manager Username: " << managerUsername << endl;
+        cout << "Manager Password: " << managerPassword << endl;
+        cout << "Manager Status: " << (managerStatus ? "Active" : "Inactive") << endl << endl;
     }
     else {
         cout << endl << "New manager not saved. Operation cancelled." << endl << endl;

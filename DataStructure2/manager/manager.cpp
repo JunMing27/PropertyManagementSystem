@@ -21,7 +21,7 @@ using namespace std;
 Manager* mHead = nullptr;
 Manager* mTail = nullptr;
 
-void addNewManager(string managerId, string managerUsername, string managerPassword, bool managerStatus) {
+void addInManager(string managerId, string managerUsername, string managerPassword, bool managerStatus) {
     Manager* newManager = new Manager;
     newManager->managerId = managerId;
     newManager->managerUsername = managerUsername;
@@ -40,11 +40,11 @@ void addNewManager(string managerId, string managerUsername, string managerPassw
 }
 
 // No need these functions, since admin can add new manager
-/*
+
 void initializeManager() {
-    addNewManager("M1", "junming", "junming123", "true");
-    addNewManager("M2", "hoiyi", "hoiyi123", "false");
-    addNewManager("M3", "alan", "alan123", "true");
+    addInManager("M1", "junming", "junming123", true);
+    addInManager("M2", "hoiyi", "hoiyi123", false);
+    addInManager("M3", "alan", "alan123", true);
 }
 
 
@@ -59,7 +59,7 @@ bool searchManager(string username, string password)
     }
     return false;
 }
-*/
+
 
 void logout()
 {
