@@ -20,4 +20,3 @@ void initializeFavProp(); //for sample only
 //for summarize and generate report
 void showAllFavProp();
 void summarizeTop10FavProp();
-void generateReport();
