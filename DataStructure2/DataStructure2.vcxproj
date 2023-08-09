@@ -127,16 +127,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="admin\admin.cpp" />
     <ClCompile Include="favouriteProperty\favProp.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="manager\manager.cpp" />
     <ClCompile Include="payment\payment.cpp" />
     <ClCompile Include="property\property.cpp" />
     <ClCompile Include="rentRequest\rentRequest.cpp" />
     <ClCompile Include="tenant\tenant.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="admin\admin.h" />
     <ClInclude Include="favouriteProperty\favProp.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="manager\manager.h" />
     <ClInclude Include="payment\payment.h" />
     <ClInclude Include="property\property.h" />
     <ClInclude Include="rentRequest\rentRequest.h" />

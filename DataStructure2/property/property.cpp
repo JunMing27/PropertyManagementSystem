@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <chrono>
 #include "property.h"
 #include "../tenant/tenant.h"
 #include "../main.h"
@@ -355,13 +356,19 @@ vector<int> linearSearchProperty(const vector<Property>& properties,int vectorSi
 
 // detect user select linear or binary to call the relative functions
 void linearOrBinary(string searchCriteria, string searchMethod, string searchInput) {
+//THE following commented code will be calculating the execution time used by different search algorithm
+//auto startQuickSort = chrono::high_resolution_clock::now();
+//displayPropertyMonthlyRent();
+//auto endQuickSort = chrono::high_resolution_clock::now();
+//chrono::duration<double> timeQuickSort = endQuickSort - startQuickSort;
+//cout << "Execution time with quick sort: " << timeQuickSort.count() << " seconds." << endl;
     Property* currentProperty = pHead;
-
 
     // Convert linked list to vector
     vector<Property> properties = convertLinkedListToVector(currentProperty);
     int vectorSize = size(properties);
     vector <int> resultIndex;
+    auto startQuickSort = chrono::high_resolution_clock::now();
     if (searchMethod == "linear") {
         // Search the vector using linear search
         vector <int> resultIndex = linearSearchProperty(properties, vectorSize, searchInput, searchCriteria);
@@ -369,6 +376,9 @@ void linearOrBinary(string searchCriteria, string searchMethod, string searchInp
             cout << "Property not found" << endl;
         }
         else {
+            auto endQuickSort = chrono::high_resolution_clock::now();
+            chrono::duration<double> timeQuickSort = endQuickSort - startQuickSort;
+            cout << "Execution time with linear search: " << timeQuickSort.count() << " seconds." << endl;
             // Display or process the matching properties
             displayLinearBinarySearchResult(properties, resultIndex);
         }
@@ -382,6 +392,9 @@ void linearOrBinary(string searchCriteria, string searchMethod, string searchInp
             cout << "Property not found" << endl;
         }
         else {
+            auto endQuickSort = chrono::high_resolution_clock::now();
+            chrono::duration<double> timeQuickSort = endQuickSort - startQuickSort;
+            cout << "Execution time with binary search: " << timeQuickSort.count() << " seconds." << endl;
             // Display or process the matching properties
             displayLinearBinarySearchResult(properties, resultIndex);
         }

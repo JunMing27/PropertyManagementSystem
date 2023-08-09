@@ -283,3 +283,18 @@ void updateRentRequest(RentRequest* rHead, bool approval)
 
 }
 
+bool verifyTenancy(string tenantId) //to check if property is already favourite, if its favourite then user cant add again 
+{
+    RentRequest* current = rHead;
+    if (current != nullptr) {
+        do {
+            if (current->tenantId == tenantId) {
+                return true;
+                break;
+            }
+            current = current->next;
+        } while (current != nullptr);
+        return false;
+    }
+    return false;
+}

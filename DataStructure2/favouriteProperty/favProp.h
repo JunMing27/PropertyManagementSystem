@@ -19,4 +19,6 @@ void displayFavPropTenant();
 bool verifyFavProp(string propertyId);
 //by hoiyi
 //for summarize
+void showAllFavProp();
 void summarizeTop10FavProp();
+void generateReport();

@@ -11,11 +11,15 @@ Payment* pTail = nullptr;
 void addPayment(string startDate, string endDate, double totalAmount, double paidAmount)
 {
     // Generate the next payment ID with the counter
-    int paymentCounter = 1;
+    int paymentCounter = 0;
+    Payment* current = pHead;
+    while (current != nullptr) {
+        paymentCounter++;
+        current = current->next;
+    }
     stringstream ss;
-    ss << "P" << paymentCounter;
+    ss << "P" << (paymentCounter + 1);
     string paymentId = ss.str();
-    paymentCounter++;
 
     Payment* newPayment = new Payment;
     newPayment->paymentId = paymentId;

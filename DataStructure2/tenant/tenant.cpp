@@ -31,17 +31,14 @@ Tenant* tHead = nullptr;
 Tenant* tTail = nullptr;
 tempUser tempUserObj;
 string tempUserId;
-void addNewTenant(string tenantId, string tenantName, string tenantUserName, string tenantPassword, string tenantEmail, string propertyId, bool isRent, string paymentHistory, bool leaseRenewed, bool isActive) {
+void addNewTenant( string tenantName, string tenantUserName, string tenantPassword, string tenantEmail, bool isActive) {
+    Tenant* temp = tHead;
     Tenant* newTenant = new Tenant;
-    newTenant->tenantId = tenantId;
+    newTenant->tenantId = incrementTenantId(temp);
     newTenant->tenantName = tenantName;
     newTenant->tenantUserName = tenantUserName;
     newTenant->tenantPassword = tenantPassword;
     newTenant->tenantEmail = tenantEmail;
-    newTenant->propertyId = propertyId;
-    newTenant->isRent = isRent;
-    newTenant->paymentHistory = paymentHistory;
-    newTenant->leaseRenewed = leaseRenewed;
     newTenant->isActive = isActive;
     newTenant->next = nullptr;
     newTenant->prev = nullptr;
@@ -61,9 +58,9 @@ void addNewTenant(string tenantId, string tenantName, string tenantUserName, str
 }
 
 void initializeTenant() {
-    addNewTenant("T1", "Jun Ming", "junming", "junming123", "jm@gmail.com", "", true, "Paid on time", true, false);
-    addNewTenant("T2", "Hoi Yi", "hoiyi", "hoiyi123", "hy@gmail.com", "", true, "Paid on time", true, true);
-    addNewTenant("T3", "Alan", "alan", "alan123", "alan@gmail.com", "", false, "Paid on time", true, true);
+    addNewTenant("Jun Ming", "junming", "junming123", "jm@gmail.com", false);
+    addNewTenant("Hoi Yi", "hoiyi", "hoiyi123", "hy@gmail.com", true);
+    addNewTenant("Alan", "alan", "alan123", "alan@gmail.com", true);
 }
 
 bool searchTenant(Tenant* tHead, string username, string password) {
@@ -94,7 +91,7 @@ void signUpTenant() {
     cin >> tenantPassword;
     cout << "Enter your email: ";
     cin >> tenantEmail;
-    addNewTenant("T4", tenantName, tenantUserName, tenantPassword, tenantEmail, "", false, "Paid on time", false, false);
+    addNewTenant(tenantName, tenantUserName, tenantPassword, tenantEmail, false);
     cout << endl << "You have successfully signed up " << endl << endl;
     displayMenu();
 }
@@ -208,32 +205,15 @@ void inputTenantMenu() {
     cout << endl;
 }
 
-void tenantRentProperty(string tenantId, string newPropertyId) {
-    Tenant* temp = tHead;
-    while (temp != NULL) {
-        if (temp->tenantId == tenantId) {
-            if (temp->propertyId == "") {
-                temp->propertyId = newPropertyId;
-                cout << "Successfully sent rent request for this property." << endl << endl;
-                break;
-            }
-            else {
-                cout << "Failed to add property. You have existing tenancy already" << endl << endl;
-            }
-        }
-        temp = temp->next;
-    }
-}
-
 void tenantDisplayTenancy(string tenantId) {
     Tenant* temp = tHead;
     while (temp != NULL) {
-        if (temp->tenantId == tenantId) {
+        if (verifyTenancy(tenantId)) {
             displayTenantTenancyPropInfo(temp->tenantId);
             tenantDisplayTenancyMenu();
             break;
         }else{
-            cout << "You have not rented any Property. You will need approval from manager after sending rent request." << endl << endl;
+            cout << "You have not rented any Property yet" << endl << endl;
             displayTenantMenu();
         }
         temp = temp->next;
@@ -243,7 +223,7 @@ void tenantDisplayTenancy(string tenantId) {
 void tenantDisplayTenancyMenu() {
     cout << "======== Tenant Operation ========" << endl;
     cout << "1. Pay" << endl;
-    cout << "1. Back to Menu" << endl;
+    cout << "2. Back to Menu" << endl;
     cout << "==================================" << endl;
     cout << "Enter your choice: ";
     int choice;
@@ -336,4 +316,23 @@ string returnTenantNameWithID(string id){
         temp = temp->next;
     } while (temp != nullptr);
     return NULL;
+}
+
+string incrementTenantId(Tenant* tHead) {
+    Tenant* current = tHead;
+    if (tHead == nullptr) {
+        string firstId = "T1";
+        return firstId;
+    }
+    while (current->next != nullptr) {
+        current = current->next;
+    }
+    // get the last id and get the integer value behind T
+    string lastId = current->tenantId;
+    int lastIdInteger;
+    istringstream(lastId.substr(1)) >> lastIdInteger;
+    lastIdInteger++;
+    string mergedNewId= "T" + to_string(lastIdInteger);
+
+    return mergedNewId;
 }
