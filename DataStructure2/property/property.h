@@ -29,11 +29,10 @@ void addNewProperty(string ads_id, string prop_name, string completion_year, str
 void initializeProperty();
 void inputTenantPropertyMenu();
 bool compareLocationDesc(const string& location1, const string& location2);
-bool isSubstring(const string& str, const string& sub);
 void merge(vector<Property>& properties, int left, int mid, int right);
 void mergeSort(vector<Property>& properties, int left, int right);
-vector<int> binarySearch(const vector<Property>& properties, int left, int right, string target, string searchCriteria);
-void displayAfterSearch(const Property& property);
+vector<int> binarySearchProperty(const vector<Property>& properties, int left, int right, string target, string searchCriteria);
+vector<int> linearSearchProperty(const vector<Property>& properties, int vectorSize, string target, string searchCriteria);
 void linearOrBinary(string searchCriteria, string searchMethod, string searchInput);
-void displaySearchResult(Property* result);
+void displayLinearBinarySearchResult(vector<Property>& properties, vector <int> resultIndexes);
 string returnPropertyPriceWithID(string id);

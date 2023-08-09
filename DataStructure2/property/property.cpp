@@ -177,7 +177,7 @@ void inputTenantPropertyMenu() {
 }
 
 
-
+// convert the linkedlist to vector to avoid stackoverflow
 vector<Property> convertLinkedListToVector(Property* head) {
     vector<Property> properties;
     while (head != nullptr) {
@@ -192,6 +192,7 @@ bool compareLocationDesc(const string& location1, const string& location2) {
     return location1 > location2;
 }
 
+//merge the sorted vector that stores the properties value
 void merge(vector<Property>& properties, int left, int mid, int right) {
     int n1 = mid - left + 1;
     int n2 = right - mid;
@@ -235,6 +236,7 @@ void merge(vector<Property>& properties, int left, int mid, int right) {
     }
 }
 
+//mergesort algorithm for binary search
 void mergeSort(vector<Property>& properties, int left, int right) {
     if (left < right) {
         int mid = left + (right - left) / 2;
@@ -246,35 +248,8 @@ void mergeSort(vector<Property>& properties, int left, int right) {
     }
 }
 
-void linearOrBinary(string searchCriteria, string searchMethod, string searchInput) {
-    Property* currentProperty = pHead;
-    if (searchMethod != "binary") {
-        cout << "Invalid search method. Binary search is supported only." << endl;
-        return;
-    }
-
-    // Convert linked list to vector
-    vector<Property> properties = convertLinkedListToVector(currentProperty);
-    // Sort the vector using merge sort
-    mergeSort(properties, 0, properties.size() - 1);
-    int vectorSize = size(properties);
-    vector <int> resultIndex = binarySearch(properties, 0, vectorSize - 1, searchInput, searchCriteria);
-    vector <int> resultIndexes = resultIndex;
-    if (resultIndex.empty()) {
-        cout << "Property not found" << endl;
-    }
-    else {
-        // Display or process the matching properties
-        cout << "Matching properties found at indices: ";
-        for (int index : resultIndex) {
-            cout << index << " ";
-        }
-        cout << endl;
-    }
-    displayTenantMenu();
-}
-
-vector<int> binarySearch(const vector<Property>& properties, int left, int right, string target, string searchCriteria) {
+//binary search for property
+vector<int> binarySearchProperty(const vector<Property>& properties, int left, int right, string target, string searchCriteria) {
     vector<int> indexValues;
 
     while (left <= right) {
@@ -352,59 +327,127 @@ vector<int> binarySearch(const vector<Property>& properties, int left, int right
     return indexValues;
 }
 
-
-void displayAfterSearch(const Property& property) {
-    // Modify this function to display the property information as desired
-    cout << "Property Information:" << endl;
-    cout << "Property Name: " << property.prop_name << endl;
-    cout << "Location: " << property.location << endl;
-    // Add other property information fields if needed
-    cout << endl;
-}
-
-void displaySearchResult(Property* result) {
-    if (result != NULL) {
-        int pageNum = 1;
-        while (result != NULL) { // Check if result is not NULL
-            cout << "============== PAGE " << pageNum << " ===============" << endl;
-            cout << "Property ID: " << result->ads_id << endl;
-            cout << "Property Name: " << result->prop_name << endl;
-            // Display other information...
-            cout << "============== PAGE " << pageNum << " ===============" << endl << endl;
-
-            // Ask for user input to continue or go back
-            int choice;
-            cout << "1. Next Property\n2. Previous Property\n3. Back to TenantMenu" << endl;
-            cin >> choice;
-
-            if (choice == 1) {
-                // Move to the next property
-                result = result->next;
-                pageNum++;
-            }
-            else if (choice == 2) {
-                // Move to the previous property
-                result = result->prev;
-                pageNum--;
-            }
-            else if (choice == 3) {
-                // Back to TenantMenu
-                cout << endl;
-                displayTenantMenu();
-                return; // Return from the function after going back to TenantMenu
-            }
-            else {
-                cout << "Invalid Input..... Redirecting to Tenant Menu......" << endl << endl;
-                // Back to TenantMenu if any other number is entered
-                displayTenantMenu();
-                return; // Return from the function after displaying the error message
+//linear search for property
+vector<int> linearSearchProperty(const vector<Property>& properties,int vectorSize,string target, string searchCriteria)
+{
+    vector<int> indexValues;
+    int i = 0;
+    while (i < vectorSize) {
+        if (searchCriteria == "propertyName") {
+            if (properties[i].prop_name == target) {
+                indexValues.push_back(i);
             }
         }
+        else if (searchCriteria == "location") {
+            if (properties[i].location == target) {
+                indexValues.push_back(i);
+            }
+        }
+        else if (searchCriteria == "region") {
+            if (properties[i].region == target) {
+                indexValues.push_back(i);
+            }
+        }
+        i++;
     }
-    else {
-        cout << "Property not found." << endl;
-        displayTenantMenu();
+    return indexValues;
+}
+
+// detect user select linear or binary to call the relative functions
+void linearOrBinary(string searchCriteria, string searchMethod, string searchInput) {
+    Property* currentProperty = pHead;
+
+
+    // Convert linked list to vector
+    vector<Property> properties = convertLinkedListToVector(currentProperty);
+    int vectorSize = size(properties);
+    vector <int> resultIndex;
+    if (searchMethod == "linear") {
+        // Search the vector using linear search
+        vector <int> resultIndex = linearSearchProperty(properties, vectorSize, searchInput, searchCriteria);
+        if (resultIndex.empty()) {
+            cout << "Property not found" << endl;
+        }
+        else {
+            // Display or process the matching properties
+            displayLinearBinarySearchResult(properties, resultIndex);
+        }
     }
+    else if (searchMethod == "binary") {
+        // Sort the vector using merge sort
+        mergeSort(properties, 0, properties.size() - 1);
+        // Search the vector using binary search
+        vector <int> resultIndex = binarySearchProperty(properties, 0, vectorSize - 1, searchInput, searchCriteria);
+        if (resultIndex.empty()) {
+            cout << "Property not found" << endl;
+        }
+        else {
+            // Display or process the matching properties
+            displayLinearBinarySearchResult(properties, resultIndex);
+        }
+    }
+}
+
+
+void displayLinearBinarySearchResult(vector<Property>& properties, vector <int> resultIndexes) {
+    int pageNum = 1;
+    int currentIndex = 0; // Initialize the current index of the resultIndexes
+    int totalResults = resultIndexes.size();
+    while (currentIndex< totalResults) { // Check if result is not NULL
+        if (currentIndex < 0) {
+            cout << "You are already at the beginning of the list." << endl << endl;
+            currentIndex = currentIndex + 1;
+            pageNum= pageNum+1;
+        }
+        int i = resultIndexes[currentIndex];
+        cout << "============== PAGE " << pageNum << " ===============" << endl;
+        cout << "Property ID: " << properties[i].ads_id << endl;
+        cout << "Property Name: " << properties[i].prop_name << endl;
+        cout << "Completion Year: " << properties[i].completion_year << endl;
+        cout << "Monthly Rent: " << properties[i].monthly_rent << endl;
+        cout << "Location: " << properties[i].location << endl;
+        cout << "Property Type: " << properties[i].propertyType << endl;
+        cout << "Number of Rooms: " << properties[i].rooms << endl;
+        cout << "Parking: " << properties[i].parking << endl;
+        cout << "Number of Bathrooms: " << properties[i].bathroom << endl;
+        cout << "Size: " << properties[i].size << endl;
+        cout << "Furnished: " << properties[i].furnished << endl;
+        cout << "Facilities: " << properties[i].facilities << endl;
+        cout << "Additional Facilities: " << properties[i].additional_facilities << endl;
+        cout << "Region: " << properties[i].region << endl;
+        cout << "============== PAGE " << pageNum << " ===============" << endl << endl;
+
+        // Ask for user input to continue or go back
+        int choice;
+        cout << "1. Next Property\n2. Previous Property\n3. Back to TenantMenu" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            // Move to the next property
+            currentIndex++;
+            pageNum++;
+        }
+        else if (choice == 2) {
+            // Move to the previous property
+            currentIndex--;
+            pageNum--;
+        }
+        else if (choice == 3) {
+            // Back to TenantMenu
+            cout << endl;
+            displayTenantMenu();
+            return; // Return from the function after going back to TenantMenu
+        }
+        else {
+            cout << "Invalid Input..... Redirecting to Tenant Menu......" << endl << endl;
+            // Back to TenantMenu if any other number is entered
+            displayTenantMenu();
+            return; // Return from the function after displaying the error message
+        }
+    }
+    cout << "That is the end of list... returning to tenant menu" << endl << endl;
+    displayTenantMenu();
 }
 
 string returnPropertyPriceWithID(string id) {
