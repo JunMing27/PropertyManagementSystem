@@ -119,15 +119,11 @@ void displayAdminMenu() {
 
 void addNewManager() {
 
-    string managerId;
     string managerUsername;
     string managerPassword;
     bool managerStatus = true;
 
     // Ask the user to enter manager details
-    cout << "Enter Manager ID: ";
-    cin >> managerId;
-
     cout << "Enter Manager Username: ";
     cin >> managerUsername;
 
@@ -140,11 +136,10 @@ void addNewManager() {
     cin >> confirm;
 
     if (confirm == 'Y' || confirm == 'y') {
-        addInManager(managerId, managerUsername, managerPassword, managerStatus);
+        addInManager(managerUsername, managerPassword, managerStatus);
 
         // Print the details of the newly added manager
         cout << endl << "New Manager Details Saved Successfully." << endl;
-        cout << "Manager ID: " << managerId << endl;
         cout << "Manager Username: " << managerUsername << endl;
         cout << "Manager Password: " << managerPassword << endl;
         cout << "Manager Status: " << (managerStatus ? "Active" : "Inactive") << endl << endl;

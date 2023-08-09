@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 #include "manager.h"
 #include "../tenant/tenant.h"
 #include "../main.h"
@@ -21,7 +22,15 @@ using namespace std;
 Manager* mHead = nullptr;
 Manager* mTail = nullptr;
 
-void addInManager(string managerId, string managerUsername, string managerPassword, bool managerStatus) {
+void addInManager(string managerUsername, string managerPassword, bool managerStatus) {
+
+    // Generate the next rent ID with the counter
+    int managerCounter = 1;
+    stringstream ss;
+    ss << "M" << managerCounter;
+    string managerId = ss.str();
+    managerCounter++;
+
     Manager* newManager = new Manager;
     newManager->managerId = managerId;
     newManager->managerUsername = managerUsername;
@@ -42,9 +51,9 @@ void addInManager(string managerId, string managerUsername, string managerPasswo
 // No need these functions, since admin can add new manager
 
 void initializeManager() {
-    addInManager("M1", "junming", "junming123", true);
-    addInManager("M2", "hoiyi", "hoiyi123", false);
-    addInManager("M3", "alan", "alan123", true);
+    addInManager("junming", "junming123", true);
+    addInManager("hoiyi", "hoiyi123", false);
+    addInManager("alan", "alan123", true);
 }
 
 
