@@ -499,9 +499,6 @@ void displayTenantsByIsActive(bool isActive) {
             cout << "Tenant Name: " << currentTenant->tenantName << endl;
             cout << "Username: " << currentTenant->tenantUserName << endl;
             cout << "Email: " << currentTenant->tenantEmail << endl;
-            cout << "Property ID: " << currentTenant->propertyId << endl;
-            cout << "Payment History: " << currentTenant->paymentHistory << endl;
-            cout << "Lease Renewed: " << (currentTenant->leaseRenewed ? "Yes" : "No") << endl;
             cout << "Is Active: " << (currentTenant->isActive ? "Yes" : "No") << endl;
             cout << "============== PAGE " << pageNum << " ===============" << endl << endl;
 

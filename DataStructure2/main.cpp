@@ -2,48 +2,16 @@
 
 #include <iostream>
 #include <fstream>
+#include <chrono>
 #include <string>
 #include "tenant/tenant.h"
+#include "admin/admin.h"
+#include "manager/manager.h"
 #include "property/property.h"
+#include "favouriteProperty/favProp.h"
+#include "rentRequest/rentRequest.h"
 #include "main.h"
 using namespace std;
-
-tempUser* tempHead = nullptr;
-tempUser* tempTail = nullptr;
-void addNewTempUser(string userId)
-{
-    tempUser* newTempUser = new tempUser;
-    newTempUser->userId = userId;
-    newTempUser->prev = nullptr;
-    newTempUser->next = nullptr;
-
-    if (tempHead == NULL) {
-        tempHead = newTempUser;
-    }
-    else {
-        tempUser* temp = tempHead;
-        while (temp->next != NULL) {
-            temp = temp->next;
-        }
-        temp->next = newTempUser;
-        newTempUser->prev = temp;
-    }
-}
-
-string getTempUser() 
-{
-    tempUser* currentTempUser= tempHead;
-    return currentTempUser->userId;
-}
-
-void cleanTempUser() {
-    tempUser* currentTempUser = tempHead;
-    while (tempHead != nullptr) {
-        tempUser* temp = tempHead;
-        tempHead = tempHead->next;
-        delete temp;
-    }
-}
 
 void displayMenuList() {
     cout << "======== Mudah Apartment ========" << endl;
@@ -75,13 +43,15 @@ void displayMenu() {
         switch (choice) {
         case 1:             // Login as Tenant
             cout << endl;
-            loginTenant();  
+            loginTenant();
             break;
         case 2:             // Login as Manager
-            cout << endl; 
+            cout << endl;
+            loginManager();
             break;
         case 3:             // Login as Admin
             cout << endl;
+            loginAdmin();
             break;
         case 4:             // Register as Tenant
             cout << endl;
@@ -100,10 +70,50 @@ void displayMenu() {
     cout << endl;
 }
 
+//store logged in user information 
+tempUser* tempHead = nullptr;
+tempUser* tempTail = nullptr;
+void addNewTempUser(string userId)
+{
+    tempUser* newTempUser = new tempUser;
+    newTempUser->userId = userId;
+    newTempUser->prev = nullptr;
+    newTempUser->next = nullptr;
+
+    if (tempHead == NULL) {
+        tempHead = newTempUser;
+    }
+    else {
+        tempUser* temp = tempHead;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newTempUser;
+        newTempUser->prev = temp;
+    }
+}
+
+string getTempUser()
+{
+    tempUser* currentTempUser = tempHead;
+    return currentTempUser->userId;
+}
+
+void cleanTempUser() {
+    tempUser* currentTempUser = tempHead;
+    while (tempHead != nullptr) {
+        tempUser* temp = tempHead;
+        tempHead = tempHead->next;
+        delete temp;
+    }
+}
+
 int main()
 {
-    initializeProperty(); //initialize the current property from csv file into linkedlist first
     initializeTenant(); //initialize the current tenant into linkedlist first
+    initializeAdmin(); //initialize the current admin into linkedlist first
+    initializeManager(); //initialize the current manager into linkedlist first
+    initializeProperty(); //initialize the current property from csv file into linkedlist first
     displayMenu();
     return 0;
 }

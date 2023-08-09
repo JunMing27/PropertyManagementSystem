@@ -2,7 +2,6 @@
 #include <string>
 #include "../property/property.h"
 #include "../tenant/tenant.h"
-#include "../rentProperty/rentProp.h"
 #include "../rentRequest/rentRequest.h"
 #include "../main.h"
 #include "favProp.h"
