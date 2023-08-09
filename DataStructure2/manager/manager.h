@@ -17,7 +17,7 @@ void addNewManager(string managerId, string managerUsername, string managerPassw
 
 //Login
 void loginManager();
-bool searchManager(string username, string password);
+Manager* searchManager(string username, string password);
 void logout();
 void displayManagerMenu();
 

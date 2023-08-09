@@ -46,15 +46,21 @@ void initializeManager() {
 }
 
 
-bool searchManager(string username, string password)
+Manager* searchManager(string username, string password)
 {
-    while (mHead != nullptr) {
-        if (mHead->managerUsername == username && mHead->managerPassword == password) {
-            return true;
-        }
-        mHead = mHead->next;
+    if (!mHead)
+    {
+        return nullptr;
     }
-    return false;
+
+    Manager* temp = mHead;
+    while (temp != mHead) {
+        if (temp->managerUsername == username && temp->managerPassword == password) {
+            return temp;
+        }
+        temp = temp->next;
+    }
+    return nullptr;
 }
 
 
@@ -72,7 +78,7 @@ void loginManager()
     cin >> managerUsername;
     cout << "Enter password: ";
     cin >> managerPassword;
-    bool loggedIn = searchManager(managerUsername, managerPassword);
+    Manager* loggedIn = searchManager(managerUsername, managerPassword);
     if (loggedIn) {
         cout << endl <<"Login successful. Welcome, " << managerUsername << " !";
         displayManagerMenu();
