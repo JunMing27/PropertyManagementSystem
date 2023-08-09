@@ -51,7 +51,7 @@ void addRent(string propId, string propName, string tenantId, string tenantName,
 
 void initializeRentRequest()
 {
-    addRent("P1", "Under Bridge", "T1", "JunMing", 2, 200, "Pending");
+    addRent("R1", "Under Bridge", "T1", "JunMing", 2, 200, "Pending");
 }
 
 void displayAllRequests()
