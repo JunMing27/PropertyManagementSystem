@@ -12,11 +12,16 @@ RentRequest* rTail;
 void addRent(string propId, string propName, string tenantId, string tenantName, int durationMonths, double rentalAmount, bool rentingApproval)
 {
     // Generate the next rent ID with the counter
-    int rentCounter = 1;
+    int rentCounter = 0;
+    RentRequest* current = rHead;
+    while (current != nullptr) {
+        rentCounter++;
+        current = current->next;
+    }
+
     stringstream ss;
-    ss << "R" << rentCounter;
+    ss << "R" << (rentCounter+1);
     string rentId = ss.str();
-    rentCounter++;
 
     RentRequest* newRequest = new RentRequest;
     newRequest->rentRequestId = rentId;

@@ -24,12 +24,17 @@ Manager* mTail = nullptr;
 
 void addInManager(string managerUsername, string managerPassword, bool managerStatus) {
 
-    // Generate the next rent ID with the counter
-    int managerCounter = 1;
+    // Generate the next manager ID with the counter
+    int managerCounter = 0;
+    Manager* current = mHead;
+    while (current != nullptr) {
+        managerCounter++;
+        current = current->next;
+    }
+
     stringstream ss;
-    ss << "M" << managerCounter;
+    ss << "M" << (managerCounter + 1); 
     string managerId = ss.str();
-    managerCounter++;
 
     Manager* newManager = new Manager;
     newManager->managerId = managerId;
