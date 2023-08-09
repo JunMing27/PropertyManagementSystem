@@ -21,6 +21,6 @@ void addInManager(string managerId, string managerUsername, string managerPasswo
 
 //Login
 void loginManager();
-bool searchManager(string username, string password);
+Manager* searchManager(string username, string password);
 void logout();
 void displayManagerMenu();

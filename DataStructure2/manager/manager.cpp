@@ -49,17 +49,22 @@ void initializeManager() {
 
 
 
-bool searchManager(string username, string password)
+Manager* searchManager(string username, string password)
 {
-    while (mHead != nullptr) {
-        if (mHead->managerUsername == username && mHead->managerPassword == password) {
-            return true;
-        }
-        mHead = mHead->next;
+    if (!mHead)
+    {
+        return nullptr;
     }
-    return false;
-}
 
+    Manager* temp = mHead;
+    while (temp != mHead) {
+        if (temp->managerUsername == username && temp->managerPassword == password) {
+            return temp;
+        }
+        temp = temp->next;
+    }
+    return nullptr;
+}
 
 void logout()
 {
@@ -77,15 +82,7 @@ void loginManager()
     cin >> managerPassword;
 
     // Search for the manager by username and password
-    Manager* loggedInManager = nullptr;
-    Manager* temp = mHead;
-    while (temp != nullptr) {
-        if (temp->managerUsername == managerUsername && temp->managerPassword == managerPassword) {
-            loggedInManager = temp;
-            break;
-        }
-        temp = temp->next;
-    }
+    Manager* loggedInManager = searchManager(managerUsername, managerPassword);
 
     if (loggedInManager) {
         if (loggedInManager->managerStatus) {
