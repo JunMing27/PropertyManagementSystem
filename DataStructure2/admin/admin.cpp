@@ -107,11 +107,12 @@ void displayAdminMenu() {
             choosePropertyType();
             break;
         case 6:
-            adminLogIn = false;
             cout << "Logged out successfully." << endl;
+            displayMenu();
             break;
         default:
             cout << "Invalid Option. Please Try Again." << endl;
+            displayAdminMenu();
             break;
         }
     }
