@@ -93,7 +93,7 @@ void signUpTenant() {
     cin >> tenantPassword;
     cout << "Enter your email: ";
     cin >> tenantEmail;
-    addNewTenant(tenantName, tenantUserName, tenantPassword, tenantEmail, false);
+    addNewTenant(tenantName, tenantUserName, tenantPassword, tenantEmail, true);
     cout << endl << "You have successfully signed up " << endl << endl;
     displayMenu();
 }
