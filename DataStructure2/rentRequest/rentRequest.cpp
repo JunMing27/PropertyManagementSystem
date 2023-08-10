@@ -3,6 +3,7 @@
 #include <sstream>
 #include "rentRequest.h"
 #include "../payment/payment.h"
+#include "../tenant/tenant.h"
 
 using namespace std;
 
@@ -286,4 +287,20 @@ void updateRentRequest(RentRequest* rHead, bool approval)
         cout << "Rent request ID " << current->rentRequestId << " has been rejected." << endl;
     }
 
+}
+
+void tenantDisplayRentRequest(string tenantId) {
+    RentRequest* current = rHead;
+    while (current != NULL) {
+        if (current->tenantId == tenantId) {
+            displayTenantTenancyPropInfo(current->tenantId);
+            tenantDisplayTenancyMenu();
+            break;
+        }
+        else {
+            cout << "You have not rented any Property yet" << endl << endl;
+            displayTenantMenu();
+        }
+        current = current->next;
+    }
 }

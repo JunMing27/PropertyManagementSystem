@@ -191,7 +191,7 @@ void inputTenantMenu() {
             cout << endl;
             break;
         case 5:             //Rent History
-            tenantDisplayTenancy(getTempUser());
+            tenantDisplayRentRequest(getTempUser());
             cout << endl;
             break;
         case 6:             //Sign Out
@@ -208,21 +208,7 @@ void inputTenantMenu() {
     cout << endl;
 }
 
-void tenantDisplayTenancy(string tenantId) {
-    Tenant* temp = tHead;
-    while (temp != NULL) {
-        if (temp->tenantId==tenantId) {
-            displayTenantTenancyPropInfo(temp->tenantId);
-            tenantDisplayTenancyMenu();
-            break;
-        }
-        else {
-            cout << "You have not rented any Property yet" << endl << endl;
-            displayTenantMenu();
-        }
-        temp = temp->next;
-    }
-}
+
 
 void tenantDisplayTenancyMenu() {
     cout << "======== Tenant Operation ========" << endl;

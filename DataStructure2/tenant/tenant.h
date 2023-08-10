@@ -31,7 +31,6 @@ void displayTenantFavPropMenu();
 void displayTenantRentPropMenu();
 void inputTenantMenu();
 bool searchTenant(Tenant* tHead, string username, string password);
-void tenantDisplayTenancy(string tenantId);
 void tenantDisplayTenancyMenu();
 void inputTenantPropertySearch();
 void displayTenantPropertySearchMenu();
