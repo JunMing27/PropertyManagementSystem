@@ -41,16 +41,22 @@ void addInManager(string managerUsername, string managerPassword, bool managerSt
     newManager->managerUsername = managerUsername;
     newManager->managerPassword = managerPassword;
     newManager->managerStatus = managerStatus;
+    newManager->prev = nullptr;
+    newManager->next = nullptr;
 
     if (mHead == nullptr) {
         mHead = newManager;
-        mTail = newManager;
     }
     else {
-        mTail->next = newManager;
-        newManager->prev = mTail;
-        mTail = newManager;
+        Manager* temp = mHead;
+        while (temp->next != nullptr)
+        {
+            temp = temp->next;
+        }
+        temp->next = newManager;
+        newManager->prev = temp;
     }
+
 }
 
 // No need these functions, since admin can add new manager
@@ -71,7 +77,7 @@ Manager* searchManager(string username, string password)
     }
 
     Manager* temp = mHead;
-    while (temp != mHead) {
+    while (temp != nullptr) {
         if (temp->managerUsername == username && temp->managerPassword == password) {
             return temp;
         }
