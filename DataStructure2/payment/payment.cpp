@@ -108,7 +108,7 @@ void displaySinglePayment()
                     break; // Input is a valid double, exit the loop
                 }
             }
-            current->paidAmount = payAmount;
+            current->paidAmount = current->paidAmount + payAmount;
             cout << "Paid amount updated successfully." << endl << endl;
         }
         else if (choice == "N" || choice == "n")

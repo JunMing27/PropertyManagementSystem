@@ -107,7 +107,6 @@ void loginTenant() {
     cin >> tenantPassword;
     bool isTenantFound = searchTenant(tHead, tenantUserName, tenantPassword);
     if (isTenantFound) {
-        cout << "Login Successfully" << endl << endl;
         cout << endl << "Login successful. Welcome, " << tenantUserName << " !" << endl << endl;
         displayTenantMenu();
     }

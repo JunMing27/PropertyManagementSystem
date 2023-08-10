@@ -278,8 +278,6 @@ void updateRentRequest(RentRequest* rHead, bool approval)
                 break; // Input is a valid double, exit the loop
             }
         }
-        cout << "Enter total amount: ";
-        cin >> totalAmount;
         addPayment(startDate, endDate, totalAmount, 0);
         cout << "Rent request ID " << current->rentRequestId << " has been approved." << endl;
     }

@@ -216,7 +216,6 @@ bool verifyFavProp(string propertyId) //to check if property is already favourit
 {
 	FavProperty* currentFavProperty = favHead;
 	if (favHead == nullptr) {
-		cout << "No favorite properties found." << endl;
 		return false;
 	}
 	else {
