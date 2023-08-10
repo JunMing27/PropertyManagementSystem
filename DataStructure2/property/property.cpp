@@ -32,7 +32,7 @@ void initializeProperty()
     string additional_facilities;
     string region;
     string ignore; // create to ignore the ,
-        getline(ip, ignore, '\n');
+    getline(ip, ignore, '\n');
     while (ip.good()) {
         // Get data from each line
         getline(ip, ads_id, ',');
@@ -105,7 +105,62 @@ void addNewProperty(string ads_id, string prop_name, string completion_year, str
     }
 }
 
+void displayPropertyBy1() {
+    int batchSize = 1;
+    int pageNum = 1;
+    Property* currentProperty = pHead;
 
+    if (currentProperty == nullptr) {
+        cout << "No property in the list." << endl;
+        return;
+    }
+
+    while (currentProperty != nullptr) {
+        cout << "============== PAGE " << pageNum << " ===============" << endl;
+        cout << "Property ID: " << currentProperty->ads_id << endl;
+        cout << "Property Name: " << currentProperty->prop_name << endl;
+        cout << "Completion Year: " << currentProperty->completion_year << endl;
+        cout << "Monthly Rent: " << currentProperty->monthly_rent << endl;
+        cout << "Location: " << currentProperty->location << endl;
+        cout << "Property Type: " << currentProperty->propertyType << endl;
+        cout << "Number of Rooms: " << currentProperty->rooms << endl;
+        cout << "Parking: " << currentProperty->parking << endl;
+        cout << "Number of Bathrooms: " << currentProperty->bathroom << endl;
+        cout << "Size: " << currentProperty->size << endl;
+        cout << "Furnished: " << currentProperty->furnished << endl;
+        cout << "Facilities: " << currentProperty->facilities << endl;
+        cout << "Additional Facilities: " << currentProperty->additional_facilities << endl;
+        cout << "Region: " << currentProperty->region << endl;
+        cout << "============== PAGE " << pageNum << " ===============" << endl << endl;
+
+        // Ask for user input to continue or go back
+        int userInput;
+        cout << "Enter '1' to view the next property, '2' to view the previous property, or any other number to exit: ";
+        cin >> userInput;
+
+        if (userInput == 2 && currentProperty == pHead) {
+            cout << "You are already at the beginning of the list." << endl;
+        }
+        else if (userInput == 1) {
+            // Move to the next property
+            currentProperty = currentProperty->next;
+            pageNum = pageNum + 1;
+        }
+        else if (userInput == 2) {
+            // Move to the previous property
+            currentProperty = currentProperty->prev;
+            pageNum = pageNum - 1;
+        }
+        else {
+            // Exit the loop if any other number is entered
+            break;
+        }
+    }
+}
+
+void displayProperty() {
+    displayPropertyBy1();
+}
 
 void inputTenantPropertyMenu() {
     int batchSize = 1;
@@ -189,7 +244,7 @@ vector<Property> convertLinkedListToVector(Property* head) {
 }
 
 // Helper function to compare two location strings for descending order sorting
-bool compareLocationDesc(const string& location1, const string& location2) {
+bool compareLocationDescForMergeSort(const string& location1, const string& location2) {
     return location1 > location2;
 }
 
@@ -213,7 +268,7 @@ void merge(vector<Property>& properties, int left, int mid, int right) {
     int k = left;
 
     while (i < n1 && j < n2) {
-        if (compareLocationDesc(leftArr[i].prop_name, rightArr[j].prop_name)) {
+        if (compareLocationDescForMergeSort(leftArr[i].prop_name, rightArr[j].prop_name)) {
             properties[k] = leftArr[i];
             i++;
         }
@@ -279,22 +334,22 @@ vector<int> binarySearchProperty(const vector<Property>& properties, int left, i
             }
         }
         if (searchCriteria == "location") {
-            if (properties[mid].location==target) {
+            if (properties[mid].location == target) {
                 indexValues.push_back(mid);
 
                 int leftProperty = mid - 1;
-                while (leftProperty >= left && (properties[leftProperty].location==target)) {
+                while (leftProperty >= left && (properties[leftProperty].location == target)) {
                     indexValues.push_back(leftProperty);
                     leftProperty--;
                 }
                 int rightProperty = mid + 1;
-                while (rightProperty >= right && (properties[rightProperty].location== target)) {
+                while (rightProperty >= right && (properties[rightProperty].location == target)) {
                     indexValues.push_back(rightProperty);
                     rightProperty++;
                 }
                 return indexValues;
             }
-            else if (properties[mid].location==target) {
+            else if (properties[mid].location == target) {
                 left = mid + 1;
             }
             else {
@@ -329,7 +384,7 @@ vector<int> binarySearchProperty(const vector<Property>& properties, int left, i
 }
 
 //linear search for property
-vector<int> linearSearchProperty(const vector<Property>& properties,int vectorSize,string target, string searchCriteria)
+vector<int> linearSearchProperty(const vector<Property>& properties, int vectorSize, string target, string searchCriteria)
 {
     vector<int> indexValues;
     int i = 0;
@@ -356,12 +411,12 @@ vector<int> linearSearchProperty(const vector<Property>& properties,int vectorSi
 
 // detect user select linear or binary to call the relative functions
 void linearOrBinary(string searchCriteria, string searchMethod, string searchInput) {
-//THE following commented code will be calculating the execution time used by different search algorithm
-//auto startQuickSort = chrono::high_resolution_clock::now();
-//displayPropertyMonthlyRent();
-//auto endQuickSort = chrono::high_resolution_clock::now();
-//chrono::duration<double> timeQuickSort = endQuickSort - startQuickSort;
-//cout << "Execution time with quick sort: " << timeQuickSort.count() << " seconds." << endl;
+    //THE following commented code will be calculating the execution time used by different search algorithm
+    //auto startQuickSort = chrono::high_resolution_clock::now();
+    //displayPropertyMonthlyRent();
+    //auto endQuickSort = chrono::high_resolution_clock::now();
+    //chrono::duration<double> timeQuickSort = endQuickSort - startQuickSort;
+    //cout << "Execution time with quick sort: " << timeQuickSort.count() << " seconds." << endl;
     Property* currentProperty = pHead;
 
     // Convert linked list to vector
@@ -406,11 +461,11 @@ void displayLinearBinarySearchResult(vector<Property>& properties, vector <int> 
     int pageNum = 1;
     int currentIndex = 0; // Initialize the current index of the resultIndexes
     int totalResults = resultIndexes.size();
-    while (currentIndex< totalResults) { // Check if result is not NULL
+    while (currentIndex < totalResults) { // Check if result is not NULL
         if (currentIndex < 0) {
             cout << "You are already at the beginning of the list." << endl << endl;
             currentIndex = currentIndex + 1;
-            pageNum= pageNum+1;
+            pageNum = pageNum + 1;
         }
         int i = resultIndexes[currentIndex];
         cout << "============== PAGE " << pageNum << " ===============" << endl;

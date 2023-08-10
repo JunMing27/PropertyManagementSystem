@@ -24,11 +24,15 @@ struct Property {
     Property* next;
 };
 
+extern Property* pHead; // Declare pHead as extern
+extern Property* pTail; // Declare pTail as extern
 
 void addNewProperty(string ads_id, string prop_name, string completion_year, string monthly_rent, string location, string propertyType, string rooms, string parking, string bathroom, string size, string furnished, string facilities, string additional_facilities, string region);
 void initializeProperty();
+void displayPropertyBy1();
+void displayProperty();
 void inputTenantPropertyMenu();
-bool compareLocationDesc(const string& location1, const string& location2);
+bool compareLocationDescForMergeSort(const string& location1, const string& location2);
 void merge(vector<Property>& properties, int left, int mid, int right);
 void mergeSort(vector<Property>& properties, int left, int right);
 vector<int> binarySearchProperty(const vector<Property>& properties, int left, int right, string target, string searchCriteria);
