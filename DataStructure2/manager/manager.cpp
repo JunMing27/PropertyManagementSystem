@@ -89,6 +89,7 @@ Manager* searchManager(string username, string password)
 void logout()
 {
     cout << "Logged out successfully." << endl;
+    displayMenu();
 }
 
 void loginManager()
