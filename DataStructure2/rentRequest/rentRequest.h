@@ -27,4 +27,3 @@ void displayPendingRequest(RentRequest* rHead);
 void manageTenancyProcess();
 void updateRentRequest(RentRequest* rHead, bool approval);
 void displayTenantTenancyPropInfo(string tenantId);
-bool verifyTenancy(string tenantId);

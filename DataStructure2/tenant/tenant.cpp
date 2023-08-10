@@ -211,7 +211,7 @@ void inputTenantMenu() {
 void tenantDisplayTenancy(string tenantId) {
     Tenant* temp = tHead;
     while (temp != NULL) {
-        if (verifyTenancy(tenantId)) {
+        if (temp->tenantId==tenantId) {
             displayTenantTenancyPropInfo(temp->tenantId);
             tenantDisplayTenancyMenu();
             break;
