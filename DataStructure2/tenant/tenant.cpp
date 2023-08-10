@@ -185,6 +185,7 @@ void inputTenantMenu() {
             break;
         case 3:             //Sort Property
             cout << endl;
+            choosePropertySort();
             break;
         case 4:             //Search Property
             inputTenantPropertySearch();
@@ -1144,7 +1145,7 @@ void choosePropertySort() {
         cout << "3. Sort Size as per square feet (Desc)" << endl;
         cout << "4. Sort by Multiple Criteria (Merge Sort)" << endl;
         cout << "5. Sort by Multiple Criteria (Quick Sort)" << endl;
-        cout << "6. Exit" << endl;
+        cout << "6. Go Back to Tenant Menu" << endl;
         cout << "=======================================" << endl;
         cout << "Enter your choice (1-6): ";
         cin >> choice;
@@ -1168,10 +1169,12 @@ void choosePropertySort() {
             displayPropertiesByMultipleCriteriaQuickSort();
             break;
         case 6:
-            cout << "Exiting..." << endl;
+            cout << endl;
+            displayTenantMenu();
             break;
         default:
             cout << "Invalid choice. Please select again." << endl;
+            displayTenantMenu();
         }
 
         cout << endl;
