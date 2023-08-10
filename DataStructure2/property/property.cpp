@@ -446,7 +446,7 @@ void linearOrBinary(string searchCriteria, string searchMethod, string searchInp
         vector <int> resultIndex = binarySearchProperty(properties, 0, vectorSize - 1, searchInput, searchCriteria);
         if (resultIndex.empty()) {
             cout << "Property not found" << endl;
-
+            inputTenantPropertySearch();
         }
         else {
             auto endQuickSort = chrono::high_resolution_clock::now();
