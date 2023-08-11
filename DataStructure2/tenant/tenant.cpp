@@ -383,6 +383,7 @@ void displaySingleTenant(Tenant* tenant)
         cout << "Tenant UserName: " << tenant->tenantUserName << endl;
         cout << "Tenant Password: " << tenant->tenantPassword << endl;
         cout << "Tenant Email: " << tenant->tenantEmail << endl;
+        cout << "Tenant Status: " << (tenant->isActive ? "Active" : "Inactive") << endl;
         cout << "=======================================" << endl;
     }
     else {
