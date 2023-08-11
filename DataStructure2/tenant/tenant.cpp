@@ -375,12 +375,19 @@ Tenant* searchTenantById(Tenant* tHead, string tenantId)
 
 void displaySingleTenant(Tenant* tenant)
 {
-    cout << "=======================================" << endl;
-    cout << "Tenant ID: " << tenant->tenantId << endl;
-    cout << "Tenant Name: " << tenant->tenantName << endl;
-    cout << "Tenant UserName: " << tenant->tenantUserName << endl;
-    cout << "Tenant Password: " << tenant->tenantPassword << endl;
-    cout << "Tenant Email: " << tenant->tenantEmail << endl;
+    if (tenant != nullptr)
+    {
+        cout << "=======================================" << endl;
+        cout << "Tenant ID: " << tenant->tenantId << endl;
+        cout << "Tenant Name: " << tenant->tenantName << endl;
+        cout << "Tenant UserName: " << tenant->tenantUserName << endl;
+        cout << "Tenant Password: " << tenant->tenantPassword << endl;
+        cout << "Tenant Email: " << tenant->tenantEmail << endl;
+        cout << "=======================================" << endl;
+    }
+    else {
+        cout << "Tenant pointer is null." << endl;
+    }
 }
 
 void searchTenantDetails()
@@ -400,37 +407,35 @@ void searchTenantDetails()
 }
 
 //delete inactive tenant
-void deleteInactive(Tenant* tHead, string tenantId)
+void deleteInactive(Tenant** tHead, string tenantId)
 {
-    //if want to delete is the first one
-    if (tHead->tenantId == tenantId)
-    {
-        Tenant* temp = tHead;
-        tHead = tHead->next;
-        delete temp;
-        cout << "Tenant with ID : " << tenantId << " deleted successfully." << endl;
-        return;
-    }
-
-    Tenant* current = tHead;
+    Tenant* current = *tHead;
     //loop through list, stop when found
-    while (current->next != nullptr && current->next->tenantId != tenantId)
+    while (current != nullptr && current->tenantId != tenantId)
     {
         current = current->next;
     }
 
     //if found
-    if (current->next != nullptr)
-    {
-        Tenant* temp = current->next;
-        current->next = current->next->next;
-        delete temp;
-        cout << "Tenant with ID: " << tenantId << " deleted successfully." << endl;
+    if (current != nullptr) {
+        if (current->prev != nullptr) {
+            current->prev->next = current->next;
+        }
+        else {
+            *tHead = current->next; // update the head if deleting the first tenant
+        }
+
+        if (current->next != nullptr) {
+            current->next->prev = current->prev;
+        }
+
+        delete current;
+        cout << "Tenant with id: " << tenantId << " deleted successfully." << endl;
     }
-    else
-    {
-        cout << "Tenant not found with ID: " << tenantId << endl;
+    else {
+        cout << "Tenant not found with id: " << tenantId << endl;
     }
+     
 }
 
 void displayDeleteInactiveTenants()
@@ -469,7 +474,8 @@ void displayDeleteInactiveTenants()
         }
         else
         {
-            deleteInactive(tHead, tenantID);
+            deleteInactive(&tHead, tenantID);
+            showAllTenants();
         }
     }
 

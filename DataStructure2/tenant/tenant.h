@@ -46,7 +46,7 @@ void displaySingleTenant(Tenant* tenant);
 
 //for delete due to inactive
 void displayDeleteInactiveTenants();
-void deleteInactive(Tenant* tHead, string tenantId);
+void deleteInactive(Tenant** tHead, string tenantId);
 
 //by alan tenant sort
 int partitionMonthlyRent(vector<Property*>& properties, int low, int high);
