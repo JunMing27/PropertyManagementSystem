@@ -21,4 +21,3 @@ bool verifyFavProp(string propertyId);
 //for summarize
 void showAllFavProp();
 void summarizeTop10FavProp();
-void generateReport();
