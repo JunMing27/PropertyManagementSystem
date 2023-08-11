@@ -47,7 +47,7 @@ void showAllFavProp()
 	FavProperty* current = favHead;
 	if (current == nullptr)
 	{
-		cout << "Tenant List is Empty." << endl;
+		cout << "Favourite Property List is Empty." << endl;
 	}
 	else
 	{
