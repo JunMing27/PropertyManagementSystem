@@ -301,4 +301,6 @@ void tenantDisplayRentRequest(string tenantId) {
         }
         current = current->next;
     }
+    cout << "You have not rented any Property yet" << endl << endl;
+    displayTenantMenu();
 }
