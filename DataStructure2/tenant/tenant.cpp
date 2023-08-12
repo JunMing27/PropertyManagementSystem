@@ -486,9 +486,12 @@ void displayDeleteInactiveTenants()
 // Alan Part
 // Function to partition the properties based on their monthly rent for Quick Sort
 int partitionMonthlyRent(vector<Property*>& properties, int low, int high) {
-    int pivotValue = extractMonthlyRentValue(properties[high]->monthly_rent);
-    int i = low - 1;
 
+    // Choose the pivot element from the last property
+    int pivotValue = extractMonthlyRentValue(properties[high]->monthly_rent);
+    int i = low - 1; // Initialize the index of the smaller element
+
+    // Traverse through the subarray
     for (int j = low; j <= high - 1; j++) {
         if (extractMonthlyRentValue(properties[j]->monthly_rent) >= pivotValue) {
             i++;
@@ -496,16 +499,20 @@ int partitionMonthlyRent(vector<Property*>& properties, int low, int high) {
         }
     }
 
+    // Swap the pivot element with the element at index i+1
     swap(properties[i + 1], properties[high]);
+
+    // Return the index of the pivot element after rearrangement
     return i + 1;
 }
 
 // Function to implement Quick Sort for sorting properties based on their monthly rent
 void quickSortMonthlyRent(vector<Property*>& properties, int low, int high) {
     if (low < high) {
+        // Partition the properties array and get the index of the pivot
         int pivotIndex = partitionMonthlyRent(properties, low, high);
-        quickSortMonthlyRent(properties, low, pivotIndex - 1);
-        quickSortMonthlyRent(properties, pivotIndex + 1, high);
+        quickSortMonthlyRent(properties, low, pivotIndex - 1); // Sort left subarray
+        quickSortMonthlyRent(properties, pivotIndex + 1, high); // Sort right subarray
     }
 }
 
@@ -559,7 +566,7 @@ void displayPropertyMonthlyRent() {
 
         // Ask for user input to continue or go back
         int userInput;
-        cout << "Enter '1' to view the next properties, '2' to view the previous properties, or any other number to exit: ";
+        displayTenantRentPropMenu();
         cin >> userInput;
 
         if (userInput == 2 && propertyIndex == 0) {
@@ -576,7 +583,7 @@ void displayPropertyMonthlyRent() {
             pageNum = max(1, pageNum - 1);
         }
         else {
-            // Exit the loop if any other number is entered
+            displayTenantMenu();// Exit the loop if any other number is entered
             break;
         }
     }
@@ -597,28 +604,38 @@ int extractSizeValue(const string& sizeString) {
     return sizeValue;
 }
 
+// Function to partition the properties based on their size for Quick Sort
 int partitionSize(vector<Property*>& properties, int low, int high) {
+    // Choose the pivot value as the size of the property at the high index
     int pivot = extractSizeValue(properties[high]->size);
     int i = low - 1;
 
+    // Traverse through the subarray [low, high-1]
     for (int j = low; j < high; j++) {
         if (extractSizeValue(properties[j]->size) >= pivot) {
             i++;
             swap(properties[i], properties[j]);
         }
     }
+
+    // Swap the pivot element with the element at index (i + 1)
     swap(properties[i + 1], properties[high]);
+
+    // Return the index of the pivot element after partitioning
     return i + 1;
 }
 
+// Function to implement Quick Sort for sorting properties based on their size
 void quickSortSize(vector<Property*>& properties, int low, int high) {
     if (low < high) {
+        // Partition the array and obtain the pivot index
         int pi = partitionSize(properties, low, high);
         quickSortSize(properties, low, pi - 1);
         quickSortSize(properties, pi + 1, high);
     }
 }
 
+// Function to sort and display property information in descending order based on size using Quick Sort
 void displayPropertySize() {
     int batchSize = 3; // Display 3 properties per page
     int pageNum = 1;
@@ -668,7 +685,7 @@ void displayPropertySize() {
 
         // Ask for user input to continue or go back
         int userInput;
-        cout << "Enter '1' to view the next properties, '2' to view the previous properties, or any other number to exit: ";
+        displayTenantRentPropMenu();
         cin >> userInput;
 
         if (userInput == 2 && propertyIndex == 0) {
@@ -685,7 +702,7 @@ void displayPropertySize() {
             pageNum = max(1, pageNum - 1);
         }
         else {
-            // Exit the loop if any other number is entered
+            displayTenantMenu();// Exit the loop if any other number is entered
             break;
         }
     }
@@ -701,9 +718,11 @@ void mergeLocation(vector<Property*>& properties, int left, int mid, int right) 
     int leftSize = mid - left + 1;
     int rightSize = right - mid;
 
+    // Create temporary arrays to hold the left and right parts
     vector<Property*> leftArray(leftSize);
     vector<Property*> rightArray(rightSize);
 
+    // Copy data to temporary arrays
     for (int i = 0; i < leftSize; i++) {
         leftArray[i] = properties[left + i];
     }
@@ -715,6 +734,7 @@ void mergeLocation(vector<Property*>& properties, int left, int mid, int right) 
     int rightIndex = 0;
     int mergedIndex = left;
 
+    // Merge the two temporary arrays back into the original array
     while (leftIndex < leftSize && rightIndex < rightSize) {
         if (compareLocationDesc(leftArray[leftIndex]->location, rightArray[rightIndex]->location)) {
             properties[mergedIndex] = leftArray[leftIndex];
@@ -727,12 +747,14 @@ void mergeLocation(vector<Property*>& properties, int left, int mid, int right) 
         mergedIndex++;
     }
 
+    // Copy remaining elements from leftArray, if any
     while (leftIndex < leftSize) {
         properties[mergedIndex] = leftArray[leftIndex];
         leftIndex++;
         mergedIndex++;
     }
 
+    // Copy remaining elements from rightArray, if any
     while (rightIndex < rightSize) {
         properties[mergedIndex] = rightArray[rightIndex];
         rightIndex++;
@@ -743,13 +765,19 @@ void mergeLocation(vector<Property*>& properties, int left, int mid, int right) 
 // Merge sort algorithm for sorting properties based on location in descending order
 void mergeSortLocation(vector<Property*>& properties, int left, int right) {
     if (left < right) {
+        // Calculate the middle index to divide the array into two parts
         int mid = left + (right - left) / 2;
+
+        // Recursively sort the left and right halves
         mergeSortLocation(properties, left, mid);
         mergeSortLocation(properties, mid + 1, right);
+
+        // Merge the sorted halves using the mergeLocation function
         mergeLocation(properties, left, mid, right);
     }
 }
 
+// Function to sort and display property information in descending order based on location using Merge Sort
 void displayPropertyLocation() {
     vector<Property*> propertyVector;
 
@@ -763,7 +791,7 @@ void displayPropertyLocation() {
     // Sort the vector based on location in descending order using merge sort
     mergeSortLocation(propertyVector, 0, propertyVector.size() - 1);
 
-    int batchSize = 5;
+    int batchSize = 3;
     int pageNum = 1;
     int startIndex = 0;
     int endIndex = min(startIndex + batchSize - 1, static_cast<int>(propertyVector.size() - 1));
@@ -796,7 +824,7 @@ void displayPropertyLocation() {
 
         // Ask for user input to continue or go back
         int userInput;
-        cout << "Enter '1' to view the next page, '2' to view the previous page, or any other number to exit: ";
+        displayTenantRentPropMenu();
         cin >> userInput;
 
         if (userInput == 2 && startIndex == 0) {
@@ -818,7 +846,7 @@ void displayPropertyLocation() {
             pageNum--;
         }
         else {
-            // Exit the loop if any other number is entered
+            displayTenantMenu();// Exit the loop if any other number is entered
             break;
         }
     }
@@ -938,7 +966,7 @@ void displayPropertiesByMultipleCriteriaMergeSort() {
         if (pageNum % batchSize == 0) {
             // Ask for user input to continue or go back
             int userInput;
-            cout << "Enter '1' to view the next page, '2' to view the previous page, or any other number to exit: ";
+            displayTenantRentPropMenu();
             cin >> userInput;
 
             if (userInput == 2 && pageNum <= batchSize) {
@@ -955,7 +983,7 @@ void displayPropertiesByMultipleCriteriaMergeSort() {
                 pageNum = pageNum - batchSize;
             }
             else {
-                // Exit the loop if any other number is entered
+                displayTenantMenu();// Exit the loop if any other number is entered
                 break;
             }
         }
@@ -1116,7 +1144,7 @@ void displayPropertiesByMultipleCriteriaQuickSort() {
         if (pageNum % batchSize == 0) {
             // Ask for user input to continue or go back
             int userInput;
-            cout << "Enter '1' to view the next page, '2' to view the previous page, or any other number to exit: ";
+            displayTenantRentPropMenu();
             cin >> userInput;
 
             if (userInput == 2 && pageNum <= batchSize) {
@@ -1133,7 +1161,7 @@ void displayPropertiesByMultipleCriteriaQuickSort() {
                 pageNum = pageNum - batchSize;
             }
             else {
-                // Exit the loop if any other number is entered
+                displayTenantMenu();// Exit the loop if any other number is entered
                 break;
             }
         }
@@ -1141,6 +1169,7 @@ void displayPropertiesByMultipleCriteriaQuickSort() {
     }
 }
 
+// Function to display the sort property menu for admin to choose. 
 void choosePropertySort() {
     int choice;
     do {
@@ -1180,7 +1209,7 @@ void choosePropertySort() {
             break;
         default:
             cout << "Invalid choice. Please select again." << endl;
-            displayTenantMenu();
+            choosePropertySort();
         }
 
         cout << endl;
