@@ -11,40 +11,53 @@
 #include "../main.h"
 using namespace std;
 
-Admin* aHead = nullptr;
-Admin* aTail = nullptr;
+// Declare pointers to track the head and tail of the Admin linked list
+Admin* aHead = nullptr; // Points to the first node in the Admin linked list
+Admin* aTail = nullptr; // Points to the last node in the Admin linked list
 
-
+// This function adds a new admin to the linked list of admin.
 void addNewAdmin(string adminId, string adminUserName, string adminPassword) {
+    // Create a new Admin node and allocate memory for it.
     Admin* newAdmin = new Admin;
+
+    // Set the properties of the new Admin node.
     newAdmin->adminId = adminId;
     newAdmin->adminUserName = adminUserName;
     newAdmin->adminPassword = adminPassword;
-    newAdmin->next = nullptr;
-    newAdmin->prev = nullptr;
+    newAdmin->next = nullptr; // Initialize the next pointer to nullptr (no next node yet)
+    newAdmin->prev = nullptr; // Initialize the prev pointer to nullptr (no previous node yet)
 
+    // Check if the linked list is empty.
     if (aHead == NULL) {
+        // If the list is empty, set the newAdmin as the head of the list.
         aHead = newAdmin;
     }
     else {
+        // If the list is not empty, find the last node using a temporary pointer.
         Admin* temp = aHead;
         while (temp->next != NULL) {
             temp = temp->next;
         }
+
+        // Attach the newAdmin node at the end of the linked list.
         temp->next = newAdmin;
-        newAdmin->prev = temp; //doubly
+        newAdmin->prev = temp; // Make the newAdmin's prev pointer point to the last node (doubly linked)
     }
 
 }
 
+// This function initializes the list of administrators with predefined admin details.
 void initializeAdmin() {
     addNewAdmin("A1", "junming", "junming123");
     addNewAdmin("A2", "hoiyi", "hoiyi123");
     addNewAdmin("A3", "alan", "alan123");
 }
 
-bool searchAdmin(string username, string password) {
+// Function to search for an admin in the admin linked list based on username and password.
+bool searchAdmin(Admin* aHead, string username, string password) {
+    // Loop through the admin linked list using the provided head pointer.
     while (aHead != nullptr) {
+        // Check if the current admin's username and password match the provided ones.
         if (aHead->adminUserName == username && aHead->adminPassword == password) {
             return true;
         }
@@ -53,6 +66,7 @@ bool searchAdmin(string username, string password) {
     return false;
 }
 
+// Function for admin login.
 void loginAdmin() {
     string adminUserName;
     string adminPassword;
@@ -61,7 +75,10 @@ void loginAdmin() {
     cin >> adminUserName;
     cout << "Enter your password: ";
     cin >> adminPassword;
-    bool isAdminFound = searchAdmin(adminUserName, adminPassword);
+
+    // Check if the admin with the provided username and password exists in the list.
+    bool isAdminFound = searchAdmin(aHead, adminUserName, adminPassword);
+
     if (isAdminFound) {
         cout << endl << "Login successful. Welcome, " << adminUserName << " !" << endl << endl;
         displayAdminMenu();
@@ -72,12 +89,14 @@ void loginAdmin() {
     }
 }
 
+// Function to display admin menu.
 void displayAdminMenu() {
     int adminOption;
     bool adminLogIn = true;
 
     while (adminLogIn)
     {
+        cout << endl;
         cout << "======== Admin Menu ========" << endl;
         cout << "1. Add New Manager" << endl;
         cout << "2. Modify Status Manager" << endl;
@@ -107,7 +126,7 @@ void displayAdminMenu() {
             choosePropertyType();
             break;
         case 6:
-            cout << "Logged out successfully." << endl;
+            cout << "Logged out successfully." << endl << endl;
             displayMenu();
             break;
         default:
@@ -118,6 +137,17 @@ void displayAdminMenu() {
     }
 }
 
+// Function to display admin operation.
+void displayAdminOperationMenu() {
+    cout << "======== Admin Operation ========" << endl;
+    cout << "1. Next" << endl;
+    cout << "2. Previous" << endl;
+    cout << "3. Back to Menu" << endl;
+    cout << "==================================" << endl;
+    cout << "Enter your choice: ";
+}
+
+// Function to add new manager.
 void addNewManager() {
 
     string managerUsername;
@@ -150,13 +180,26 @@ void addNewManager() {
     }
 }
 
+// Function to modify manager status.
 void modifyManagerStatus() {
+    // Display all manager details
+    cout << endl << "List of Managers:" << endl;
+    Manager* temp = mHead;
+    while (temp != nullptr) {
+        cout << "Manager ID: " << temp->managerId << endl;
+        cout << "Manager Username: " << temp->managerUsername << endl;
+        cout << "Manager Password: " << temp->managerPassword << endl;
+        cout << "Current Manager Status: " << (temp->managerStatus ? "Active" : "Inactive") << endl;
+        cout << "-----------------------" << endl;
+        temp = temp->next;
+    }
+
     string managerId;
     cout << endl << "Enter Manager ID to search: ";
     cin >> managerId;
 
     // Search for the manager with the specified managerId
-    Manager* temp = mHead;
+    temp = mHead;
     bool managerFound = false;
     while (temp != nullptr) {
         if (temp->managerId == managerId) {
@@ -196,6 +239,7 @@ void modifyManagerStatus() {
     }
 }
 
+// Function to display property information by property type.
 void displayPropertyByType(const string& propertyType) {
     Property* currentProperty = pHead;
     int batchSize = 1;
@@ -232,7 +276,7 @@ void displayPropertyByType(const string& propertyType) {
             if (pageNum % batchSize == 0) {
                 // Ask for user input to continue or go back
                 int userInput;
-                cout << "Enter '1' to view the next page, '2' to view the previous page, or any other number to exit: ";
+                displayAdminOperationMenu();
                 cin >> userInput;
 
                 if (userInput == 2 && pageNum <= batchSize) {
@@ -249,7 +293,7 @@ void displayPropertyByType(const string& propertyType) {
                     pageNum = pageNum - batchSize;
                 }
                 else {
-                    // Exit the loop if any other number is entered
+                    displayAdminMenu();// Exit the loop if any other number is entered
                     break;
                 }
             }
@@ -264,6 +308,7 @@ void displayPropertyByType(const string& propertyType) {
     }
 }
 
+// Function to display property type menu for admin.
 void choosePropertyType() {
     int choice;
     do {
@@ -275,7 +320,7 @@ void choosePropertyType() {
         cout << "4. Studio" << endl;
         cout << "5. Flat" << endl;
         cout << "6. Duplex" << endl;
-        cout << "7. Exit" << endl;
+        cout << "7. Back to Menu" << endl;
         cout << "=======================================" << endl;
         cout << "Enter your choice (1-7): ";
         cin >> choice;
@@ -302,7 +347,7 @@ void choosePropertyType() {
             displayPropertyByType("Duplex");
             break;
         case 7:
-            cout << "Exiting..." << endl;
+            cout << endl;
             break;
         default:
             cout << "Invalid choice. Please select again." << endl;
@@ -336,7 +381,7 @@ int extractMonthlyRentValue(const string& rentString) {
     return rentValue;
 }
 
-
+// Function to display property information by monthly rent.
 void displayPropertiesByMonthlyRent() {
 
     int option;
@@ -364,7 +409,7 @@ void displayPropertiesByMonthlyRent() {
     }
 
     if (option == 4) {
-        cout << endl << "Exiting..." << endl << endl;
+        cout << endl;
         return; // Exit the function if option 4 is chosen
     }
 
@@ -415,7 +460,7 @@ void displayPropertiesByMonthlyRent() {
             if (pageNum % batchSize == 0) {
                 // Ask for user input to continue or go back
                 int userInput;
-                cout << "Enter '1' to view the next page, '2' to view the previous page, or any other number to exit: ";
+                displayAdminOperationMenu();
                 cin >> userInput;
 
                 if (userInput == 2 && pageNum <= batchSize) {
@@ -448,7 +493,7 @@ void displayPropertiesByMonthlyRent() {
     }
 }
 
-// Function to display the admin menu
+// Function to display tenant information based on status.
 void chooseTenantStatus() {
     cout << endl;
     cout << "======== Select Tenant Status ========" << endl;
@@ -507,7 +552,7 @@ void displayTenantsByIsActive(bool isActive) {
             if (pageNum % batchSize == 0) {
                 // Ask for user input to continue or go back
                 int userInput;
-                cout << "Enter '1' to view the next page, '2' to view the previous page, or any other number to exit: ";
+                displayAdminOperationMenu();
                 cin >> userInput;
 
                 if (userInput == 2 && pageNum <= batchSize) {

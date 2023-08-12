@@ -12,11 +12,12 @@ struct Admin {
     Admin* next;
 };
 
+void displayAdminOperationMenu();
 void addNewAdmin(string adminId, string adminUserName, string adminPassword);
 void initializeAdmin();
 void loginAdmin();
 void displayAdminMenu();
-bool searchAdmin(string username, string password);
+bool searchAdmin(Admin* aHead, string username, string password);
 void addNewManager();
 void modifyManagerStatus();
 void displayPropertyByType(const string& propertyType);
