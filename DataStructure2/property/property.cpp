@@ -326,7 +326,7 @@ vector<int> binarySearchProperty(const vector<Property>& properties, int left, i
                 }
                 return indexValues;
             }
-            else if (properties[mid].prop_name == target) {
+            else if (properties[mid].prop_name >target) {
                 left = mid + 1;
             }
             else {
@@ -349,7 +349,7 @@ vector<int> binarySearchProperty(const vector<Property>& properties, int left, i
                 }
                 return indexValues;
             }
-            else if (properties[mid].location == target) {
+            else if (properties[mid].location >target) {
                 left = mid + 1;
             }
             else {
@@ -372,7 +372,7 @@ vector<int> binarySearchProperty(const vector<Property>& properties, int left, i
                 }
                 return indexValues;
             }
-            else if (properties[mid].region == target) {
+            else if (properties[mid].region >target) {
                 left = mid + 1;
             }
             else {
