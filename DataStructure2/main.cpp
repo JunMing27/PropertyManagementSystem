@@ -100,11 +100,9 @@ string getTempUser()
 }
 
 void cleanTempUser() {
-    tempUser* currentTempUser = tempHead;
     while (tempHead != nullptr) {
-        tempUser* temp = tempHead;
         tempHead = tempHead->next;
-        delete temp;
+        delete tempHead;
     }
 }
 
