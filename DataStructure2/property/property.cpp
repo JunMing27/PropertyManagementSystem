@@ -320,7 +320,7 @@ vector<int> binarySearchProperty(const vector<Property>& properties, int left, i
                     leftProperty--;
                 }
                 int rightProperty = mid + 1;
-                while (rightProperty >= right && (properties[rightProperty].prop_name == target)) {
+                while (rightProperty <= right && (properties[rightProperty].prop_name == target)) {
                     indexValues.push_back(rightProperty);
                     rightProperty++;
                 }
@@ -343,7 +343,7 @@ vector<int> binarySearchProperty(const vector<Property>& properties, int left, i
                     leftProperty--;
                 }
                 int rightProperty = mid + 1;
-                while (rightProperty >= right && (properties[rightProperty].location == target)) {
+                while (rightProperty <= right && (properties[rightProperty].location == target)) {
                     indexValues.push_back(rightProperty);
                     rightProperty++;
                 }
@@ -366,7 +366,7 @@ vector<int> binarySearchProperty(const vector<Property>& properties, int left, i
                     leftProperty--;
                 }
                 int rightProperty = mid + 1;
-                while (rightProperty >= right && (properties[rightProperty].region == target)) {
+                while (rightProperty <= right && (properties[rightProperty].region == target)) {
                     indexValues.push_back(rightProperty);
                     rightProperty++;
                 }
