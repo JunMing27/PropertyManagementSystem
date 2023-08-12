@@ -47,16 +47,17 @@ void showAllFavProp()
 	FavProperty* current = favHead;
 	if (current == nullptr)
 	{
-		cout << "Tenant List is Empty." << endl;
+		cout << "Favourite Property List is Empty." << endl;
 	}
 	else
 	{
 		while (current != nullptr)
 		{
-			cout << "Favourite Property ID: " << current->propId << endl;
-			cout << "Favourite Property Name: " << current->propName << endl;
-			cout << "Favourite By Tenant ID: " << current->favTenantId << endl;
-			cout << "================================" << endl;
+			cout << "============== Favourite Property List ===============" << endl;
+			cout << "Property ID: " << current->propId << endl;
+			cout << "Property Name: " << current->propName << endl;
+			cout << "Tenant ID: " << current->favTenantId << endl;
+			cout << "======================================================" << endl;
 			current = current->next;
 		}
 	}
